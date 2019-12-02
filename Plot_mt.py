@@ -1,7 +1,12 @@
 #coding:utf-8
+
+__author__: "Risky"
+__date__: "2019-12-2"
 import re
 import matplotlib.pyplot as plt
 import numpy as np
+import math
+
 
 # 从单个文件中读取
 def GetLrc():
@@ -13,22 +18,33 @@ def GetLrc():
     for piece_lrc in lrd_detail:
         print(piece_lrc)
         piece_pattern = re.compile(piece_lrc)
-        exp_sub = '^r"[".*?r"]"&'
+        exp_sub = r"^[.*?r]&"
         if piece_pattern.match(exp_sub):
             print(piece_pattern.findall(exp_sub))
 
     lrc.close()
 
 def Figureplot():
-    print("figure plotting")
     data = np.arange(10)
     print(data) 
-    fig = plt.figure()
-    ax1 = fig.add_subplot(2, 2, 1)
     plt.plot(data,data)
-    plt.plot(np.random.randn(50).cumsum(), 'k--')
     print('last line')
+    plt.show()
+
+
+def plot_2():
+
+    x=[0,1,2,3,4,5,6,7,8,9]
+    y=[12,23,4,10,22,33,44,23,35,7]
+    plt.bar(x,y,align='center',alpha=0.5)
+    plt.xticks(x,x)
+    plt.ylabel('count')
+    plt.title('Distribution')
+    plt.show()
+
     
+
 if __name__ == '__main__':
-    # GetLrc()
-    Figureplot()    
+    GetLrc()
+    # Figureplot()    
+    # plot_2()

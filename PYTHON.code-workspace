@@ -4,5 +4,11 @@
 			"path": "D:\\Python_M"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"editor.fontWeight": "500",
+		"editor.fontSize": 23,
+		// "editor.fontFamily": "Consolas, 'Courier New', monospace",
+		"editor.fontFamily": "DialogInput, 'DialogInput', Courier New",
+		// "extensions.closeExtensionDetailsOnViewChange": false
+	}
 }
