@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import math
 
-
 # 从单个文件中读取
 def GetLrc():
     print('get lrc from file')
@@ -16,12 +15,12 @@ def GetLrc():
         lrd_detail = lrc.readlines()
         print('lrc file open succeed')
     for piece_lrc in lrd_detail:
-        print(piece_lrc)
-        piece_pattern = re.compile(piece_lrc)
-        exp_sub = r"^[.*?r]&"
-        if piece_pattern.match(exp_sub):
-            print(piece_pattern.findall(exp_sub))
-
+        piece_pattern = re.compile(r"\[.+\]")
+        # print('origin:'+ piece_lrc)
+        words = piece_pattern.sub(" ",piece_lrc)
+        if len(words)!=0:
+            print(words)
+        
     lrc.close()
 
 def Figureplot():
@@ -48,3 +47,5 @@ if __name__ == '__main__':
     GetLrc()
     # Figureplot()    
     # plot_2()
+  
+    
