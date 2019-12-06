@@ -30,9 +30,10 @@ def Figureplot():
     print('last line')
     plt.show()
 
-
+'''
+    绘图
+'''
 def plot_2():
-
     x=[0,1,2,3,4,5,6,7,8,9]
     y=[12,23,4,10,22,33,44,23,35,7]
     plt.bar(x,y,align='center',alpha=0.5)
@@ -44,8 +45,8 @@ def plot_2():
     
 
 if __name__ == '__main__':
-    GetLrc()
+    # GetLrc()
     # Figureplot()    
-    # plot_2()
+    plot_2()
   
     
