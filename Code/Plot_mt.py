@@ -2,26 +2,12 @@
 
 __author__: "Risky"
 __date__: "2019-12-2"
-import re
+
 import matplotlib.pyplot as plt
 import numpy as np
 import math
 
-# 从单个文件中读取
-def GetLrc():
-    print('get lrc from file')
-    file = 'D:\\1874 (Live).lrc'
-    with open(file,"r",encoding="utf-8") as lrc:
-        lrd_detail = lrc.readlines()
-        print('lrc file open succeed')
-    for piece_lrc in lrd_detail:
-        piece_pattern = re.compile(r"\[.+\]")
-        # print('origin:'+ piece_lrc)
-        words = piece_pattern.sub(" ",piece_lrc)
-        if len(words)!=0:
-            print(words)
-        
-    lrc.close()
+
 
 def Figureplot():
     data = np.arange(10)
@@ -45,7 +31,7 @@ def plot_2():
     
 
 if __name__ == '__main__':
-    # GetLrc()
+    
     # Figureplot()    
     plot_2()
   
