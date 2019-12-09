@@ -5,6 +5,9 @@ import os
 '''
     遍历文件
 '''
-def funcname(self, parameter_list):
+def (self, parameter_list):
     srcpath = r'D:\Python_M\Src\LRC'
-    
+    print(srcpath)
+
+
+if __name__ == "__main__":
