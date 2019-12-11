@@ -6,6 +6,8 @@ import re
 import datetime
 import random as rd
 import jieba
+from wordcloud import WordCloud
+
 
 '''
     遍历文件
@@ -75,6 +77,7 @@ def DepartWord():
 
 # 处理单个文件
 def PrintPiece(file):
+    final_text = ""
     if os.path.isfile(file):
         print(file)
         with open(file,encoding='utf-8',mode='r') as curfile:
@@ -83,22 +86,51 @@ def PrintPiece(file):
         curfile.close()
         for j in aline:
             # print(j)
-            # 正则表达式替换
+            # re
             if isinstance(j,str):
-                # 处理多余信息
-                OutCut = ['母带','鼓手','作曲','：']
+                # remove time table
+                OutCut = ['：']
                 piece_pattern = re.compile(r"\[.+\]")
                 words = piece_pattern.sub(" ",j)
-                if len(words)!=0:
-                    # 默认是精确模式 分词
+                words = words.strip()
+                # remove words contains "："
+                if len(words) > 0 and words.find("：") == -1:
                     seg_list = jieba.cut(words)
                     print(words)
                     print(seg_list)
-                    print("Full Mode: " + "/ ".join(seg_list))  # 全模式
-                    
+                    LineSplit = ""
+                    LineSplit +=  " ".join(seg_list)
+                    print("Full Mode: " +  LineSplit) # full modle
+                    final_text += LineSplit
+        GetCloud(final_text)
+        return  final_text
     else:
         print('input is not a file')
-        return
+        return ""
+
+# test for remove "："
+def Remove_R1():
+    egs = "：remove"
+    print(egs)
+    a = egs.find("：")
+    print(a)
+
+# word cloud
+def GetCloud(src_text):
+    if isinstance(src_text,str):
+        wc = WordCloud(
+            background_color="white", #背景颜色
+            max_words=200, #显示最大词数
+            font_path="C:\\Windows\\Fonts\\STSONG.TTF",  #使用字体
+            min_font_size=15,
+            max_font_size=50, 
+            width=400  #图幅宽度
+            )
+        wc.generate(src_text)
+        wc.to_file("D:\\Python_M\\Code\\pic.png")
+        print("word cloud draw finished + file:D:\\Python_M\\Code\\pic.png")
+    else:
+        print("not string instance")
 
 
 if __name__ == "__main__":
@@ -107,5 +139,6 @@ if __name__ == "__main__":
     # GetLrc()
     # GetFileIndex()
     DepartWord()
+    # GetCloud("wh ,s ,sdf")
 
     
