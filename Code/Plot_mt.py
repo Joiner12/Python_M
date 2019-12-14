@@ -1,4 +1,4 @@
-#coding:utf-8
+# coding:utf-8
 
 __author__: "Risky"
 __date__: "2019-12-2"
@@ -6,8 +6,6 @@ __date__: "2019-12-2"
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-
-
 
 def Figureplot():
     data = np.arange(10)

@@ -16,7 +16,7 @@ from wordcloud import WordCloud
 # 从单个文件中读取
 def GetLrc():
     print('get lrc from file')
-    file = 'D:\\1874 (Live).lrc'
+    file = 'xx.lrc'
     with open(file,"r",encoding="utf-8") as lrc:
         lrd_detail = lrc.readlines()
         print('lrc file open succeed')
