@@ -1,4 +1,5 @@
-#encoding:utf-8
+# -*- coding:utf-8 -*-
+
 __author__: "Anonymous"
 __date__: "2019-12-5"
 import os
@@ -7,6 +8,7 @@ import datetime
 import random as rd
 import jieba
 from wordcloud import WordCloud
+import turtle
 
 
 '''
@@ -132,13 +134,27 @@ def GetCloud(src_text):
     else:
         print("not string instance")
 
+def TurtleFig():
+    #SquareSpiral1.py
+    
+    t = turtle.Pen()
+    turtle.bgcolor("black")
+    sides=eval(input("输入要绘制的边的数目，请输入2-6的数字！"))
+    colors=["red","yellow","green","blue","orange","purple"]
+    for x in range(100):
+        t.pencolor(colors[x%sides])
+        t.forward(x*3/sides+x)
+        t.left(360/sides+1)
+        t.width(x*sides/200)
+
 
 if __name__ == "__main__":
     os.system("cls")
     print('at least there is a syntax')
     # GetLrc()
     # GetFileIndex()
-    DepartWord()
+    # DepartWord()
     # GetCloud("wh ,s ,sdf")
+    TurtleFig()
 
     
