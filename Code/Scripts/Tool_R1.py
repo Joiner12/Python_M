@@ -122,7 +122,10 @@ class ProcessBar_1(QWidget):
 
 if __name__ =="__main__":
 #    StuckIn()
-    app = QApplication(sys.argv)
-    ex = loveRiver()
-    sys.exit(app.exec_()) 
-   
+    if False:
+        app = QApplication(sys.argv)
+        ex = loveRiver()
+        sys.exit(app.exec_()) 
+    else:
+        filepath = os.path.abspath(os.path.join(os.path.abspath(__file__),'../..'))
+        print(filepath)
