@@ -5,6 +5,9 @@ import serial.tools.list_ports as lp
 import os 
 import datetime
 
+from PyQt5.QWidgets import QComboBox,QListView
+from PyQt5.QtCore import pyqtSignal
+
 global com_port_avilable
 com_port_avilable=[]
 
@@ -56,3 +59,7 @@ if __name__ == "__main__":
 		print(b)
 	'''
 	
+
+	'''
+		PyQt5 Com tool
+	'''
