@@ -56,6 +56,9 @@ class MainWindow(QMainWindow):
             paletteBg = QPalette()
             paletteBg.setBrush(QPalette.Background,QBrush(QPixmap(mainBackGround)))
             self.setPalette(paletteBg)
+            # 固定窗口大小
+            self.setFixedSize(1024,683)
+            self.setWindowFlag(Qt.WindowMinimizeButtonHint)
         self.setGeometry(100, 100, 600, 600*0.618)
         # self.resize(1000,683)
         self.setWindowTitle('翻开')
