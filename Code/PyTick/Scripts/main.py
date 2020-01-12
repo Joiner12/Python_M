@@ -4,14 +4,15 @@ Author:Risky Junior
 Data:2020/1/10
 '''
 
-import os
-import sys
-from PyQt5.QtCore import pyqtSignal, Qt
+import os,sys
+import time
+from PyQt5.QtCore import pyqtSignal, Qt,QTimer,QTime
 from PyQt5.QtWidgets import (QApplication, QWidget, QToolTip, QPushButton, QMessageBox, QDesktopWidget, QMainWindow,
                              QVBoxLayout, QHBoxLayout, QGridLayout, QTextEdit, QLabel, QRadioButton, QCheckBox,
                              QLineEdit, QGroupBox, QSplitter, QFileDialog)
 from PyQt5.QtGui import QIcon, QFont, QTextCursor, QPixmap
 from PyQt5.QtGui import QPalette, QBrush, QPixmap
+
 
 '''
     主级类 (main class)
@@ -21,7 +22,7 @@ from PyQt5.QtGui import QPalette, QBrush, QPixmap
 class MyClass(object):
     def __init__(self):
         super(MyClass, self).__init__()
-        print('翻开了我，已经褪了色的相册')
+        print('PyTick')
 
 
 class MainWindow(QMainWindow):
@@ -38,7 +39,7 @@ class MainWindow(QMainWindow):
         mainIcon = QIcon(os.path.join(img_src,'Deer.ico'))
         self.setWindowIcon(mainIcon)
         # self.setWindowIcon(QIcon(r'D:\Python_M\Code\PyTick\Scripts\Deer.ico'))
-        self.statusBar().showMessage('Can\'t see')
+        self.statusBar().showMessage('翻开了我 已经褪了色的相册 再也看不见彩虹的颜色')
 
         '''
             窗口背景
@@ -60,9 +61,23 @@ class MainWindow(QMainWindow):
             self.setFixedSize(1024,683)
             self.setWindowFlag(Qt.WindowMinimizeButtonHint)
         self.setGeometry(100, 100, 600, 600*0.618)
+
+
+        # 更新状态显示时间
+        self.timerStatus = QTimer(self)
+        self.timerStatus.timeout.connect(self.UpDateStatus)
+        self.timerStatus.start(1000)
+
         # self.resize(1000,683)
-        self.setWindowTitle('翻开')
+        self.setWindowTitle('PyTick')
         self.show()
+
+
+    #　更新显示信息
+    def UpDateStatus(self):
+        statusInfo = time.strftime(r'%H:%M:%S',time.localtime(time.time()))
+        self.statusBar().showMessage(statusInfo)
+        
 
 
 if __name__ == '__main__':
