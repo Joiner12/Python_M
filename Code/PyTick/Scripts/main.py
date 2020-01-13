@@ -25,7 +25,7 @@ class MyClass(object):
         print('PyTick')
 
 
-class MainWindow(QMainWindow):
+class MainWindow(QMainWindow,QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -40,7 +40,93 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(mainIcon)
         # self.setWindowIcon(QIcon(r'D:\Python_M\Code\PyTick\Scripts\Deer.ico'))
         self.statusBar().showMessage('翻开了我 已经褪了色的相册 再也看不见彩虹的颜色')
+        '''
+            按钮
+        '''
+        if False:
+            button_start = QPushButton('Start')
+            # button_start.move(100,100)
+            hbox = QHBoxLayout()
+            hbox.addStretch(1)
+            hbox.addWidget(button_start)
 
+            vbox = QVBoxLayout()
+            vbox.addStretch(1)
+            vbox.addLayout(hbox)
+
+            self.setLayout(vbox)
+        else:
+            grid = QGridLayout()
+            self.setLayout(grid)
+
+            names = ['Cls', 'Bck', '', 'Close',
+                    '7', '8', '9', '/',
+                    '4', '5', '6', '*',
+                    '1', '2', '3', '-',
+                    '0', '.', '=', '+']
+
+            positions = [(i,j) for i in range(5) for j in range(4)]
+
+            for position, name in zip(positions, names):
+
+                if name == '':
+                    continue
+                button = QPushButton(name)
+                grid.addWidget(button, *position)
+
+            self.move(300, 150)
+        '''
+            窗口背景
+        '''
+        # 使用setStyleSheet 方式实现
+        if False:
+            self.setObjectName('MainWindow1')
+            mainBackGround = os.path.join(img_src,'Background-1.jpg')
+            print(mainBackGround)
+            self.setStyleSheet("#MainWindow1{border-image:url(Background-1.jpg);}")
+            # self.setStyleSheet(r'#MainWindow1{border-image:url(:mainBackGround)};')
+        else:
+            pass
+            # # 使用palette方式实现
+            # mainBackGround = os.path.join(img_src,'Background-1.jpg')
+            # paletteBg = QPalette()
+            # paletteBg.setBrush(QPalette.Background,QBrush(QPixmap(mainBackGround)))
+            # self.setPalette(paletteBg)
+            # # 固定窗口大小
+        self.setFixedSize(1024,683)
+        self.setWindowFlag(Qt.WindowMinimizeButtonHint)
+        self.setGeometry(100, 100, 600, 600*0.618)
+
+        
+
+        '''
+            状态显示时间信息定时器
+        '''
+        # 更新状态显示时间
+        self.timerStatus = QTimer(self)
+        self.timerStatus.timeout.connect(self.UpDateStatus)
+        self.timerStatus.start(1000)
+
+
+        '''
+            主窗显示
+        '''
+        # self.resize(1000,683)
+        self.setWindowTitle('PyTick')
+        self.show()
+
+
+    #　状态显示信息修改为系统时间
+    def UpDateStatus(self):
+        statusInfo = time.strftime(r'%H:%M:%S',time.localtime(time.time()))
+        self.statusBar().showMessage(statusInfo)
+    
+    # 修改主窗背景图
+    def ModifyBackGround(self):
+        file_path = os.path.abspath(__file__)
+        img_src = os.path.abspath(os.path.join(os.path.join(file_path,'../..'),'Src'))
+        mainIcon = QIcon(os.path.join(img_src,'Deer.ico'))
+        self.setWindowIcon(mainIcon)
         '''
             窗口背景
         '''
@@ -57,27 +143,9 @@ class MainWindow(QMainWindow):
             paletteBg = QPalette()
             paletteBg.setBrush(QPalette.Background,QBrush(QPixmap(mainBackGround)))
             self.setPalette(paletteBg)
-            # 固定窗口大小
-            self.setFixedSize(1024,683)
-            self.setWindowFlag(Qt.WindowMinimizeButtonHint)
-        self.setGeometry(100, 100, 600, 600*0.618)
 
-
-        # 更新状态显示时间
-        self.timerStatus = QTimer(self)
-        self.timerStatus.timeout.connect(self.UpDateStatus)
-        self.timerStatus.start(1000)
-
-        # self.resize(1000,683)
-        self.setWindowTitle('PyTick')
-        self.show()
-
-
-    #　更新显示信息
-    def UpDateStatus(self):
-        statusInfo = time.strftime(r'%H:%M:%S',time.localtime(time.time()))
-        self.statusBar().showMessage(statusInfo)
         
+
 
 
 if __name__ == '__main__':
