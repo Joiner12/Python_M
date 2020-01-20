@@ -43,38 +43,11 @@ class MainWindow(QMainWindow,QWidget):
         '''
             按钮
         '''
-        if False:
-            button_start = QPushButton('Start')
-            # button_start.move(100,100)
-            hbox = QHBoxLayout()
-            hbox.addStretch(1)
-            hbox.addWidget(button_start)
-
-            vbox = QVBoxLayout()
-            vbox.addStretch(1)
-            vbox.addLayout(hbox)
-
-            self.setLayout(vbox)
-        else:
-            grid = QGridLayout()
-            self.setLayout(grid)
-
-            names = ['Cls', 'Bck', '', 'Close',
-                    '7', '8', '9', '/',
-                    '4', '5', '6', '*',
-                    '1', '2', '3', '-',
-                    '0', '.', '=', '+']
-
-            positions = [(i,j) for i in range(5) for j in range(4)]
-
-            for position, name in zip(positions, names):
-
-                if name == '':
-                    continue
-                button = QPushButton(name)
-                grid.addWidget(button, *position)
-
-            self.move(300, 150)
+        okButton = QPushButton("Start",self)
+        okButton.setGeometry(100,100,50,50*0.62)
+        cancelButton = QPushButton("Cancel",self)
+        cancelButton.setGeometry(180,100,50,50*0.62)
+        # 窗口布局的方式不需要使用盒子 格栅的方式 通过调整坐标的方式手动完成
         '''
             窗口背景
         '''
@@ -87,17 +60,15 @@ class MainWindow(QMainWindow,QWidget):
             # self.setStyleSheet(r'#MainWindow1{border-image:url(:mainBackGround)};')
         else:
             pass
-            # # 使用palette方式实现
-            # mainBackGround = os.path.join(img_src,'Background-1.jpg')
-            # paletteBg = QPalette()
-            # paletteBg.setBrush(QPalette.Background,QBrush(QPixmap(mainBackGround)))
-            # self.setPalette(paletteBg)
-            # # 固定窗口大小
+            # 使用palette方式实现
+            mainBackGround = os.path.join(img_src,'Background-1.jpg')
+            paletteBg = QPalette()
+            paletteBg.setBrush(QPalette.Background,QBrush(QPixmap(mainBackGround)))
+            self.setPalette(paletteBg)
+        # 固定窗口大小
         self.setFixedSize(1024,683)
         self.setWindowFlag(Qt.WindowMinimizeButtonHint)
-        self.setGeometry(100, 100, 600, 600*0.618)
 
-        
 
         '''
             状态显示时间信息定时器
@@ -107,11 +78,17 @@ class MainWindow(QMainWindow,QWidget):
         self.timerStatus.timeout.connect(self.UpDateStatus)
         self.timerStatus.start(1000)
 
+        '''
+            Label
+        '''
+        # lab_1 = QLabel('Label_1',self)
+        # lab_1.move(120,120)
 
         '''
             主窗显示
         '''
         # self.resize(1000,683)
+        self.setGeometry(100, 100, 600, 600*0.618)
         self.setWindowTitle('PyTick')
         self.show()
 

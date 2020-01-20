@@ -41,6 +41,15 @@ def LineDraw():
     ).add_to(m) #将这条线添加到刚才的区域m内
     print("finished ")
 
+'''
+    map测试函数
+'''
+def Map_1():
+    print('map test function:%s',(Map_1))
+    m = folium.Map(location=[45.5236, -122.6750])
+
+
 # m.save(os.path.join(r'C:\Users\Desktop', 'Heatmap1.html')) #将结果以HTML形式保存到桌面上
 if __name__ == "__main__":
-    LineDraw()
+    # LineDraw()
+    Map_1()
