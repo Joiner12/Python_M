@@ -13,34 +13,50 @@
     [4] <字符串>https://www.runoob.com/python/python-strings.html
     [5] <break|return>https://stackoverflow.com/questions/28854988/what-is-the-difference-between-return-and-break-in-python
     [6] <数据类型转换>https://www.cnblogs.com/shockerli/p/python3-data-type-convert.html
+    [7] <文件相关操作>https://juejin.im/post/5c57afb1f265da2dda6924a1
+    [8] <' " "' 的区别> https://blog.csdn.net/woainishifu/article/details/76105667
+    [9] <生成exe文件> https://blog.csdn.net/zengxiantao1994/article/details/76578421
+
 '''
 
 import os
-import shutil
+# import shutil
 
 
 def Re_WallPaper():
-    filepath = r"D:\壁纸 - 副本"
+    filepath = r"D:\壁纸"
     std_name = r'Wallpaper_'
-    fileCnt = 0
+    pic_Format = ['png', 'gif', 'jpg', 'bpm']
+    std_fileCnt = 1
+    re_stdfileCnt = 0
     if CheckName(filepath, std_name):
         print(' start to rename')
         # rename
         detail_2 = os.listdir(filepath)
-        picsTemp = []
+        picsRe = []
 
+        # 统计标准文件个数
         for file_1 in detail_2:
-            sepNameTemp = SeperateName(file_1)
-            pic_Format = ['png', 'gif', 'jpg', 'bpm']
+            if file_1.find(std_name) == -1:
+                sepNameTemp = SeperateName(file_1)
+                if pic_Format.count(sepNameTemp[1]) != 0:
+                    picsRe.append(file_1)
+            else:
+                std_fileCnt = std_fileCnt + 1
+        for pic in picsRe:
+            re_stdfileCnt = re_stdfileCnt + 1
+            sepNameTemp = SeperateName(pic)
             if pic_Format.count(sepNameTemp[1]) != 0:
-                os.rename(file_1, std_name+str(fileCnt)+sepNameTemp[1])
-                fileCnt = fileCnt + 1
+                origin_name = filepath + '\\' + pic
+                new_name = filepath + '\\' + \
+                    std_name + str(re_stdfileCnt+std_fileCnt) + \
+                    '.' + sepNameTemp[1]
+                os.rename(origin_name, new_name)
             else:
                 pass
     else:
         print('no need to rename handle')
     debug_a = 1
-    print(fileCnt, 'file rename finished')
 
 
 def SeperateName(origin_name):
@@ -62,7 +78,7 @@ def CheckName(filepath, std_name):
     detail_1 = os.listdir(filepath)
 
     for i in detail_1:
-        if i.find(std_name, 1) == -1:
+        if i.find(std_name) == -1:
             # 区别是否为图片格式bmp,jpg,png,tif,gif
             SepTemp_1 = SeperateName(i)
             pic_Format = ['png', 'gif', 'jpg', 'bpm']
@@ -78,5 +94,3 @@ if __name__ == "__main__":
     os.system('cls')
     print('你紧紧拉住我衣袖')
     Re_WallPaper()
-    # a = SeperateName('what.1')
-    # print(a)
