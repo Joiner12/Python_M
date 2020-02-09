@@ -1,4 +1,4 @@
-#-*- coding:utf-8 -*-
+# -*- coding:utf-8 -*-
 
 import os
 import shutil
@@ -14,7 +14,7 @@ def BashFile():
             # print(i)
     # walk function
     detail_1 = os.walk(tar_path)
-    for (path,dirnames,filenames) in detail_1:
+    for (path, dirnames, filenames) in detail_1:
         for i in dirnames:
             print(i)
         for j in filenames:
@@ -24,4 +24,3 @@ def BashFile():
 if __name__ == "__main__":
     print("bash file handle")
     BashFile()
-    
