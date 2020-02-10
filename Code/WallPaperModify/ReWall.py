@@ -16,7 +16,7 @@
     [7] <文件相关操作>https://juejin.im/post/5c57afb1f265da2dda6924a1
     [8] <' " "' 的区别> https://blog.csdn.net/woainishifu/article/details/76105667
     [9] <生成exe文件> https://blog.csdn.net/zengxiantao1994/article/details/76578421
-
+    [10] <bat 运行脚本> https://zhuanlan.zhihu.com/p/81042686
 '''
 
 import os
@@ -30,7 +30,7 @@ def Re_WallPaper():
     std_fileCnt = 1
     re_stdfileCnt = 0
     if CheckName(filepath, std_name):
-        print(' start to rename')
+        print('start to rename')
         # rename
         detail_2 = os.listdir(filepath)
         picsRe = []
@@ -52,6 +52,7 @@ def Re_WallPaper():
                     std_name + str(re_stdfileCnt+std_fileCnt) + \
                     '.' + sepNameTemp[1]
                 os.rename(origin_name, new_name)
+                print(origin_name, '->', new_name)
             else:
                 pass
     else:
@@ -91,6 +92,8 @@ def CheckName(filepath, std_name):
 
 
 if __name__ == "__main__":
-    os.system('cls')
-    print('你紧紧拉住我衣袖')
-    Re_WallPaper()
+    # os.system('cls')
+    # print('你紧紧拉住我衣袖')
+
+    if False:
+        Re_WallPaper()
