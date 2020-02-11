@@ -11,8 +11,8 @@ from PyQt5.QtCore import pyqtSignal, Qt, QTimer, QTime
 from PyQt5.QtWidgets import (QApplication, QWidget, QToolTip, QPushButton, QMessageBox, QDesktopWidget, QMainWindow,
                              QVBoxLayout, QHBoxLayout, QGridLayout, QTextEdit, QLabel, QRadioButton, QCheckBox,
                              QLineEdit, QGroupBox, QSplitter, QFileDialog)
-from PyQt5.QtGui import QIcon, QFont, QTextCursor, QPixmap
-from PyQt5.QtGui import QPalette, QBrush, QPixmap
+from PyQt5.QtGui import QIcon, QFont, QTextCursor
+from PyQt5.QtGui import QPalette, QBrush, QPixmap, QPainter
 
 
 '''
@@ -49,26 +49,34 @@ class MainWindow(QMainWindow, QWidget):
         okButton.setGeometry(100, 100, 50, 50*0.62)
         cancelButton = QPushButton("Cancel", self)
         cancelButton.setGeometry(180, 100, 50, 50*0.62)
-        # 窗口布局的方式不需要使用盒子 格栅的方式 通过调整坐标的方式手动完成
         '''
-            窗口背景
+        窗口布局的方式不需要使用盒子 格栅的方式 通过调整坐标的方式手动完成
         '''
         # 使用setStyleSheet 方式实现
         if False:
             self.setObjectName('MainWindow1')
-            mainBackGround = os.path.join(img_src, 'Background-1.jpg')
+            mainBackGround = os.path.join(img_src, 'Background-2.jpg')
             print(mainBackGround)
             self.setStyleSheet(
-                "#MainWindow1{border-image:url(Background-1.jpg);}")
-            # self.setStyleSheet(r'#MainWindow1{border-image:url(:mainBackGround)};')
-        else:
+                "#MainWindow1{border-image:url(Background-2.jpg);}")
+            self.setStyleSheet(
+                r'#MainWindow1{border-image:url(:mainBackGround)};')
+        elif False:
             pass
             # 使用palette方式实现
-            mainBackGround = os.path.join(img_src, 'Background-1.jpg')
+            mainBackGround = os.path.join(img_src, 'Background-2.jpg')
             paletteBg = QPalette()
             paletteBg.setBrush(QPalette.Background,
                                QBrush(QPixmap(mainBackGround)))
             self.setPalette(paletteBg)
+            # Qpainter方式设置背景
+        else:
+            painter = QPainter(self)
+            painter.drawRect(self.rect())
+            mainBackGround = os.path.join(img_src, 'Background-2.jpg')
+            pixBg = QPixmap(mainBackGround)
+            painter.drawPixmap(self.rect(), pixBg)
+
         # 固定窗口大小
         self.setFixedSize(1024, 683)
         self.setWindowFlag(Qt.WindowMinimizeButtonHint)
@@ -102,7 +110,7 @@ class MainWindow(QMainWindow, QWidget):
         self.statusBar().showMessage(statusInfo)
 
     # 修改主窗背景图
-    def ModifyBackGround(self):
+    def ModifyBackGround(self, event):
         file_path = os.path.abspath(__file__)
         img_src = os.path.abspath(os.path.join(
             os.path.join(file_path, '../..'), 'Src'))
@@ -114,18 +122,24 @@ class MainWindow(QMainWindow, QWidget):
         # 使用setStyleSheet 方式实现
         if False:
             self.setObjectName('MainWindow1')
-            mainBackGround = os.path.join(img_src, 'Background-1.jpg')
+            mainBackGround = os.path.join(img_src, 'Background-2.jpg')
             print(mainBackGround)
             self.setStyleSheet(
-                "#MainWindow1{border-image:url(Background-1.jpg);}")
+                "#MainWindow1{border-image:url(Background-2.jpg);}")
             # self.setStyleSheet(r'#MainWindow1{border-image:url(:mainBackGround)};')
-        else:
+        elif False:
             # 使用palette方式实现
-            mainBackGround = os.path.join(img_src, 'Background-1.jpg')
+            mainBackGround = os.path.join(img_src, 'Background-2.jpg')
             paletteBg = QPalette()
             paletteBg.setBrush(QPalette.Background,
                                QBrush(QPixmap(mainBackGround)))
             self.setPalette(paletteBg)
+        else:
+            # 通过Qpainter方式修改主窗背景
+            bgQp = QPainter(self)
+            mainBackGround = os.path.join(img_src, 'Background-2.jpg')
+            bg = QPixmap(mainBackGround)
+            bgQp.drawRect(self.rect(), bg)
 
 
 if __name__ == '__main__':
