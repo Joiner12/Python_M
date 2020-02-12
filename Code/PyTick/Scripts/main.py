@@ -52,30 +52,6 @@ class MainWindow(QMainWindow, QWidget):
         '''
         窗口布局的方式不需要使用盒子 格栅的方式 通过调整坐标的方式手动完成
         '''
-        # 使用setStyleSheet 方式实现
-        if False:
-            self.setObjectName('MainWindow1')
-            mainBackGround = os.path.join(img_src, 'Background-2.jpg')
-            print(mainBackGround)
-            self.setStyleSheet(
-                "#MainWindow1{border-image:url(Background-2.jpg);}")
-            self.setStyleSheet(
-                r'#MainWindow1{border-image:url(:mainBackGround)};')
-        elif False:
-            pass
-            # 使用palette方式实现
-            mainBackGround = os.path.join(img_src, 'Background-2.jpg')
-            paletteBg = QPalette()
-            paletteBg.setBrush(QPalette.Background,
-                               QBrush(QPixmap(mainBackGround)))
-            self.setPalette(paletteBg)
-            # Qpainter方式设置背景
-        else:
-            painter = QPainter(self)
-            painter.drawRect(self.rect())
-            mainBackGround = os.path.join(img_src, 'Background-2.jpg')
-            pixBg = QPixmap(mainBackGround)
-            painter.drawPixmap(self.rect(), pixBg)
 
         # 固定窗口大小
         self.setFixedSize(1024, 683)
@@ -99,7 +75,7 @@ class MainWindow(QMainWindow, QWidget):
             主窗显示
         '''
         # self.resize(1000,683)
-        self.setGeometry(100, 100, 600, 600*0.618)
+        self.setGeometry(200, 200, 600, 600*0.618)
         self.setWindowTitle('PyTick')
         self.show()
 
@@ -114,8 +90,6 @@ class MainWindow(QMainWindow, QWidget):
         file_path = os.path.abspath(__file__)
         img_src = os.path.abspath(os.path.join(
             os.path.join(file_path, '../..'), 'Src'))
-        mainIcon = QIcon(os.path.join(img_src, 'Deer.ico'))
-        self.setWindowIcon(mainIcon)
         '''
             窗口背景
         '''
@@ -135,11 +109,25 @@ class MainWindow(QMainWindow, QWidget):
                                QBrush(QPixmap(mainBackGround)))
             self.setPalette(paletteBg)
         else:
-            # 通过Qpainter方式修改主窗背景
-            bgQp = QPainter(self)
-            mainBackGround = os.path.join(img_src, 'Background-2.jpg')
-            bg = QPixmap(mainBackGround)
-            bgQp.drawRect(self.rect(), bg)
+            pass
+            # # 通过Qpainter方式修改主窗背景
+            # bgQp = QPainter(self)
+            # mainBackGround = os.path.join(img_src, 'Background-2.jpg')
+            # bg = QPixmap(mainBackGround)
+            # bgQp.drawPixmap(self.rect(), bg)
+
+    '''
+        重写paintEvent实现背景修改
+    '''
+
+    def paintEvent(self, event):
+        bgQp = QPainter(self)
+        file_path = os.path.abspath(__file__)
+        img_src = os.path.abspath(os.path.join(
+            os.path.join(file_path, '../..'), 'Src'))
+        mainBackGround = os.path.join(img_src, 'Background-1.jpg')
+        bg = QPixmap(mainBackGround)
+        bgQp.drawPixmap(self.rect(), bg)
 
 
 if __name__ == '__main__':

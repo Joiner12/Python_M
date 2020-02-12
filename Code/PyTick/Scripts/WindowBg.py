@@ -6,6 +6,7 @@
     [1]<修改背景图> https://blog.csdn.net/jia666666/article/details/81874045
     [2]<通过PYQT调整>https://blog.csdn.net/qq_41784559/article/details/88601084
     [3]<路径问题>https://www.cnblogs.com/wangyanyan/p/7440685.html
+    [4]<QPainter event>http://zetcode.com/gui/pyqt5/painting/
 '''
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget
@@ -16,7 +17,7 @@ import os
 
 
 class BgClass(QWidget):
-    def init(self):
+    def __init__(self):
         super().__init__()
         self.setWindowTitle('修改背景')
 
@@ -33,7 +34,7 @@ class BgClass(QWidget):
             file_path = os.path.abspath(__file__)
             img_src = os.path.abspath(os.path.join(
                 os.path.join(file_path, '../..'), 'Src'))
-            bgfile = os.path.join(img_src, 'Background-2.jpg')
+            bgfile = os.path.join(img_src, 'Background-3.jpg')
             pixBg = QPixmap(bgfile)
 
             painter.drawPixmap(self.rect(), pixBg)
