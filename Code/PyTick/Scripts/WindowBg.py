@@ -9,8 +9,8 @@
     [4]<QPainter event>http://zetcode.com/gui/pyqt5/painting/
 '''
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtGui import QPainter, QPixmap
 import sys
 import os
@@ -25,9 +25,9 @@ class BgClass(QWidget):
         painter = QPainter(self)
         painter.drawRect(self.rect())
 
-        if False:
+        if True:
             # todo 1 设置背景颜色
-            painter.setBrush(Qt.green)
+            painter.setBrush(Qt.transparent)
             painter.drawRect(self.rect())
         else:
             # todo:使用相对路径背景文件不生效

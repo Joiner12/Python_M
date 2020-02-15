@@ -11,7 +11,7 @@
 '''
 from math import sqrt
 # import numpy as np
-from numpy import linspace, sin, pi
+from numpy import linspace, sin, pi, log10
 import matplotlib.pyplot as plt
 
 
@@ -48,17 +48,35 @@ def sqrt_controller(error, p, second_ord_lim, dt):
     print('error:', error, 'p:', p, 'second_ord_lim:', second_ord_lim, 'dt:', dt)
 
 
-if __name__ == "__main__":
-    print('sqrt controller')
-    t = linspace(0, 5, 100)
-    dt_a = 5/len(t)
-    error_a = sin(t*pi)
-    p_a = 1
-    seclim_a = 0.5
-    out_a = []
-    for i in range(0, 100):
-        temp_out = sqrt_controller(error_a[i], p_a, seclim_a, dt_a)
-        out_a.append(temp_out)
-    # plt.plot(t, error_a)
-    plt.plot(t, out_a)
+'''
+    x轴lg
+'''
+
+
+def lgX():
+    x = linspace(1, 20000, 1000)
+    y1 = x
+    y2 = log10(x)
+    # plt.plot(x, y1)
+    plt.plot(x, y2)
     plt.show()
+
+
+if __name__ == "__main__":
+    if False:
+        print('sqrt controller')
+        t = linspace(0, 5, 100)
+        dt_a = 5/len(t)
+        error_a = sin(t*pi)
+        p_a = 1
+        seclim_a = 0.5
+        out_a = []
+        for i in range(0, 100):
+            temp_out = sqrt_controller(error_a[i], p_a, seclim_a, dt_a)
+            out_a.append(temp_out)
+        # plt.plot(t, error_a)
+        plt.plot(t, out_a)
+        plt.show()
+
+    if True:
+        lgX()
