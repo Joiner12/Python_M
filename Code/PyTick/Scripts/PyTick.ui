@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>891</width>
+    <height>594</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -48,7 +48,30 @@
      </rect>
     </property>
     <property name="text">
-     <string>克舗</string>
+     <string>熊</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>130</x>
+      <y>70</y>
+      <width>91</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>PushButton</string>
+    </property>
+   </widget>
+   <widget class="QDial" name="dial">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>370</y>
+      <width>131</width>
+      <height>81</height>
+     </rect>
     </property>
    </widget>
   </widget>
