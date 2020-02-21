@@ -20,12 +20,6 @@ from PyQt5.QtGui import QPalette, QBrush, QPixmap, QPainter
 '''
 
 
-class MyClass(object):
-    def __init__(self):
-        super(MyClass, self).__init__()
-        print('PyTick')
-
-
 class MainWindow(QMainWindow, QWidget):
     def __init__(self):
         super().__init__()
@@ -45,10 +39,10 @@ class MainWindow(QMainWindow, QWidget):
         '''
             按钮
         '''
-        okButton = QPushButton("Start", self)
-        okButton.setGeometry(100, 100, 50, 50*0.62)
-        cancelButton = QPushButton("Cancel", self)
-        cancelButton.setGeometry(180, 100, 50, 50*0.62)
+        # okButton = QPushButton("Start", self)
+        # okButton.setGeometry(100, 100, 50, 50*0.62)
+        # cancelButton = QPushButton("Cancel", self)
+        # cancelButton.setGeometry(180, 100, 50, 50*0.62)
         '''
         窗口布局的方式不需要使用盒子 格栅的方式 通过调整坐标的方式手动完成
         '''
@@ -57,6 +51,9 @@ class MainWindow(QMainWindow, QWidget):
         self.setFixedSize(1024, 683)
         self.setWindowFlag(Qt.WindowMinimizeButtonHint)
 
+        # menubar
+        menubar = self.menuBar()
+        menubar.setNativeMenuBar(False)
         '''
             状态显示时间信息定时器
         '''
@@ -77,6 +74,7 @@ class MainWindow(QMainWindow, QWidget):
         # self.resize(1000,683)
         self.setGeometry(200, 200, 600, 600*0.618)
         self.setWindowTitle('PyTick')
+
         self.show()
 
     #　状态显示信息修改为系统时间
@@ -128,6 +126,24 @@ class MainWindow(QMainWindow, QWidget):
         mainBackGround = os.path.join(img_src, 'Deer-2.png')
         bg = QPixmap(mainBackGround)
         bgQp.drawPixmap(self.rect(), bg)
+
+    def MainLayout(self):
+        grid = QGridLayout()
+        self.setLayout(grid)
+
+        names = ['Cls', 'Bck', '', 'Close',
+                 '7', '8', '9', '/',
+                 '4', '5', '6', '*',
+                 '1', '2', '3', '-',
+                 '0', '.', '=', '+']
+
+        positions = [(i, j) for i in range(5) for j in range(4)]
+
+        for position, name in zip(positions, names):
+            if name == '':
+                continue
+            button = QPushButton(name)
+            grid.addWidget(button, *position)
 
 
 if __name__ == '__main__':
