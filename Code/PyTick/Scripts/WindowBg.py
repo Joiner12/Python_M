@@ -25,7 +25,7 @@ class BgClass(QWidget):
         painter = QPainter(self)
         painter.drawRect(self.rect())
 
-        if True:
+        if False:
             # todo 1 设置背景颜色
             painter.setBrush(Qt.transparent)
             painter.drawRect(self.rect())
@@ -34,7 +34,7 @@ class BgClass(QWidget):
             file_path = os.path.abspath(__file__)
             img_src = os.path.abspath(os.path.join(
                 os.path.join(file_path, '../..'), 'Src'))
-            bgfile = os.path.join(img_src, 'Background-3.jpg')
+            bgfile = os.path.join(img_src, 'Background-2.jpg')
             pixBg = QPixmap(bgfile)
 
             painter.drawPixmap(self.rect(), pixBg)

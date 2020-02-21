@@ -125,7 +125,7 @@ class MainWindow(QMainWindow, QWidget):
         file_path = os.path.abspath(__file__)
         img_src = os.path.abspath(os.path.join(
             os.path.join(file_path, '../..'), 'Src'))
-        mainBackGround = os.path.join(img_src, 'Background-1.jpg')
+        mainBackGround = os.path.join(img_src, 'Deer-2.png')
         bg = QPixmap(mainBackGround)
         bgQp.drawPixmap(self.rect(), bg)
 
