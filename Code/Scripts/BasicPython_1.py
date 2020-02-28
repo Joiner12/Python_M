@@ -7,6 +7,7 @@
     [1]字符串和编码https://www.liaoxuefeng.com/wiki/1016959663602400/1017075323632896
 
 '''
+from types import MethodType
 
 
 def Variables():
@@ -84,6 +85,30 @@ def HandleCheckPara(a):
         print('argument check succeed')
 
 
+'''
+    object oriented programming 
+'''
+
+
+class Ai():
+    def __init__(self, name):
+        self.name = name
+
+    def showInfo(self):
+        print(self.name)
+
+
+def SetAge(self, age):
+    self.age = age
+    print('give it a new method')
+
+
+def TestMethod():
+    ai = Ai('hrt')
+    ai.SetAge = MethodType(SetAge, ai)
+    ai.SetAge(3)
+
+
 if __name__ == "__main__":
     # Variables()
     # HandleList()
@@ -92,5 +117,6 @@ if __name__ == "__main__":
     # HandleLoop()
     # HandleDict()
     # HandleSet()
-    HandleCheckPara('1')
-    HandleCheckPara(1)
+    # HandleCheckPara('1')
+    # HandleCheckPara(1)
+    TestMethod()
