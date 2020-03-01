@@ -20,7 +20,9 @@
     [15]QLCDNumber使用https://blog.csdn.net/xuancailinggan/article/details/77487705
     [16]PyQt5系列教程（8）：标准输入对话框https://zhuanlan.zhihu.com/p/29101077
     [17]Python读写文本三种方式 https://zhuanlan.zhihu.com/p/21347291
-    [18]Python读写txt文本文件 https://www.cnblogs.com/hackpig/p/8215786.html 
+    [18]Python读写txt文本文件 https://www.cnblogs.com/hackpig/p/8215786.html
+    [19]python报错 TypeError: bad operand type for unary +: 'str' 的解决办法
+     https://stackoverflow.com/questions/29880136/python-2-7-typeerror-bad-operand-type-for-unary-str
 '''
 
 from PyQt5.QtCore import *
@@ -54,6 +56,8 @@ class ClockStatics(QWidget):
         self.LCD.setFrameShape(QFrame.StyledPanel)
         self.LCD.setFrameShadow(QFrame.Sunken)
 
+        self.StartTime = datetime.now()
+        self.StopTime = datetime.now()
         self.gap = datetime.now()-datetime.now()
         # button area
         ButtonArea = QWidget()
@@ -105,6 +109,7 @@ class ClockStatics(QWidget):
         self.setLayout(WholeLCDLayout)
 
     def PushLCD(self):
+        # Start 👉 Stop(计时开始)
         if self.StartButton.text() == "START":
             self.StartButton.setText("STOP")
             self.StartButton.setIcon(
@@ -113,19 +118,23 @@ class ClockStatics(QWidget):
             self.KeepButton.setEnabled(False)
             self.StartTime = datetime.now()
             self.StopTime = datetime.now()
-            self.gap = self.StartTime - self.StopTime
+            self.gap = self.StopTime - self.StartTime
             self.Timing = True
+            self.LCD.setStyleSheet(
+                "QLCDNumber{border:2px solidgreen;color:rgb(35, 107, 185 );}")
         else:
+            # Stop 👉 Star(计时停止)
             self.StartButton.setText("START")
             self.StartButton.setIcon(
                 QIcon(os.path.join(self.srcpath, "启动-2.png")))
             self.ClearButton.setEnabled(True)
             self.KeepButton.setEnabled(True)
+            self.LCD.setStyleSheet(
+                "QLCDNumber{border:2px solidgreen;color:rgb(102, 212, 209 );}")
             self.Timing = False
             # 更新时间
             self.StopTime = datetime.now()
             self.gap = self.StopTime - self.StartTime
-            print(self.gap.seconds)
 
     def TrackLCD(self):
         # 有效记录
@@ -149,14 +158,23 @@ class ClockStatics(QWidget):
             self.LCD.display(datetime.now().strftime("%H:%M:%S"))
 
     def __Writelog__(self):
-        text, ok = QInputDialog.getText(self, 'Track', '请输入姓名：')
-        print(text, len(text))
-        if ok & len(text) > 0:
-            f = open(self.logfile, 'a+', encoding='UTF-8')
-            allLines = f.readlines()
-            allLines.append(text+"\n")
-            f.writelines(allLines)
-            f.close()
+        self.gap = self.StopTime - self.StartTime
+        if int(self.gap.seconds/60) >= 1:
+            text, ok = QInputDialog.getText(self, 'Track', '请输入姓名：')
+            if ok & len(text) > 0:
+                f = open(self.logfile, 'a+', encoding='UTF-8')
+                allLines = f.readlines()
+                item = datetime.strftime(self.StartTime, "%Y-%m-%d %H:%M:%S") + \
+                    "|" + datetime.strftime(self.StopTime, "%Y-%m-%d %H:%M:%S")
+                item = item + "|" + str(int(self.gap.seconds/60))+"|"
+                item = item + text
+                allLines.append(item+"\n")
+                f.writelines(allLines)
+                f.close()
+                # self.gap置零
+                self.gap = datetime.now() - datetime.now()
+                self.StartTime = datetime.now()
+                self.StopTime = datetime.now()
 
 
 if __name__ == "__main__":
