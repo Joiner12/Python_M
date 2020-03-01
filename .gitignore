@@ -2,3 +2,6 @@ python_m.code-workspace
 .idea/
 venv/
 Code/PyTick/Scripts/__pycache__/
+Code/PyTick/Scripts/Ui_PyTick.py
+Code/PyTick/Scripts/PyTick.ui
+

@@ -1,0 +1,167 @@
+# -*- coding:utf-8 -*-
+'''
+    时钟功能区
+
+    ref:
+    [1]Qt 之 QLCDNumber https://blog.csdn.net/liang19890820/article/details/50917205
+    [2]qLCDnumber https://www.riverbankcomputing.com/static/Docs/PyQt4/qLCDnumber.html
+    [3]pyqt实现时钟效果 https://www.pythontab.com/html/2013/pythongui_0703/474.html
+    [4]pyqt实现简易时钟 https://blog.csdn.net/Kprogram/article/details/83623079
+    [5]PyQt5基本控件详解之QPushButton（六）https://blog.csdn.net/jia666666/article/details/81513443
+    [6]计算时间差 https://www.cnblogs.com/SophiaTang/archive/2012/03/25/2417031.html
+    [7]python--利用datetime模块计算时间差https://blog.csdn.net/wo1182929447/article/details/77841529?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task
+    [8]python datetime处理时间 https://www.cnblogs.com/lhj588/archive/2012/04/23/2466653.html
+    [9]PyQt5布局管理之QSplitter（六）https://blog.csdn.net/jia666666/article/details/81705675
+    [10]PyQt的Layout的比例化分块 https://blog.csdn.net/weixin_33995481/article/details/86275539
+    [11]QSplitter分割界面 初始比例https://blog.csdn.net/imxiangzi/article/details/52584599
+    [12]setStyleSheet 一些QSS设置的集合https://www.cnblogs.com/xj626852095/p/3648112.html
+    [13]QPushButton 按钮设置大小颜色以及字体的大小https://blog.csdn.net/qq_44920726/article/details/102575334
+    [14]qss样式表之QPushButton https://blog.csdn.net/aiwangtingyun/article/details/94462976
+    [15]QLCDNumber使用https://blog.csdn.net/xuancailinggan/article/details/77487705
+    [16]PyQt5系列教程（8）：标准输入对话框https://zhuanlan.zhihu.com/p/29101077
+    [17]Python读写文本三种方式 https://zhuanlan.zhihu.com/p/21347291
+    [18]Python读写txt文本文件 https://www.cnblogs.com/hackpig/p/8215786.html 
+'''
+
+from PyQt5.QtCore import *
+import sys
+import os
+from datetime import datetime
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+
+
+class ClockStatics(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
+        self.logfile = r'D:\Codes\Python_M\Code\PyTick\Src\log.txt'
+        self.Timing = False
+        self.setupUI()
+        self.setGeometry(100, 100, 500, 200)
+
+    def setupUI(self):
+        WholeLCDLayout = QHBoxLayout()
+
+        self.LCD = QLCDNumber(self)
+        self.LCD.setDigitCount(8)
+        self.LCD.setMode(QLCDNumber.Dec)
+        self.LCD.setSegmentStyle(QLCDNumber.Flat)
+        self.LCD.setStyleSheet(
+            "QLCDNumber{border:2px solidgreen;color:rgb(102, 212, 209 );}"
+            "QLCDNumber{font-size:100px;}")
+        self.LCD.setAutoFillBackground(True)
+        self.LCD.setFrameShape(QFrame.StyledPanel)
+        self.LCD.setFrameShadow(QFrame.Sunken)
+
+        self.gap = datetime.now()-datetime.now()
+        # button area
+        ButtonArea = QWidget()
+        ButtonAreaLayout = QVBoxLayout()
+
+        self.StartButton = QPushButton('START')
+        self.StartButton.clicked.connect(self.PushLCD)
+        self.StartButton.setIcon(
+            QIcon(os.path.join(self.srcpath, "启动-2.png")))
+        self.StartButton.setIconSize(QSize(20, 20))
+        self.StartButton.setStyleSheet(
+            "QPushButton{border-radius:4px;font-size:22px;font-weight:bold;color:rgb(2, 9, 34);}"
+            "QPushButton{border:2px solid rgb(195, 227, 81);}"
+            "QPushButton:hover{background:rgb(195, 227, 81 );}")
+
+        self.KeepButton = QPushButton('TRACK')
+        self.KeepButton.setIcon(
+            QIcon(os.path.join(self.srcpath, "记录-1.png")))
+        self.KeepButton.setIconSize(QSize(20, 20))
+        self.KeepButton.setStyleSheet(
+            "QPushButton{border-radius:4px;font-size:22px;font-weight:bold;color:rgb(2, 9, 34);}"
+            "QPushButton{border:2px solid rgb(195, 227, 81);}"
+            "QPushButton:hover{background:rgb(195, 227, 81 );}")
+        self.KeepButton.clicked.connect(self.TrackLCD)
+
+        self.ClearButton = QPushButton("CLEAR")
+        self.ClearButton.setIcon(
+            QIcon(os.path.join(self.srcpath, "清除-1.png")))
+        self.ClearButton.setIconSize(QSize(20, 20))
+        self.ClearButton.setStyleSheet(
+            "QPushButton{border-radius:4px;font-size:22px;font-weight:bold;color:rgb(2, 9, 34);}"
+            "QPushButton{border:2px solid rgb(195, 227, 81);}"
+            "QPushButton:hover{background:rgb(195, 227, 81 );}")
+        # button area
+        ButtonAreaLayout.addWidget(self.StartButton)
+        ButtonAreaLayout.addWidget(self.KeepButton)
+        ButtonAreaLayout.addWidget(self.ClearButton)
+        ButtonArea.setLayout(ButtonAreaLayout)
+
+        WholeLCDLayout.addWidget(ButtonArea)
+        WholeLCDLayout.addWidget(self.LCD)
+
+        WholeLCDLayout.setStretch(0, 1)
+        WholeLCDLayout.setStretch(1, 9)
+        self.BaseTicker = QTimer(self)
+        self.BaseTicker.timeout.connect(self.UpdateLCD)
+        self.BaseTicker.start(1000)
+
+        self.setLayout(WholeLCDLayout)
+
+    def PushLCD(self):
+        if self.StartButton.text() == "START":
+            self.StartButton.setText("STOP")
+            self.StartButton.setIcon(
+                QIcon(os.path.join(self.srcpath, "停止-1.png")))
+            self.ClearButton.setEnabled(False)
+            self.KeepButton.setEnabled(False)
+            self.StartTime = datetime.now()
+            self.StopTime = datetime.now()
+            self.gap = self.StartTime - self.StopTime
+            self.Timing = True
+        else:
+            self.StartButton.setText("START")
+            self.StartButton.setIcon(
+                QIcon(os.path.join(self.srcpath, "启动-2.png")))
+            self.ClearButton.setEnabled(True)
+            self.KeepButton.setEnabled(True)
+            self.Timing = False
+            # 更新时间
+            self.StopTime = datetime.now()
+            self.gap = self.StopTime - self.StartTime
+            print(self.gap.seconds)
+
+    def TrackLCD(self):
+        # 有效记录
+        if int(self.gap.seconds) >= 0:
+            self.gap = datetime.now() - datetime.now()
+            self.__Writelog__()
+        else:
+            pass
+
+    def ClearLCD(self):
+        pass
+
+    def UpdateLCD(self):
+        if self.Timing:
+            gap = datetime.now() - self.StartTime
+            '''创建时间字符串'''
+            time = QTime(gap.seconds/3600, gap.seconds/60, gap.seconds % 60)
+            text = time.toString('hh:mm:ss')
+            self.LCD.display(text)
+        else:
+            self.LCD.display(datetime.now().strftime("%H:%M:%S"))
+
+    def __Writelog__(self):
+        text, ok = QInputDialog.getText(self, 'Track', '请输入姓名：')
+        print(text, len(text))
+        if ok & len(text) > 0:
+            f = open(self.logfile, 'a+', encoding='UTF-8')
+            allLines = f.readlines()
+            allLines.append(text+"\n")
+            f.writelines(allLines)
+            f.close()
+
+
+if __name__ == "__main__":
+    import sys
+    app = QApplication(sys.argv)
+    form = ClockStatics()
+    form.show()
+    app.exec_()

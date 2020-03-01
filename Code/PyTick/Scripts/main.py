@@ -1,115 +1,185 @@
-# -*- coding:utf-8-*-
-'''
-Author:Risky Junior
-Data:2020/1/10
+# -*- encoding:utf-8 -*-
 '''
 
-import os
+    Ref:
+    [1] QListWidget 设置样式 https://www.bbsmax.com/A/KE5QOlL0zL/
+    [2] 设置QListWidget透明背景 https://blog.csdn.net/liyan728/article/details/8955634
+    [3] QSplitter 分割线 https://blog.csdn.net/skykingf/article/details/8247593
+    [4] QListWidgetItem带上颜色的问题 https://www.cnblogs.com/hushaojun/p/4632843.html
+    [5] QT控制选中item的文字颜色(HighlightedText) 和 QT表格交替背景色
+    https://blog.csdn.net/aisq2008/article/details/6393874?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task
+    [6] PyQt - QLabel Widget https://www.tutorialspoint.com/pyqt/pyqt_qlabel_widget.htm
+    [7] PyQt中QLabel背景与字体的一些设置 https://blog.csdn.net/jiuzuidongpo/article/details/45485127
+    [8] QPalette https://doc.qt.io/qtforpython/PySide2/QtGui/QPalette.html
+    [9] 无边框 https://www.cnblogs.com/jyroy/p/9461317.html
+
+'''
 import sys
-import time
-from PyQt5.QtCore import pyqtSignal, Qt, QTimer, QTime
-from PyQt5.QtWidgets import (QApplication, QWidget, QToolTip, QPushButton, QMessageBox, QDesktopWidget, QMainWindow,
-                             QVBoxLayout, QHBoxLayout, QGridLayout, QTextEdit, QLabel, QRadioButton, QCheckBox,
-                             QLineEdit, QGroupBox, QSplitter, QFileDialog)
-from PyQt5.QtGui import QIcon, QFont, QTextCursor
-from PyQt5.QtGui import QPalette, QBrush, QPixmap, QPainter
+import os
+from PyQt5.QtWidgets import (QWidget, QGridLayout,
+                             QPushButton, QApplication, QMainWindow)
+
+import sys
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
 
 
-'''
-    主级类 (main class)
-'''
-
-
-class MainWindow(QMainWindow, QWidget):
+class MainWindow(QWidget):
     def __init__(self):
+        print('constructor')
         super().__init__()
-        self.initUI()
+        self.setupUi()
 
-    def initUI(self):
-        '''
-            Icon设置
-        '''
-        file_path = os.path.abspath(__file__)
-        img_src = os.path.abspath(os.path.join(
-            os.path.join(file_path, '../..'), 'Src'))
-        mainIcon = QIcon(os.path.join(img_src, 'Deer.ico'))
-        self.setWindowIcon(mainIcon)
-        # self.setWindowIcon(QIcon(r'D:\Python_M\Code\PyTick\Scripts\Deer.ico'))
-        self.statusBar().showMessage('翻开了我 已经褪了色的相册 再也看不见彩虹的颜色')
-        '''
-            按钮
-        '''
-        okButton = QPushButton('CLOCK', self)
-        self.b1 = okButton
-        okButton.setIcon(
-            QIcon(QPixmap(r'D:\Codes\Python_M\Code\PyTick\Src\Deer.ico')))
-        okButton.setCheckable(True)
-        okButton.setGeometry(100, 100, 80, 70*0.62)
-        okButton.clicked[bool].connect(self.Jump_1)
+    def setupUi(self):
+        self.srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
+        print('setup ui')
+        self.setWindowTitle('ITool')
+        self.setWindowIcon(QIcon(os.path.join(self.srcpath, r'moutain-1.png')))
 
-        '''
-        窗口布局的方式不需要使用盒子 格栅的方式 通过调整坐标的方式手动完成
-        '''
+        # 主窗垂直布局(3/3) +  分割
+        mainWidget = QVBoxLayout()
 
-        # 固定窗口大小
-        self.setFixedSize(1024, 683)
-        self.setWindowFlag(Qt.WindowMinimizeButtonHint)
+        # QListWidget样式
+        self.selectArea = QListWidget()
+        self.selectArea.setIconSize(QSize(30, 40))
+        self.selectArea.setViewMode(QListView.ListMode)
+        selectAreaStyle = "border: 1px; background-color: transparent"
+        self.selectArea.setStyleSheet(selectAreaStyle)
+        self.selectArea.Font = QFont()
+        self.selectArea.Font.setPointSize(10)
+        self.selectArea.Font.setWeight(60)
+        self.selectArea.setFont(self.selectArea.Font)
 
-        # menubar
-        menubar = self.menuBar()
-        menubar.setNativeMenuBar(False)
-        '''
-            状态显示时间信息定时器
-        '''
-        # 更新状态显示时间
-        self.timerStatus = QTimer(self)
-        self.timerStatus.timeout.connect(self.UpDateStatus)
-        self.timerStatus.start(1000)
+        bo = QListWidgetItem('Daily Count')
+        self.selectArea.insertItem(0, bo)
+        bo.setTextAlignment(Qt.AlignCenter)
+        bo.setIcon(QIcon(os.path.join(self.srcpath, r'I-1.ico')))
+        bo.setSizeHint(QSize(60, 40))
 
-        '''
-            Label
-        '''
-        # lab_1 = QLabel('Label_1',self)
-        # lab_1.move(120,120)
+        ser_1 = QListWidgetItem('爱你')
+        self.selectArea.insertItem(1, ser_1)
+        ser_1.setTextAlignment(Qt.AlignCenter)
+        ser_1.setIcon(QIcon(os.path.join(self.srcpath, r'love.png')))
+        ser_1.setSizeHint(QSize(60, 40))
 
-        '''
-            主窗显示
-        '''
-        # self.resize(1000,683)
-        self.setGeometry(200, 200, 600, 600*0.618)
-        self.setWindowTitle('PyTick')
+        ser_2 = QListWidgetItem('MM')
+        ser_2.setTextAlignment(Qt.AlignCenter)
+        ser_2.setIcon(QIcon(os.path.join(self.srcpath, r'horse.png')))
+        self.selectArea.insertItem(2, ser_2)
+        ser_2.setSizeHint(QSize(60, 40))
 
-        self.show()
+        ser_3 = QListWidgetItem('麻花儿')
+        ser_3.setTextAlignment(Qt.AlignCenter)
+        ser_3.setIcon(QIcon(os.path.join(self.srcpath, r'flower.png')))
+        self.selectArea.insertItem(3, ser_3)
+        ser_3.setSizeHint(QSize(60, 40))
+        self.stackArea = QStackedWidget(self)
 
-    #　状态显示信息修改为系统时间
+        self.stack1 = QWidget()
+        self.stack2 = QWidget()
+        self.stack3 = QWidget()
 
-    def UpDateStatus(self):
-        statusInfo = time.strftime(r'%H:%M:%S', time.localtime(time.time()))
-        self.statusBar().showMessage(statusInfo)
+        self.stack1UI()
+        self.stack2UI()
+        self.stack3UI()
 
-    '''
-        重写paintEvent实现背景修改
-    '''
+        self.stackArea.addWidget(self.stack1)
+        self.stackArea.addWidget(self.stack2)
+        self.stackArea.addWidget(self.stack3)
+
+        mainHLayout = QSplitter(Qt.Horizontal)
+        mainHLayout.setHandleWidth(1)
+
+        mainHLayout.addWidget(self.selectArea)
+        mainHLayout.addWidget(self.stackArea)
+
+        mainHLayout.setStretchFactor(0, 9)
+        mainHLayout.setStretchFactor(1, 1)
+
+        self.infoBar = QLabel()
+        self.infoBar.setText("你寻求的幸福 其实不在远处 它就是你现在 一直走的路")
+        self.infoBar.setStyleSheet("QLabel{color:rgb(100,100,100,250);font-size:18px;font-weight:bold;font-family:楷体;}"
+                                   "QLabel:hover{color:rgb(100,100,100,120);}")
+        self.infoBar.setAlignment(Qt.AlignCenter)
+        self.infoBar.setFixedHeight(20)
+        self.selectArea.setFixedWidth(150)
+
+        mainWidget.addWidget(mainHLayout)
+        mainWidget.addWidget(self.infoBar)
+
+        # 绑定stack
+        self.selectArea.currentRowChanged.connect(self.display)
+        self.setLayout(mainWidget)
+        self.setGeometry(200, 200, 600/0.618, 600)
+
+    # 时钟及相应界面
+    def stack1UI(self):
+        layout = QFormLayout()
+        layout.addRow('姓名', QLineEdit())
+        layout.addRow('地址', QLineEdit())
+        self.stack1.setLayout(layout)
+
+    def stack2UI(self):
+        # 主表单布局，次水平布局
+        if False:
+            layout = QFormLayout()
+            sex = QHBoxLayout()
+
+            # 水平布局添加单选按钮
+            sex.addWidget(QRadioButton('男'))
+            sex.addWidget(QRadioButton('女'))
+
+            # 表单布局添加控件
+            layout.addRow(QLabel('性别'), sex)
+            layout.addRow('生日', QLineEdit())
+            self.stack2.setLayout(layout)
+        else:
+            layout = QHBoxLayout()
+            sr = '''
+                    Stars shining bright above you
+                    星儿在你头顶闪耀
+                    Night breezes seem to whisper "I love you"
+                    夜晚的微风似乎轻轻地在说 我爱你
+                    Birds singing in the sycamore tree
+                    鸟儿在梧桐树里歌唱着
+                    Dream a little dream of me
+                    愿你的梦里有我
+                    Say "Night-ie night" and kiss me
+                    说晚安吧，然后亲吻我
+                  '''
+            info = QLabel(sr)
+            layout.addWidget(info)
+
+            self.stack2.setLayout(layout)
+
+    def stack3UI(self):
+        # 水平布局
+        layout = QHBoxLayout()
+
+        # 添加控件到布局中
+        layout.addWidget(QLabel('科目'))
+        layout.addWidget(QCheckBox('物理'))
+        layout.addWidget(QCheckBox('高数'))
+
+        self.stack3.setLayout(layout)
+
+    def display(self, i):
+        # 设置当前可见的选项卡的索引
+        self.stackArea.setCurrentIndex(i)
 
     def paintEvent(self, event):
         bgQp = QPainter(self)
         file_path = os.path.abspath(__file__)
         img_src = os.path.abspath(os.path.join(
             os.path.join(file_path, '../..'), 'Src'))
-        mainBackGround = os.path.join(img_src, 'Deer-3.png')
+        mainBackGround = os.path.join(img_src, 'bg-2.jpg')
         bg = QPixmap(mainBackGround)
         bgQp.drawPixmap(self.rect(), bg)
 
-    def Jump_1(self, pressed):
-        if self.b1.isChecked():
-            print('责怪都舍不得')
-        else:
-            print('xinan')
-
 
 if __name__ == '__main__':
-    os.system('cls')
-    if True:
-        app = QApplication(sys.argv)
-        wm = MainWindow()
-        sys.exit(app.exec_())
+    app = QApplication(sys.argv)
+    demo = MainWindow()
+    demo.show()
+    sys.exit(app.exec_())

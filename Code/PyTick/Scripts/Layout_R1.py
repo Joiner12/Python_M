@@ -14,6 +14,10 @@ website: zetcode.com
 last edited: January 2015
 """
 
+from PyQt5.Qt import QLineEdit
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QAction, QMessageBox
 from PyQt5.QtWidgets import QMainWindow
 import sys
 from PyQt5.QtWidgets import (QWidget, QHBoxLayout, QVBoxLayout, 
@@ -102,13 +106,49 @@ class My_Layout(QWidget):
         mlayout.addWidget(hbW)
         mlayout.addWidget(vbW)
         mlayout.addWidget(gbW)
-        
+
         self.setLayout(mlayout)
 
 
-if __name__ == '__main__':
+class App(QWidget):
 
+    def __init__(self):
+        super().__init__()
+        self.title = 'PyQt5 textbox'
+        self.left = 10
+        self.top = 10
+        self.width = 320
+        self.height = 200
+        self.initUI()
+
+    def initUI(self):
+        self.setWindowTitle(self.title)
+        self.setGeometry(self.left, self.top, self.width, self.height)
+
+        # create textbox
+        self.textbox = QLineEdit(self)
+        self.textbox.move(20, 20)
+        self.textbox.resize(280, 40)
+
+        # Create a button in the window
+        self.button = QPushButton('show text', self)
+        self.button.move(20, 80)
+
+        # connect button to function on_click
+        self.button.clicked.connect(self.on_click)
+        self.show()
+
+    @pyqtSlot()
+    def on_click(self):
+        textboxValue = self.textbox.text()
+        QMessageBox.question(self, "Message", 'You typed:' + textboxValue,
+                             QMessageBox.Ok, QMessageBox.Ok)
+        """打印完毕之后清空文本框"""
+        self.textbox.setText('')
+
+
+if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = My_Layout()
-    ex.show()
-    sys.exit(app.exec_())
+    ex = App()
+    app.exit(app.exec_())
+
