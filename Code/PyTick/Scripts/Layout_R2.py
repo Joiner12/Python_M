@@ -196,10 +196,7 @@ class StackWindow(QWidget):
 
     def paintEvent(self, event):
         bgQp = QPainter(self)
-        file_path = os.path.abspath(__file__)
-        img_src = os.path.abspath(os.path.join(
-            os.path.join(file_path, '../..'), 'Src'))
-        mainBackGround = os.path.join(img_src, 'bg-2.jpg')
+        mainBackGround = os.path.join(self.srcpath, 'bg-2.jpg')
         bg = QPixmap(mainBackGround)
         bgQp.drawPixmap(self.rect(), bg)
 

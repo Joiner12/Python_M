@@ -7,3 +7,6 @@ Code/PyTick/Scripts/PyTick.ui
 
 Html/
 index.html
+*.spec
+Code/PyTick/Scripts/build/
+Code/PyTick/Scripts/dist/
