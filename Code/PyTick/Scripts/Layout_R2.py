@@ -24,6 +24,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from Clock_R1 import ClockStatics
+from SmokeArea_R1 import SmokeArea
 
 
 class StackWindow(QWidget):
@@ -119,15 +120,30 @@ class StackWindow(QWidget):
         tick = ClockStatics()
         TickLabel = QLabel()
         TickLabel.setText('''
-                                Espanyol
-                                来源：懂球帝 链接为 www.dongqiudi.com
+                                白色的风车
+
+                                安静地转着
+
+                                真实的感觉
+
+                                梦境般遥远
+
+                                甜甜的海水
+
+                                复杂的眼泪
+                              
                           ''')
+        SmokeArea_1 = SmokeArea()
+        # SmokeArea.setStyleSheet("{color:rgb(0, 0, 34)}")
+
         layout = QVBoxLayout()
 
         layout.addWidget(tick)
+        layout.addWidget(SmokeArea_1)
         layout.addWidget(TickLabel)
         layout.setStretch(0, 2)
-        layout.setStretch(1, 8)
+        layout.setStretch(1, 1)
+        layout.setStretch(2, 7)
         self.stack1.setLayout(layout)
 
     def stack2UI(self):

@@ -160,8 +160,9 @@ class ClockStatics(QWidget):
     def __Writelog__(self):
         self.gap = self.StopTime - self.StartTime
         if int(self.gap.seconds/60) >= 1:
+            # if int(self.gap.seconds) >= 1:
             text, ok = QInputDialog.getText(self, 'Track', '请输入姓名：')
-            if ok & len(text) > 0:
+            if ok & (text.strip() != ""):
                 f = open(self.logfile, 'a+', encoding='UTF-8')
                 allLines = f.readlines()
                 item = datetime.strftime(self.StartTime, "%Y-%m-%d %H:%M:%S") + \
