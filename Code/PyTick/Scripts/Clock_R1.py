@@ -23,7 +23,9 @@
     [18]Python读写txt文本文件 https://www.cnblogs.com/hackpig/p/8215786.html
     [19]python报错 TypeError: bad operand type for unary +: 'str' 的解决办法
      https://stackoverflow.com/questions/29880136/python-2-7-typeerror-bad-operand-type-for-unary-str
-'''
+    [20]PyQt信号与槽之多窗口数据传递（七）https://blog.csdn.net/jia666666/article/details/81781697
+    [21]打开文件https://blog.csdn.net/humanking7/article/details/80546728
+     '''
 
 from PyQt5.QtCore import *
 import sys
@@ -36,8 +38,9 @@ from PyQt5.QtWidgets import *
 class ClockStatics(QWidget):
     def __init__(self):
         super().__init__()
+        # 文件路径暂采用绝对路径
         self.srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
-        self.logfile = r'D:\Codes\Python_M\Code\PyTick\Src\log.txt'
+        self.logfile = r'D:\Codes\Python_M\Code\PyTick\Logs\log.txt'
         self.Timing = False
         self.setupUI()
         self.setGeometry(100, 100, 500, 200)
@@ -83,18 +86,21 @@ class ClockStatics(QWidget):
             "QPushButton:hover{background:rgb(195, 227, 81 );}")
         self.KeepButton.clicked.connect(self.TrackLCD)
 
-        self.ClearButton = QPushButton("CLEAR")
-        self.ClearButton.setIcon(
+        self.ManualButton = QPushButton("MANUAL")
+        self.ManualButton.setIcon(
             QIcon(os.path.join(self.srcpath, "清除-1.png")))
-        self.ClearButton.setIconSize(QSize(20, 20))
-        self.ClearButton.setStyleSheet(
+        self.ManualButton.setIconSize(QSize(20, 20))
+        self.ManualButton.setStyleSheet(
             "QPushButton{border-radius:4px;font-size:22px;font-weight:bold;color:rgb(2, 9, 34);}"
             "QPushButton{border:2px solid rgb(195, 227, 81);}"
             "QPushButton:hover{background:rgb(195, 227, 81 );}")
+
+        self.ManualButton.clicked.connect(self.ManmalTrack)
+
         # button area
         ButtonAreaLayout.addWidget(self.StartButton)
         ButtonAreaLayout.addWidget(self.KeepButton)
-        ButtonAreaLayout.addWidget(self.ClearButton)
+        ButtonAreaLayout.addWidget(self.ManualButton)
         ButtonArea.setLayout(ButtonAreaLayout)
 
         WholeLCDLayout.addWidget(ButtonArea)
@@ -114,7 +120,7 @@ class ClockStatics(QWidget):
             self.StartButton.setText("STOP")
             self.StartButton.setIcon(
                 QIcon(os.path.join(self.srcpath, "停止-1.png")))
-            self.ClearButton.setEnabled(False)
+            self.ManualButton.setEnabled(False)
             self.KeepButton.setEnabled(False)
             self.StartTime = datetime.now()
             self.StopTime = datetime.now()
@@ -127,7 +133,7 @@ class ClockStatics(QWidget):
             self.StartButton.setText("START")
             self.StartButton.setIcon(
                 QIcon(os.path.join(self.srcpath, "启动-2.png")))
-            self.ClearButton.setEnabled(True)
+            self.ManualButton.setEnabled(True)
             self.KeepButton.setEnabled(True)
             self.LCD.setStyleSheet(
                 "QLCDNumber{border:2px solidgreen;color:rgb(102, 212, 209 );}")
@@ -144,9 +150,6 @@ class ClockStatics(QWidget):
         else:
             pass
 
-    def ClearLCD(self):
-        pass
-
     def UpdateLCD(self):
         if self.Timing:
             gap = datetime.now() - self.StartTime
@@ -157,11 +160,16 @@ class ClockStatics(QWidget):
         else:
             self.LCD.display(datetime.now().strftime("%H:%M:%S"))
 
+    def ManmalTrack(self):
+        openfile_name = QFileDialog.getOpenFileName(
+            self, '打开日志', '', 'Text Files (*.txt)')
+        print("manmal handle")
+
     def __Writelog__(self):
         self.gap = self.StopTime - self.StartTime
-        if int(self.gap.seconds/60) >= 1:
+        if int(self.gap.seconds) >= 1:
             # if int(self.gap.seconds) >= 1:
-            text, ok = QInputDialog.getText(self, 'Track', '请输入姓名：')
+            text, ok = QInputDialog.getText(self, 'Track', 'What Did U DO?')
             if ok & (text.strip() != ""):
                 f = open(self.logfile, 'a+', encoding='UTF-8')
                 allLines = f.readlines()

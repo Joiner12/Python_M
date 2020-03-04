@@ -25,6 +25,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from Clock_R1 import ClockStatics
 from SmokeArea_R1 import SmokeArea
+from ScrollText_R1 import SrollTxt
 
 
 class StackWindow(QWidget):
@@ -77,6 +78,7 @@ class StackWindow(QWidget):
         self.selectArea.insertItem(3, ser_3)
         ser_3.setSizeHint(QSize(60, 40))
         self.stackArea = QStackedWidget(self)
+        self.selectArea.setFixedWidth(150)
 
         self.stack1 = QWidget()
         self.stack2 = QWidget()
@@ -99,17 +101,20 @@ class StackWindow(QWidget):
         mainHLayout.setStretchFactor(0, 9)
         mainHLayout.setStretchFactor(1, 1)
 
-        self.infoBar = QLabel()
-        self.infoBar.setText("你寻求的幸福 其实不在远处 它就是你现在 一直走的路")
-        self.infoBar.setStyleSheet("QLabel{color:rgb(100,100,100,250);font-size:18px;font-weight:bold;font-family:楷体;}"
-                                   "QLabel:hover{color:rgb(100,100,100,120);}")
-        self.infoBar.setAlignment(Qt.AlignCenter)
-        self.infoBar.setFixedHeight(20)
-        self.selectArea.setFixedWidth(150)
+        # information bar area
+        self.infoBar = SrollTxt()
+        # self.infoBar = QLabel()
+        # self.infoBar.setText("你寻求的幸福 其实不在远处 它就是你现在 一直走的路")
+        # self.infoBar.setStyleSheet("QLabel{color:rgb(100,100,100,250);font-size:18px;font-weight:bold;font-family:楷体;}"
+        #                            "QLabel:hover{color:rgb(100,100,100,120);}")
+        # self.infoBar.setAlignment(Qt.AlignCenter)
+        self.infoBar.setFixedSize(self.width(), 20)
 
-        mainWidget.addWidget(mainHLayout)
-        mainWidget.addWidget(self.infoBar)
+        mainWidget.addWidget(mainHLayout, Qt.AlignCenter | Qt.AlignBottom)
+        mainWidget.addWidget(self.infoBar, Qt.AlignCenter | Qt.AlignBottom)
 
+        mainWidget.setStretch(0, 9)
+        mainWidget.setStretch(1, 1)
         # 绑定stack
         self.selectArea.currentRowChanged.connect(self.display)
         self.setLayout(mainWidget)
@@ -133,17 +138,19 @@ class StackWindow(QWidget):
                                 复杂的眼泪
                               
                           ''')
-        SmokeArea_1 = SmokeArea()
+        # ScrollInfo = SrollTxt()
+        # SmokeArea_1 = SmokeArea()
         # SmokeArea.setStyleSheet("{color:rgb(0, 0, 34)}")
 
         layout = QVBoxLayout()
 
         layout.addWidget(tick)
-        layout.addWidget(SmokeArea_1)
         layout.addWidget(TickLabel)
+        # layout.addWidget(ScrollInfo)
+
         layout.setStretch(0, 2)
-        layout.setStretch(1, 1)
-        layout.setStretch(2, 7)
+        # layout.setStretch(2, 1)
+        layout.setStretch(1, 7)
         self.stack1.setLayout(layout)
 
     def stack2UI(self):
