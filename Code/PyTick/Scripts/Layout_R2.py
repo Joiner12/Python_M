@@ -1,4 +1,4 @@
-# -*- encoding:utf-8 -*-
+# -*- coding:utf-8 -*-
 '''
 
     Ref:
@@ -16,10 +16,6 @@
 '''
 import sys
 import os
-from PyQt5.QtWidgets import (QWidget, QGridLayout,
-                             QPushButton, QApplication, QMainWindow)
-
-import sys
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
@@ -103,11 +99,6 @@ class StackWindow(QWidget):
 
         # information bar area
         self.infoBar = SrollTxt()
-        # self.infoBar = QLabel()
-        # self.infoBar.setText("你寻求的幸福 其实不在远处 它就是你现在 一直走的路")
-        # self.infoBar.setStyleSheet("QLabel{color:rgb(100,100,100,250);font-size:18px;font-weight:bold;font-family:楷体;}"
-        #                            "QLabel:hover{color:rgb(100,100,100,120);}")
-        # self.infoBar.setAlignment(Qt.AlignCenter)
         self.infoBar.setFixedSize(self.width(), 20)
 
         mainWidget.addWidget(mainHLayout, Qt.AlignCenter | Qt.AlignBottom)

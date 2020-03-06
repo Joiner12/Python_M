@@ -25,12 +25,15 @@
      https://stackoverflow.com/questions/29880136/python-2-7-typeerror-bad-operand-type-for-unary-str
     [20]PyQt信号与槽之多窗口数据传递（七）https://blog.csdn.net/jia666666/article/details/81781697
     [21]打开文件https://blog.csdn.net/humanking7/article/details/80546728
-     '''
+    [22]python运行其他程序方式https://blog.csdn.net/Jerry_1126/article/details/46584179
+    [23]判断文件是否存在https://blog.csdn.net/samxx8/article/details/6284960
+    [24]os.path https://www.runoob.com/python/python-os-path.html
+'''
 
-from PyQt5.QtCore import *
 import sys
 import os
 from datetime import datetime
+from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
@@ -53,7 +56,7 @@ class ClockStatics(QWidget):
         self.LCD.setMode(QLCDNumber.Dec)
         self.LCD.setSegmentStyle(QLCDNumber.Flat)
         self.LCD.setStyleSheet(
-            "QLCDNumber{border:2px solidgreen;color:rgb(102, 212, 209 );}"
+            "QLCDNumber{border:1px solidgreen;color:rgb(102, 212, 209 );}"
             "QLCDNumber{font-size:100px;}")
         self.LCD.setAutoFillBackground(True)
         self.LCD.setFrameShape(QFrame.StyledPanel)
@@ -66,40 +69,35 @@ class ClockStatics(QWidget):
         ButtonArea = QWidget()
         ButtonAreaLayout = QVBoxLayout()
 
+        # 按钮样式-1
+        buttonStyle_1 = ("QPushButton{border-radius:4px;font-size:22px;font-weight:bold;color:rgb(2, 9, 34);}"
+                         "QPushButton{border:1px solid rgb(49,49,46);}"
+                         "QPushButton:hover{background:rgb(49,49,46 );}")
+
         self.StartButton = QPushButton('START')
         self.StartButton.clicked.connect(self.PushLCD)
         self.StartButton.setIcon(
             QIcon(os.path.join(self.srcpath, "启动-2.png")))
-        self.StartButton.setIconSize(QSize(20, 20))
-        self.StartButton.setStyleSheet(
-            "QPushButton{border-radius:4px;font-size:22px;font-weight:bold;color:rgb(2, 9, 34);}"
-            "QPushButton{border:2px solid rgb(195, 227, 81);}"
-            "QPushButton:hover{background:rgb(195, 227, 81 );}")
+        self.StartButton.setIconSize(QSize(30, 30))
+        self.StartButton.setStyleSheet(buttonStyle_1)
 
-        self.KeepButton = QPushButton('TRACK')
-        self.KeepButton.setIcon(
+        self.TrackButton = QPushButton('TRACK')
+        self.TrackButton.setIcon(
             QIcon(os.path.join(self.srcpath, "记录-1.png")))
-        self.KeepButton.setIconSize(QSize(20, 20))
-        self.KeepButton.setStyleSheet(
-            "QPushButton{border-radius:4px;font-size:22px;font-weight:bold;color:rgb(2, 9, 34);}"
-            "QPushButton{border:2px solid rgb(195, 227, 81);}"
-            "QPushButton:hover{background:rgb(195, 227, 81 );}")
-        self.KeepButton.clicked.connect(self.TrackLCD)
+        self.TrackButton.setIconSize(QSize(30, 30))
+        self.TrackButton.setStyleSheet(buttonStyle_1)
+        self.TrackButton.clicked.connect(self.TrackLCD)
 
         self.ManualButton = QPushButton("MANUAL")
         self.ManualButton.setIcon(
             QIcon(os.path.join(self.srcpath, "清除-1.png")))
-        self.ManualButton.setIconSize(QSize(20, 20))
-        self.ManualButton.setStyleSheet(
-            "QPushButton{border-radius:4px;font-size:22px;font-weight:bold;color:rgb(2, 9, 34);}"
-            "QPushButton{border:2px solid rgb(195, 227, 81);}"
-            "QPushButton:hover{background:rgb(195, 227, 81 );}")
-
+        self.ManualButton.setIconSize(QSize(30, 30))
+        self.ManualButton.setStyleSheet(buttonStyle_1)
         self.ManualButton.clicked.connect(self.ManmalTrack)
 
         # button area
         ButtonAreaLayout.addWidget(self.StartButton)
-        ButtonAreaLayout.addWidget(self.KeepButton)
+        ButtonAreaLayout.addWidget(self.TrackButton)
         ButtonAreaLayout.addWidget(self.ManualButton)
         ButtonArea.setLayout(ButtonAreaLayout)
 
@@ -120,21 +118,19 @@ class ClockStatics(QWidget):
             self.StartButton.setText("STOP")
             self.StartButton.setIcon(
                 QIcon(os.path.join(self.srcpath, "停止-1.png")))
-            self.ManualButton.setEnabled(False)
-            self.KeepButton.setEnabled(False)
+            self.TrackButton.setEnabled(False)
             self.StartTime = datetime.now()
-            self.StopTime = datetime.now()
+            self.StopTime = self.StartTime
             self.gap = self.StopTime - self.StartTime
             self.Timing = True
             self.LCD.setStyleSheet(
-                "QLCDNumber{border:2px solidgreen;color:rgb(35, 107, 185 );}")
+                "QLCDNumber{border:1px solidgreen;color:rgb(35, 107, 185 );}")
         else:
             # Stop 👉 Star(计时停止)
             self.StartButton.setText("START")
             self.StartButton.setIcon(
                 QIcon(os.path.join(self.srcpath, "启动-2.png")))
-            self.ManualButton.setEnabled(True)
-            self.KeepButton.setEnabled(True)
+            self.TrackButton.setEnabled(True)
             self.LCD.setStyleSheet(
                 "QLCDNumber{border:2px solidgreen;color:rgb(102, 212, 209 );}")
             self.Timing = False
@@ -161,14 +157,15 @@ class ClockStatics(QWidget):
             self.LCD.display(datetime.now().strftime("%H:%M:%S"))
 
     def ManmalTrack(self):
+        # 读取并打开单个文件,所以tuple索引为0。
         openfile_name = QFileDialog.getOpenFileName(
             self, '打开日志', '', 'Text Files (*.txt)')
-        print("manmal handle")
+        if os.path.samefile(openfile_name[0], os.path.join(self.logpath, r"Log.txt")):
+            os.system(openfile_name[0])
 
     def __Writelog__(self):
         self.gap = self.StopTime - self.StartTime
-        if int(self.gap.seconds) >= 1:
-            # if int(self.gap.seconds) >= 1:
+        if int(self.gap.seconds) >= 30:
             text, ok = QInputDialog.getText(self, 'Track', 'What Did U DO?')
             if ok & (text.strip() != ""):
                 f = open(self.logfile, 'a+', encoding='UTF-8')
