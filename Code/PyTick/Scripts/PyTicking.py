@@ -1,6 +1,5 @@
-# -*- encoding:utf-8 -*-
+# -*- coding:utf-8 -*-
 '''
-
     Ref:
     [1] QListWidget 设置样式 https://www.bbsmax.com/A/KE5QOlL0zL/
     [2] 设置QListWidget透明背景 https://blog.csdn.net/liyan728/article/details/8955634
@@ -12,30 +11,34 @@
     [7] PyQt中QLabel背景与字体的一些设置 https://blog.csdn.net/jiuzuidongpo/article/details/45485127
     [8] QPalette https://doc.qt.io/qtforpython/PySide2/QtGui/QPalette.html
     [9] 无边框 https://www.cnblogs.com/jyroy/p/9461317.html
-
 '''
 import sys
 import os
-from PyQt5.QtWidgets import (QWidget, QGridLayout,
-                             QPushButton, QApplication, QMainWindow)
-
-import sys
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
+from Clock_R1 import ClockStatics
+from SmokeArea_R1 import SmokeArea
+from ScrollText_R1 import SrollTxt
+from StaticArea_R1 import StaticsArea
 
 
-class MainWindow(QWidget):
+class StackWindow(QWidget):
     def __init__(self):
         print('constructor')
         super().__init__()
         self.setupUi()
 
     def setupUi(self):
-        self.srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
-        print('setup ui')
+        # 环境配置
+        if False:
+            self.srcpath = r"D:\Python_M\Code\PyTick\Src"
+            self.logpath = r"D:\Python_M\Code\PyTick\Log"
+        else:
+            self.srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
+            self.logpath = r"D:\Codes\Python_M\Code\PyTick\Log"
         self.setWindowTitle('ITool')
-        self.setWindowIcon(QIcon(os.path.join(self.srcpath, r'moutain-1.png')))
+        self.setWindowIcon(QIcon(os.path.join(self.srcpath, r'Deer.ico')))
 
         # 主窗垂直布局(3/3) +  分割
         mainWidget = QVBoxLayout()
@@ -75,6 +78,7 @@ class MainWindow(QWidget):
         self.selectArea.insertItem(3, ser_3)
         ser_3.setSizeHint(QSize(60, 40))
         self.stackArea = QStackedWidget(self)
+        self.selectArea.setFixedWidth(150)
 
         self.stack1 = QWidget()
         self.stack2 = QWidget()
@@ -94,20 +98,18 @@ class MainWindow(QWidget):
         mainHLayout.addWidget(self.selectArea)
         mainHLayout.addWidget(self.stackArea)
 
-        mainHLayout.setStretchFactor(0, 9)
-        mainHLayout.setStretchFactor(1, 1)
+        mainHLayout.setStretchFactor(0, 8)
+        mainHLayout.setStretchFactor(1, 2)
 
-        self.infoBar = QLabel()
-        self.infoBar.setText("你寻求的幸福 其实不在远处 它就是你现在 一直走的路")
-        self.infoBar.setStyleSheet("QLabel{color:rgb(100,100,100,250);font-size:18px;font-weight:bold;font-family:楷体;}"
-                                   "QLabel:hover{color:rgb(100,100,100,120);}")
-        self.infoBar.setAlignment(Qt.AlignCenter)
+        # information bar area
+        self.infoBar = SrollTxt()
         self.infoBar.setFixedHeight(20)
-        self.selectArea.setFixedWidth(150)
 
         mainWidget.addWidget(mainHLayout)
         mainWidget.addWidget(self.infoBar)
 
+        mainWidget.setStretch(0, 9)
+        mainWidget.setStretch(1, 1)
         # 绑定stack
         self.selectArea.currentRowChanged.connect(self.display)
         self.setLayout(mainWidget)
@@ -115,10 +117,16 @@ class MainWindow(QWidget):
 
     # 时钟及相应界面
     def stack1UI(self):
-        layout = QFormLayout()
-        layout.addRow('姓名', QLineEdit())
-        layout.addRow('地址', QLineEdit())
+        layout = QVBoxLayout()
+        self.ticker = ClockStatics()
+        self.Static = StaticsArea()
+
+        layout.addWidget(self.ticker)
+        layout.addWidget(self.Static)
+
         self.stack1.setLayout(layout)
+        layout.setStretch(0, 3)
+        layout.setStretch(1, 7)
 
     def stack2UI(self):
         # 主表单布局，次水平布局
@@ -170,16 +178,13 @@ class MainWindow(QWidget):
 
     def paintEvent(self, event):
         bgQp = QPainter(self)
-        file_path = os.path.abspath(__file__)
-        img_src = os.path.abspath(os.path.join(
-            os.path.join(file_path, '../..'), 'Src'))
-        mainBackGround = os.path.join(img_src, 'bg-2.jpg')
+        mainBackGround = os.path.join(self.srcpath, 'bg-2.jpg')
         bg = QPixmap(mainBackGround)
         bgQp.drawPixmap(self.rect(), bg)
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    demo = MainWindow()
+    demo = StackWindow()
     demo.show()
     sys.exit(app.exec_())

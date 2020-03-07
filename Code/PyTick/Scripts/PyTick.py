@@ -31,7 +31,7 @@ class StackWindow(QWidget):
     def setupUi(self):
         self.srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
         self.setWindowTitle('ITool')
-        self.setWindowIcon(QIcon(os.path.join(self.srcpath, r'moutain-1.png')))
+        self.setWindowIcon(QIcon(os.path.join(self.srcpath, r'Deer.ico')))
 
         # 主窗垂直布局(3/3) +  分割
         mainWidget = QVBoxLayout()
@@ -91,8 +91,8 @@ class StackWindow(QWidget):
         mainHLayout.addWidget(self.selectArea)
         mainHLayout.addWidget(self.stackArea)
 
-        mainHLayout.setStretchFactor(0, 9)
-        mainHLayout.setStretchFactor(1, 1)
+        mainHLayout.setStretchFactor(0, 8)
+        mainHLayout.setStretchFactor(1, 2)
 
         # information bar area
         self.infoBar = SrollTxt()
@@ -110,9 +110,9 @@ class StackWindow(QWidget):
 
     # 时钟及相应界面
     def stack1UI(self):
-        tick = ClockStatics()
-        TickLabel = QLabel()
-        TickLabel.setText('''
+        self.ticker = ClockStatics()
+        self.TickLabel = QLabel()
+        self.TickLabel.setText('''
                                 白色的风车
 
                                 安静地转着
@@ -126,18 +126,13 @@ class StackWindow(QWidget):
                                 复杂的眼泪
                               
                           ''')
-        # ScrollInfo = SrollTxt()
-        # SmokeArea_1 = SmokeArea()
-        # SmokeArea.setStyleSheet("{color:rgb(0, 0, 34)}")
 
         layout = QVBoxLayout()
 
-        layout.addWidget(tick)
-        layout.addWidget(TickLabel)
-        # layout.addWidget(ScrollInfo)
+        layout.addWidget(self.ticker)
+        layout.addWidget(self.TickLabel)
 
-        layout.setStretch(0, 2)
-        # layout.setStretch(2, 1)
+        layout.setStretch(0, 3)
         layout.setStretch(1, 7)
         self.stack1.setLayout(layout)
 

@@ -56,25 +56,25 @@ class ClockStatics(QWidget):
         self.LCD.setMode(QLCDNumber.Dec)
         self.LCD.setSegmentStyle(QLCDNumber.Flat)
         self.LCD.setStyleSheet(
-            "QLCDNumber{border:2px solidgreen;color:rgb(102, 212, 209 );}"
-            "QLCDNumber{font-size:100px;}")
+            "QLCDNumber{border:2px solidgreen;color:rgb(102, 212, 209 );}")
+        # "QLCDNumber{font-size:100px;}")
         self.LCD.setAutoFillBackground(True)
         self.LCD.setFrameShape(QFrame.StyledPanel)
         self.LCD.setFrameShadow(QFrame.Sunken)
-
+        self.LCD.setSizePolicy(QSizePolicy.Expanding,
+                               QSizePolicy.Expanding)
         self.StartTime = datetime.now()
         self.StopTime = datetime.now()
         self.gap = datetime.now()-datetime.now()
         # button area
-        ButtonArea = QWidget()
         ButtonAreaLayout = QVBoxLayout()
 
         # 按钮样式-1
-        self.buttonStyle_1 = ("QPushButton{border-radius:4px;font-size:22px;font-weight:bold;color:rgb(2, 9, 34);}"
+        self.buttonStyle_1 = ("QPushButton{border-radius:4px;font-size:16px;font-weight:bold;color:rgb(2, 9, 34);}"
                               "QPushButton{border:2px solid rgb(118,154,40);}"
                               "QPushButton:hover{background:rgb(118,154,40);}")
         # 按钮样式-2 enable = False
-        self.buttonStyle_2 = ("QPushButton{border-radius:4px;font-size:20px;font-weight:bold;color:rgb(2, 9, 34);}"
+        self.buttonStyle_2 = ("QPushButton{border-radius:4px;font-size:16px;font-weight:bold;color:rgb(2, 9, 34);}"
                               "QPushButton{border:2px solid rgb(118,154,40);}"
                               "QPushButton:hover{background:rgb(118,154,40);}")
 
@@ -82,20 +82,17 @@ class ClockStatics(QWidget):
         self.StartButton.clicked.connect(self.PushLCD)
         self.StartButton.setIcon(
             QIcon(os.path.join(self.srcpath, "启动-2.png")))
-        self.StartButton.setIconSize(QSize(30, 30))
         self.StartButton.setStyleSheet(self.buttonStyle_1)
 
         self.TrackButton = QPushButton('TRACK')
         self.TrackButton.setIcon(
             QIcon(os.path.join(self.srcpath, "记录-1.png")))
-        self.TrackButton.setIconSize(QSize(30, 30))
         self.TrackButton.setStyleSheet(self.buttonStyle_1)
         self.TrackButton.clicked.connect(self.TrackLCD)
 
         self.ManualButton = QPushButton("MANUAL")
         self.ManualButton.setIcon(
             QIcon(os.path.join(self.srcpath, "打开-1.png")))
-        self.ManualButton.setIconSize(QSize(30, 30))
         self.ManualButton.setStyleSheet(self.buttonStyle_2)
         self.ManualButton.clicked.connect(self.ManmalTrack)
 
@@ -103,13 +100,12 @@ class ClockStatics(QWidget):
         ButtonAreaLayout.addWidget(self.StartButton)
         ButtonAreaLayout.addWidget(self.TrackButton)
         ButtonAreaLayout.addWidget(self.ManualButton)
-        ButtonArea.setLayout(ButtonAreaLayout)
 
-        WholeLCDLayout.addWidget(ButtonArea)
         WholeLCDLayout.addWidget(self.LCD)
+        WholeLCDLayout.addLayout(ButtonAreaLayout)
 
-        WholeLCDLayout.setStretch(0, 1)
-        WholeLCDLayout.setStretch(1, 9)
+        WholeLCDLayout.setStretch(0, 8)
+        WholeLCDLayout.setStretch(1, 2)
         self.BaseTicker = QTimer(self)
         self.BaseTicker.timeout.connect(self.UpdateLCD)
         self.BaseTicker.start(1000)
@@ -164,8 +160,10 @@ class ClockStatics(QWidget):
         # 读取并打开单个文件,所以tuple索引为0。
         openfile_name = QFileDialog.getOpenFileName(
             self, '打开日志', '', 'Text Files (*.txt)')
-        if os.path.samefile(openfile_name[0], os.path.join(self.logpath, r"Log.txt")):
+        if os.path.samefile(openfile_name[0], self.logfile):
             os.system(openfile_name[0])
+        else:
+            pass
 
     def __Writelog__(self):
         self.gap = self.StopTime - self.StartTime
