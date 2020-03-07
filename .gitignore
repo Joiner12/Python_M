@@ -10,3 +10,7 @@ index.html
 *.spec
 Code/PyTick/Scripts/build/
 Code/PyTick/Scripts/dist/
+
+Code/PyTick/Scripts/Exe/
+Code/build/
+

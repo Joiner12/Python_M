@@ -1,4 +1,4 @@
-#-*- coding:utf-8 -*-
+# -*- coding:utf-8 -*-
 '''
     统计分析功能区
     [1]文件是否存在https://www.cnblogs.com/jhao/p/7243043.html
@@ -10,6 +10,7 @@ from datetime import datetime
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+
 
 class StaticsArea(QWidget):
     def __init__(self):
@@ -26,8 +27,9 @@ class StaticsArea(QWidget):
 
     # 读取日志文本
     def __ReadLog__(self):
-        if os.path.exists(os.path.join(self.logpath,r"log.txt")):
-            f = open(os.path.join(self.logpath,r"log.txt"),'r',encoding='UTF-8')
+        if os.path.exists(os.path.join(self.logpath, r"log.txt")):
+            f = open(os.path.join(self.logpath, r"log.txt"),
+                     'r', encoding='UTF-8')
             self.logOrg = f.readlines
             f.close()
 
@@ -41,4 +43,3 @@ if __name__ == "__main__":
     ex = StaticsArea()
     ex.show()
     sys.exit(app.exec_())
-

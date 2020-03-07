@@ -57,7 +57,7 @@ class SrollTxt(QWidget):
             self.label_1.adjustSize()
 
             self.txtPropAnimation.setStartValue(
-                QRect(0, -self.label_1.height(), self.width(), self.label_1.height()))
+                QRect(0, self.label_1.height(), self.width(), self.label_1.height()))
             self.txtPropAnimation.setEndValue(
                 QRect(0, 0, self.width(), self.label_1.height()))
             self.label_1.show()
@@ -65,18 +65,16 @@ class SrollTxt(QWidget):
         self.pieceIndex = self.pieceIndex + 1
 
     def __ReadLog__(self):
-        f = open(r"D:\Codes\Python_M\Code\PyTick\Logs\log-1.txt",
+        f = open(r"D:\Codes\Python_M\Code\PyTick\Logs\log.txt",
                  'r', encoding='UTF-8')
         allLines = f.readlines()
         self.logdetail = allLines
 
     def initLabel(self):
-        self.label_1 = QLabel("Gausss...", self)
-        self.label_1.setAlignment(Qt.AlignCenter)
+        self.label_1 = QLabel(self)
         self.label_1.setStyleSheet(
             "QLabel{color:rgb(100,100,100,250);font-size:20px;font-weight:bold;font-family:Consoles;}")
         self.label_1.setText("Gausss...")
-        self.label_1.setFixedWidth(self.width())
         self.label_1.setAlignment(Qt.AlignCenter)
 
 

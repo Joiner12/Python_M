@@ -1,6 +1,5 @@
 # -*- coding:utf-8 -*-
 '''
-
     Ref:
     [1] QListWidget 设置样式 https://www.bbsmax.com/A/KE5QOlL0zL/
     [2] 设置QListWidget透明背景 https://blog.csdn.net/liyan728/article/details/8955634
@@ -12,7 +11,6 @@
     [7] PyQt中QLabel背景与字体的一些设置 https://blog.csdn.net/jiuzuidongpo/article/details/45485127
     [8] QPalette https://doc.qt.io/qtforpython/PySide2/QtGui/QPalette.html
     [9] 无边框 https://www.cnblogs.com/jyroy/p/9461317.html
-
 '''
 import sys
 import os
@@ -32,7 +30,6 @@ class StackWindow(QWidget):
 
     def setupUi(self):
         self.srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
-        print('setup ui')
         self.setWindowTitle('ITool')
         self.setWindowIcon(QIcon(os.path.join(self.srcpath, r'moutain-1.png')))
 
@@ -99,10 +96,10 @@ class StackWindow(QWidget):
 
         # information bar area
         self.infoBar = SrollTxt()
-        self.infoBar.setFixedSize(self.width(), 20)
+        self.infoBar.setFixedHeight(20)
 
-        mainWidget.addWidget(mainHLayout, Qt.AlignCenter | Qt.AlignBottom)
-        mainWidget.addWidget(self.infoBar, Qt.AlignCenter | Qt.AlignBottom)
+        mainWidget.addWidget(mainHLayout)
+        mainWidget.addWidget(self.infoBar)
 
         mainWidget.setStretch(0, 9)
         mainWidget.setStretch(1, 1)
