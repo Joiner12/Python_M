@@ -11,6 +11,18 @@ index.html
 Code/PyTick/Scripts/build/
 Code/PyTick/Scripts/dist/
 
-Code/PyTick/Scripts/Exe/
 Code/build/
 
+.vscode/
+
+# 
+Src/
+
+Code/images
+Code/google-translate/__pycache__
+
+Code/COMTool-master
+Code/Scripts/Draft.py
+Code/PyTick/Exe/
+
+*.mp3
