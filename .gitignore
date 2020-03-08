@@ -23,12 +23,13 @@ Code/google-translate/__pycache__
 
 Code/COMTool-master
 Code/Scripts/Draft.py
+
 # *.exe
 *.exe
 
 !Code/PyTick/Logs
 !Code/PyTick/Src
-
+Code/PyTick/Exe
 Code/PyTick/Scripts/__pycache__
 
 *.mp3
