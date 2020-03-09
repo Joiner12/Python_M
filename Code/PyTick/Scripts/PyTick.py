@@ -33,10 +33,11 @@ class StackWindow(QWidget):
 
     def setupUi(self):
         # 环境配置
-        self.srcpath = os.path.join(
-            os.path.dirname(os.path.dirname(__file__)), "Src")
-        self.logpath = os.path.join(os.path.dirname(
-            os.path.dirname(__file__)), r"Log")
+        if False:
+            self.srcpath = os.path.join(
+                os.path.dirname(os.path.dirname(__file__)), "Src")
+            self.logpath = os.path.join(os.path.dirname(
+                os.path.dirname(__file__)), r"Log")
         self.srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
         self.logpath = r"D:\Codes\Python_M\Code\PyTick\Logs"
         self.setWindowTitle('ITool')

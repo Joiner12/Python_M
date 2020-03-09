@@ -42,10 +42,13 @@ class ClockStatics(QWidget):
     def __init__(self):
         super().__init__()
         # 环境配置
-        self.srcpath = os.path.join(os.path.dirname(
-            os.path.dirname(__file__)), r"Src")
-        self.logpath = os.path.join(os.path.dirname(
-            os.path.dirname(__file__)), r"Log")
+        if False:
+            self.srcpath = os.path.join(os.path.dirname(
+                os.path.dirname(__file__)), r"Src")
+            self.logpath = os.path.join(os.path.dirname(
+                os.path.dirname(__file__)), r"Log")
+        self.srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
+        self.logpath = r"D:\Codes\Python_M\Code\PyTick\Logs"
         self.Timing = False
         self.setupUI()
         self.setGeometry(100, 100, 500, 200)
