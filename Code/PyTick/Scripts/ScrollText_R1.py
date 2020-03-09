@@ -19,7 +19,6 @@ from PyQt5.QtGui import *
 class SrollTxt(QWidget):
     def __init__(self):
         super().__init__()
-        print('roll text')
         self.logdetail = 0  # 字符串表
         self.timer_1 = QTimer()
         self.counter = 0

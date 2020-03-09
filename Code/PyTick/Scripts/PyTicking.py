@@ -21,7 +21,7 @@ from PyQt5.QtWidgets import *
 from Clock_R1 import ClockStatics
 from SmokeArea_R1 import SmokeArea
 from ScrollText_R1 import SrollTxt
-from StaticArea_R2 import StaticsArea, StaticsArea_1
+# from StaticArea_R2 import StaticsArea, StaticsArea_1
 # from KeyMouse_R1 import KeyMouse
 
 
@@ -33,12 +33,10 @@ class StackWindow(QWidget):
 
     def setupUi(self):
         # 环境配置
-        if False:
-            self.srcpath = r"D:\Python_M\Code\PyTick\Src"
-            self.logpath = r"D:\Python_M\Code\PyTick\Log"
-        else:
-            self.srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
-            self.logpath = r"D:\Codes\Python_M\Code\PyTick\Log"
+        self.srcpath = os.path.join(
+            os.path.dirname(os.path.dirname(__file__)), "Src")
+        self.logpath = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), r"Log")
         self.setWindowTitle('ITool')
         self.setWindowIcon(QIcon(os.path.join(self.srcpath, r'Deer.ico')))
 
@@ -85,14 +83,17 @@ class StackWindow(QWidget):
         self.stack1 = QWidget()
         self.stack2 = QWidget()
         self.stack3 = QWidget()
+        self.stack4 = QWidget()
 
         self.stack1UI()
         self.stack2UI()
         self.stack3UI()
+        self.stack4UI()
 
         self.stackArea.addWidget(self.stack1)
         self.stackArea.addWidget(self.stack2)
         self.stackArea.addWidget(self.stack3)
+        self.stackArea.addWidget(self.stack4)
 
         mainHLayout = QSplitter(Qt.Horizontal)
         mainHLayout.setHandleWidth(1)
@@ -115,68 +116,54 @@ class StackWindow(QWidget):
         # 绑定stack
         self.selectArea.currentRowChanged.connect(self.display)
         self.setLayout(mainWidget)
-        self.setGeometry(200, 200, 500/0.618, 500)
+        self.setGeometry(200, 200, 400/0.618, 400)
 
     # 时钟及相应界面
     def stack1UI(self):
         layout = QVBoxLayout()
         self.ticker = ClockStatics()
-        self.Static = StaticsArea()
-
+        sr = '''
+        Stars shining bright above you
+        星儿在你头顶闪耀
+        Night breezes seem to whisper "I love you"
+        夜晚的微风似乎轻轻地在说 我爱你
+        Birds singing in the sycamore tree
+        鸟儿在梧桐树里歌唱着
+        Dream a little dream of me
+        愿你的梦里有我
+        Say "Night-ie night" and kiss me
+        说晚安吧，然后亲吻我
+            '''
+        info = QLabel(sr)
+        info.setStyleSheet(
+            "QLabel{color:rgb(216,245,255,250);font-size:15px;font-family:Consoles;}")
+        info.setAlignment(Qt.AlignLeft)
         layout.addWidget(self.ticker)
-        layout.addWidget(self.Static)
-
+        layout.addWidget(info)
         self.stack1.setLayout(layout)
         layout.setStretch(0, 3)
         layout.setStretch(1, 7)
 
     def stack2UI(self):
-        # 主表单布局，次水平布局
-        if False:
-            layout = QFormLayout()
-            sex = QHBoxLayout()
-
-            # 水平布局添加单选按钮
-            sex.addWidget(QRadioButton('男'))
-            sex.addWidget(QRadioButton('女'))
-
-            # 表单布局添加控件
-            layout.addRow(QLabel('性别'), sex)
-            layout.addRow('生日', QLineEdit())
-            self.stack2.setLayout(layout)
-        else:
-            layout = QHBoxLayout()
-            figUI = StaticsArea_1()
-            sr = '''
-                    Stars shining bright above you
-                    星儿在你头顶闪耀
-                    Night breezes seem to whisper "I love you"
-                    夜晚的微风似乎轻轻地在说 我爱你
-                    Birds singing in the sycamore tree
-                    鸟儿在梧桐树里歌唱着
-                    Dream a little dream of me
-                    愿你的梦里有我
-                    Say "Night-ie night" and kiss me
-                    说晚安吧，然后亲吻我
-                  '''
-            info = QLabel(sr)
-            layout.addWidget(info)
-            layout.addWidget(figUI)
-            layout.setStretch(0, 8)
-            layout.setStretch(1, 2)
-
-            self.stack2.setLayout(layout)
+         # 水平布局
+        layout = QHBoxLayout()
+        # figUI = StaticsArea_1()
+        # layout.addWidget(figUI)
+        self.stack2.setLayout(layout)
 
     def stack3UI(self):
-        # 水平布局
         layout = QHBoxLayout()
-
         # 添加控件到布局中
         layout.addWidget(QLabel('科目'))
         layout.addWidget(QCheckBox('物理'))
         layout.addWidget(QCheckBox('高数'))
-
         self.stack3.setLayout(layout)
+
+    def stack4UI(self):
+        layout = QVBoxLayout()
+        # self.Static = StaticsArea()
+        # layout.addWidget(self.Static)
+        self.stack4.setLayout(layout)
 
     def display(self, i):
         # 设置当前可见的选项卡的索引

@@ -42,12 +42,10 @@ class ClockStatics(QWidget):
     def __init__(self):
         super().__init__()
         # 环境配置
-        if False:
-            self.srcpath = r"D:\Python_M\Code\PyTick\Src"
-            self.logpath = r"D:\Python_M\Code\PyTick\Log"
-        else:
-            self.srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
-            self.logpath = r"D:\Codes\Python_M\Code\PyTick\Logs"
+        self.srcpath = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), r"Src")
+        self.logpath = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), r"Log")
         self.Timing = False
         self.setupUI()
         self.setGeometry(100, 100, 500, 200)
@@ -154,7 +152,8 @@ class ClockStatics(QWidget):
         if self.Timing:
             gap = datetime.now() - self.StartTime
             '''创建时间字符串'''
-            time = QTime(gap.seconds/3600, gap.seconds/60, gap.seconds % 60)
+            time = QTime((gap.seconds/3600) %
+                         24, (gap.seconds/60) % 60, gap.seconds % 60)
             text = time.toString('hh:mm:ss')
             self.LCD.display(text)
         else:
@@ -162,24 +161,17 @@ class ClockStatics(QWidget):
 
     def ManmalTrack(self):
         # 读取并打开单个文件,所以tuple索引为0。
-
-        if False:
-            openfile_name = QFileDialog.getOpenFileName(
-                self, '打开日志', '', 'Text Files (*.txt)')
-            if os.path.samefile(openfile_name[0], os.path.join(self.logpath, r"log2.txt")):
-                print(openfile_name[0])
-                os.system(openfile_name[0])
-            else:
-                print('n')
-        else:
-            os.system(os.path.join(self.logpath, r"log2.txt"))
+        openfile_name = QFileDialog.getOpenFileName(
+            self, '打开日志', '', 'Text Files (*.txt)')
+        if openfile_name[0].strip() != "":
+            os.system(openfile_name[0].strip())
 
     def __Writelog__(self):
         self.gap = self.StopTime - self.StartTime
         if int(self.gap.seconds) >= 2:
             text, ok = QInputDialog.getText(self, 'Track', 'What Did U DO?')
             if ok & (text.strip() != ""):
-                f = open(os.path.join(self.logpath, r"log2.txt"),
+                f = open(os.path.join(self.logpath, r"log.txt"),
                          'a+', encoding='UTF-8')
                 allLines = f.readlines()
                 item = datetime.strftime(self.StartTime, "%Y-%m-%d %H:%M:%S") + \
