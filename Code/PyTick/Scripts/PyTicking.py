@@ -11,6 +11,7 @@
     [7] PyQt中QLabel背景与字体的一些设置 https://blog.csdn.net/jiuzuidongpo/article/details/45485127
     [8] QPalette https://doc.qt.io/qtforpython/PySide2/QtGui/QPalette.html
     [9] 无边框 https://www.cnblogs.com/jyroy/p/9461317.html
+    [10]Layerout https://www.learnpyqt.com/courses/start/layouts/
 '''
 
 import sys
@@ -42,7 +43,9 @@ class StackWindow(QWidget):
         self.logpath = r"D:\Codes\Python_M\Code\PyTick\Logs"
         self.setWindowTitle('ITool')
         self.setWindowIcon(QIcon(os.path.join(self.srcpath, r'Deer.ico')))
-
+        # self.setWindowOpacity(0.9)  # 边框透明
+        # self.setAttribute(Qt.WA_TranslucentBackground)  # 设置透明背景
+        # self.setWindowFlag(Qt.FramelessWindowHint)  # 隐藏边框
         # 主窗垂直布局(3/3) +  分割
         mainWidget = QVBoxLayout()
 
@@ -61,25 +64,25 @@ class StackWindow(QWidget):
         self.selectArea.insertItem(0, bo)
         bo.setTextAlignment(Qt.AlignCenter)
         bo.setIcon(QIcon(os.path.join(self.srcpath, r'I-1.ico')))
-        bo.setSizeHint(QSize(60, 40))
+        bo.setSizeHint(QSize(30, 30))
 
         ser_1 = QListWidgetItem('爱你')
         self.selectArea.insertItem(1, ser_1)
         ser_1.setTextAlignment(Qt.AlignCenter)
         ser_1.setIcon(QIcon(os.path.join(self.srcpath, r'love.png')))
-        ser_1.setSizeHint(QSize(60, 40))
+        ser_1.setSizeHint(QSize(30, 30))
 
         ser_2 = QListWidgetItem('MM')
         ser_2.setTextAlignment(Qt.AlignCenter)
         ser_2.setIcon(QIcon(os.path.join(self.srcpath, r'horse.png')))
         self.selectArea.insertItem(2, ser_2)
-        ser_2.setSizeHint(QSize(60, 40))
+        ser_2.setSizeHint(QSize(30, 30))
 
         ser_3 = QListWidgetItem('麻花儿')
         ser_3.setTextAlignment(Qt.AlignCenter)
         ser_3.setIcon(QIcon(os.path.join(self.srcpath, r'flower.png')))
         self.selectArea.insertItem(3, ser_3)
-        ser_3.setSizeHint(QSize(60, 40))
+        ser_3.setSizeHint(QSize(30, 30))
         self.stackArea = QStackedWidget(self)
         self.selectArea.setFixedWidth(150)
 
