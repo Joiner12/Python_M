@@ -11,21 +11,22 @@ from PyQt5.QtGui import QFont, QEnterEvent, QPainter, QColor, QPen
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QSpacerItem, QSizePolicy, QPushButton
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton, QTextEdit
+from StackLayout_R1 import StackWindow
 # from LeftTabWidget import LeftTabWidget
 # 样式
 StyleSheet = """
 /*标题栏*/
 TitleBar {
-    background-color: red;
+    background-color:rgb(61, 187, 176);
 }
 /*最小化最大化关闭按钮通用默认背景*/
 #buttonMinimum,#buttonMaximum,#buttonClose {
     border: none;
-    background-color: red;
+    background-color:rgb(61, 187, 176);
 }
 /*悬停*/
 #buttonMinimum:hover,#buttonMaximum:hover {
-    background-color: red;
+    background-color:rgb(61, 187, 176);
     color: white;
 }
 #buttonClose:hover {
@@ -56,12 +57,11 @@ class TitleBar(QWidget):
     windowMoved = pyqtSignal(QPoint)
 
     def __init__(self, *args, **kwargs):
-        # super(TitleBar, self).__init__(*args, **kwargs)
         super().__init__()
         # 支持qss设置背景
         self.setAttribute(Qt.WA_StyledBackground, True)
         self.mPos = None
-        self.iconSize = 20  # 图标的默认大小
+        self.iconSize = 35  # 图标的默认大小
         # 设置默认背景颜色,否则由于受到父窗口的影响导致透明
         self.setAutoFillBackground(True)
         palette = self.palette()
@@ -72,11 +72,11 @@ class TitleBar(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         # 窗口图标
         self.iconLabel = QLabel(self)
-#         self.iconLabel.setScaledContents(True)
+        self.iconLabel.setScaledContents(True)
         layout.addWidget(self.iconLabel)
         # 窗口标题
         self.titleLabel = QLabel(self)
-        self.titleLabel.setMargin(2)
+        self.titleLabel.setMargin(4)
         layout.addWidget(self.titleLabel)
         # 中间伸缩条
         layout.addSpacerItem(QSpacerItem(
@@ -108,7 +108,7 @@ class TitleBar(QWidget):
             self.buttonMaximum.setText('1')
             self.windowNormaled.emit()
 
-    def setHeight(self, height=38):
+    def setHeight(self, height=40):
         """设置标题栏高度"""
         self.setMinimumHeight(height)
         self.setMaximumHeight(height)
@@ -368,24 +368,22 @@ class FramelessWindow(QWidget):
 
 
 class MainWindow(QWidget):
-
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
         layout = QVBoxLayout(self, spacing=0)
         layout.setContentsMargins(0, 0, 0, 0)
-
-        self.left_tag = QLabel("原来爱情这么伤")
-        layout.addWidget(self.left_tag)
+        self.tick = StackWindow()
+        layout.addWidget(self.tick)
 
 
 if __name__ == '__main__':
-
     app = QApplication(sys.argv)
     app.setStyleSheet(StyleSheet)
     mainWnd = FramelessWindow()
-    mainWnd.setWindowTitle('测试标题栏')
-    mainWnd.setWindowIcon(QIcon('Qt.ico'))
-    mainWnd.resize(QSize(1250, 780))
+    mainWnd.setWindowTitle('PyTick')
+    mainWnd.setWindowIcon(
+        QIcon(r'D:\Codes\Python_M\Code\PyTick\Src\Deer.ico'))
+    mainWnd.resize(QSize(800, 800*0.618))
     mainWnd.setWidget(MainWindow(mainWnd))  # 把自己的窗口添加进来
     mainWnd.show()
     sys.exit(app.exec_())
