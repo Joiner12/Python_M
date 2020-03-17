@@ -1,73 +1,64 @@
-# coding=utf-8
-# matplotlib背景透明示例图
-# python 3.5
+# -*- coding:utf-8 -*-
+from matplotlib.figure import Figure
+import sys
+import time
 
 import numpy as np
-import matplotlib.pyplot as plt
-from pylab import mpl
-import scipy.stats as stats
 
-# 设置中文字体
-mpl.rcParams['font.sans-serif'] = ['SimHei']
-
-
-def autolabel(rects):
-    # attach some text labels
-    for rect in rects:
-        height = rect.get_height()
-        # 设置标注文字及位置
-        ax.text(rect.get_x() + rect.get_width() / 2, 0.03 +
-                height, '%.4f' % height, ha='center', va='bottom')
+from matplotlib.backends.qt_compat import QtCore, QtWidgets, is_pyqt5
+if is_pyqt5():
+    from matplotlib.backends.backend_qt5agg import (
+        FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
+else:
+    from matplotlib.backends.backend_qt4agg import (
+        FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
 
 
-# 数据
-testData = [[0.87, 0.40, 0.56],
-            [0.97, 0.50, 0.33],
-            [0.88, 0.30, 0.44],
-            [0.25, 0.23, 0.17],
-            [0.73, 0.33, 0.45]]
+class ApplicationWindow(QtWidgets.QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self._main = QtWidgets.QWidget()
+        self.setCentralWidget(self._main)
+        layout = QtWidgets.QVBoxLayout(self._main)
 
-N = 3
-width = 0.5
-ind = np.arange(width, width*6*N, width*6)
+        static_canvas = FigureCanvas(Figure(figsize=(5, 3)))
+        layout.addWidget(static_canvas)
+        self.addToolBar(NavigationToolbar(static_canvas, self))
 
-fig, ax = plt.subplots()
-rectsTest1 = ax.bar(ind, (testData[0][0], testData[0][1], testData[0][2]), width, color=(
-    0, 0, 1, 1), edgecolor=(0, 0, 1, 1))
+        dynamic_canvas = FigureCanvas(Figure(figsize=(5, 3)))
+        layout.addWidget(dynamic_canvas)
+        self.addToolBar(QtCore.Qt.BottomToolBarArea,
+                        NavigationToolbar(dynamic_canvas, self))
 
-rectsTest2 = ax.bar(ind + width, (testData[1][0], testData[1][1],
-                                  testData[1][2]), width, color=(1, 0, 0, 1), edgecolor=(1, 0, 0, 1))
+        self._static_ax = static_canvas.figure.subplots()
+        t = np.linspace(0, 10, 501)
+        self._static_ax.plot(t, np.tan(t), ".")
 
-rectsTest3 = ax.bar(ind + 2*width, (testData[2][0], testData[2][1],
-                                    testData[2][2]), width, color=(0, 1, 0, 1), edgecolor=(0, 1, 0, 1))
+        self._dynamic_ax = dynamic_canvas.figure.subplots()
+        self._timer = dynamic_canvas.new_timer(
+            50, [(self._update_canvas, (), {})])
+        self._timer.start()
 
-rectsTest4 = ax.bar(ind + 3*width, (testData[3][0], testData[3][1], testData[3][2]),
-                    width, color=(1, 0.6471, 0, 1), edgecolor=(1, 0.6471, 0, 1))
+    def _update_canvas(self):
+        self._dynamic_ax.clear()
+        t = np.linspace(0, 10, 101)
+        # Use fixed vertical limits to prevent autoscaling changing the scale
+        # of the axis.
+        self._dynamic_ax.set_ylim(-1.1, 1.1)
+        # Shift the sinusoid as a function of time.
+        self._dynamic_ax.plot(t, np.sin(t + time.time()))
+        self._dynamic_ax.figure.canvas.draw()
 
-rectsTest5 = ax.bar(ind + 4*width, (testData[4][0], testData[4][1], testData[4][2]),
-                    width, color=(0.5804, 0, 0.8275, 1), edgecolor=(0.5804, 0, 0.8275, 1))
 
-ax.set_xlim(0, 9.5)
-ax.set_ylim(0, 1.4)
-ax.set_ylabel('数值')
-ax.yaxis.grid(True)
-ax.set_xticks(ind + width * 2.5)
-ax.set_xticklabels(('P', 'R', 'F'))
+if __name__ == "__main__":
+    # Check whether there is already a running QApplication (e.g., if running
+    # from an IDE).
+    qapp = QtWidgets.QApplication.instance()
+    if not qapp:
+        qapp = QtWidgets.QApplication(sys.argv)
 
-# 设置图例
-legend = ax.legend((rectsTest1, rectsTest2, rectsTest3, rectsTest4,
-                    rectsTest5), ('test1', 'test2', 'test3', 'test4', 'test5'))
-frame = legend.get_frame()
-frame.set_alpha(1)
-frame.set_facecolor('none')  # 设置图例legend背景透明
-
-# 给每个数据矩形标注数值
-autolabel(rectsTest1)
-autolabel(rectsTest2)
-autolabel(rectsTest3)
-autolabel(rectsTest4)
-autolabel(rectsTest5)
-# plt.show()
-plt.savefig(r'C:\Users\10520\Desktop\test.png', format='png', bbox_inches='tight',
-            transparent=True, dpi=600)  # bbox_inches='tight' 图片边界空白紧致, 背景透明
-print('saved')
+    app = ApplicationWindow()
+    app.show()
+    app.activateWindow()
+    app.raise_()
+    qapp.exec_()

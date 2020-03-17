@@ -1,27 +1,51 @@
 # -*- coding:utf-8 -*-
 '''
     日志处理模块
+    Reference:
+    [1]nested pie chartshttps://matplotlib.org/3.2.0/gallery/pie_and_polar_charts/nested_pie.html#sphx-glr-gallery-pie-and-polar-charts-nested-pie-py
+    [2]pie https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.pie.html
+    [3]中文显示乱码https://www.jianshu.com/p/b5138e48fefa
+
 '''
-import pyqtgraph as pg
+
 from datetime import datetime
 import os
 import sys
-import pyqtgraph.examples
-from PyQt5 import QtGui  # (the example applies equally well to PySide)
+from PyQt5.QtGui import *  # (the example applies equally well to PySide)
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
+from matplotlib.backends.backend_qt5agg import(
+    FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
+from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
+plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
 
 
-class LogMoudle():
+class LogMoudle(QWidget):
     logDetailList = list()
 
     def __init__(self, logpath):
-        # check file
+         # check file
+        super().__init__()
         self.logpath = logpath
+        self.__GenList__()
         fileflag = os.path.exists(logpath)
-        if not fileflag:
-            print('not a exist file')
-    # [startkick,stopkick,duration,event]
+        self.setupUI()
+        self.StaticDrawPie()
+        self.time_01 = QTimer()
+        self.show()
 
-    def GenList(self):
+    def setupUI(self):
+        mainlayout = QVBoxLayout()
+        self.staticPieCanvas = FigureCanvas(Figure(figsize=(5, 5)))
+        self.danamicPieCanvas = FigureCanvas(Figure(figsize=(5, 5)))
+        mainlayout.addWidget(self.staticPieCanvas)
+        mainlayout.addWidget(self.danamicPieCanvas)
+        mainlayout.addWidget(QPushButton("BUTTON"))
+        self.setLayout(mainlayout)
+
+    def __GenList__(self):
         try:
             with open(self.logpath, 'r', encoding='utf-8') as f:
                 logDetail = f.readlines()
@@ -30,8 +54,10 @@ class LogMoudle():
                 deTemp = i.rstrip('\n')
                 deTemp = deTemp.split('|')
                 if len(deTemp) == 4:
-                    CowOne = datetime.strptime(deTemp[0], "%Y-%m-%d %H:%M:%S")
-                    CowTwo = datetime.strptime(deTemp[1], "%Y-%m-%d %H:%M:%S")
+                    CowOne = datetime.strptime(
+                        deTemp[0], "%Y-%m-%d %H:%M:%S")
+                    CowTwo = datetime.strptime(
+                        deTemp[1], "%Y-%m-%d %H:%M:%S")
                     CowThree = int(deTemp[2])
                     deTemp[0] = CowOne
                     deTemp[1] = CowTwo
@@ -40,41 +66,31 @@ class LogMoudle():
         except:
             self.logDetailList = ['error' for i in range(4)]
 
-    def DrawBar_1(self):
+    def StaticDrawPie(self):
+        if len(self.logDetailList) > 1:
+            self.sPieDraw = self.staticPieCanvas.figure.subplots()
+            dayGap = list()
+            labels = list()
+            for i in self.logDetailList:
+                dayGap.append(i[2])
+                labels.append(i[3])
+            dayGap = dayGap[0:10]
+            labels = labels[0:10]
+            self.sPieDraw.pie(dayGap, labels=labels, radius=1, wedgeprops=dict(
+                width=0.4, edgecolor='w'))
+            self.sPieDraw.pie(dayGap, counterclock=False, radius=1-0.3, wedgeprops=dict(
+                width=0.3, edgecolor='w'))
+        else:
+            labels = ('1', '2', '3', '4')
+            self.sPieDraw = self.staticPieCanvas.figure.subplots()
+            self.sPieDraw.pie([1, 2, 3, 4], labels=labels)
+
+    def DynamicDrawPie(self):
         pass
-
-    def Graph_1(self):
-        # Always start by initializing Qt (only once per application)
-        app = QtGui.QApplication([])
-
-        # Define a top-level widget to hold everything
-        w = QtGui.QWidget()
-
-        # Create some widgets to be placed inside
-        btn = QtGui.QPushButton('press me')
-        text = QtGui.QLineEdit('enter text')
-        listw = QtGui.QListWidget()
-        plot = pg.PlotWidget()
-
-        # Create a grid layout to manage the widgets size and position
-        layout = QtGui.QGridLayout()
-        w.setLayout(layout)
-
-        # Add widgets to the layout in their proper positions
-        layout.addWidget(btn, 0, 0)   # button goes in upper-left
-        layout.addWidget(text, 1, 0)   # text edit goes in middle-left
-        layout.addWidget(listw, 2, 0)  # list widget goes in bottom-left
-        # plot goes on right side, spanning 3 rows
-        layout.addWidget(plot, 0, 1, 3, 1)
-
-        # Display the widget as a new window
-        w.show()
-
-        # Start the Qt event loop
-        app.exec_()
 
 
 if __name__ == "__main__":
-    ex = LogMoudle(r"D:\Codes\Python_M\Code\PyTick\Logs\log2.txt")
-    ex.GenList()
-    pyqtgraph.examples.run()
+    app = QApplication(sys.argv)
+    ex = LogMoudle(r'D:\Codes\Python_M\Code\PyTick\Logs\log2.txt')
+    sys.exit(app.exec_())
+    # pyqtgraph.examples.run()
