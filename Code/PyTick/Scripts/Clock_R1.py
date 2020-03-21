@@ -28,6 +28,11 @@
     [22]python运行其他程序方式https://blog.csdn.net/Jerry_1126/article/details/46584179
     [23]判断文件是否存在https://blog.csdn.net/samxx8/article/details/6284960
     [24]os.path https://www.runoob.com/python/python-os-path.html
+    [25]自定义输入框https://www.jianshu.com/p/7b5a40bb74fb
+    [26]QLineEdit https://blog.csdn.net/jia666666/article/details/81510502
+    [27]QDateTimeEdit https://blog.csdn.net/jia666666/article/details/81589442
+    [28]去掉空格 https://blog.csdn.net/qingquanyingyue/article/details/93907224
+    [29]stylesheet https://doc.qt.io/qt-5/stylesheet-examples.html
 '''
 
 import sys
@@ -258,11 +263,18 @@ class ClockStatics_V1(QWidget):
         self.ManualButton.setStyleSheet(self.buttonStyle_2)
         self.ManualButton.clicked.connect(self.ManmalTrack)
 
+        self.PieceButton = QPushButton("Piece")
+        self.PieceButton.setIcon(
+            QIcon(os.path.join(self.srcpath, "resizeApi-1.png")))
+        self.PieceButton.setStyleSheet(self.buttonStyle_2)
+        self.PieceButton.clicked.connect(self.AddPiece)
+
         # button area
         ButtonAreaLayout.addStretch(2)
-        ButtonAreaLayout.addWidget(self.StartButton,  1)
+        ButtonAreaLayout.addWidget(self.StartButton, 1)
         ButtonAreaLayout.addWidget(self.TrackButton, 1)
         ButtonAreaLayout.addWidget(self.ManualButton, 1)
+        ButtonAreaLayout.addWidget(self.PieceButton, 1)
 
         WholeLCDLayout.addWidget(self.LCD)
         WholeLCDLayout.addLayout(ButtonAreaLayout)
@@ -327,12 +339,17 @@ class ClockStatics_V1(QWidget):
         if openfile_name[0].strip() != "":
             os.system(openfile_name[0].strip())
 
+    def AddPiece(self):
+        # 手动单独添加
+        self.mli = MultiInputDialog()
+        self.__WritePiece__(self.mli.GetPieceInfo())
+
     def __Writelog__(self):
         self.gap = self.StopTime - self.StartTime
         if int(self.gap.seconds) >= 2:
             text, ok = QInputDialog.getText(self, 'Track', 'What Did U DO?')
             if ok & (text.strip() != ""):
-                f = open(os.path.join(self.logpath, r"log.txt"),
+                f = open(os.path.join(self.logpath, r"log2.txt"),
                          'a+', encoding='UTF-8')
                 allLines = f.readlines()
                 item = datetime.strftime(self.StartTime, "%Y-%m-%d %H:%M:%S") + \
@@ -347,10 +364,140 @@ class ClockStatics_V1(QWidget):
                 self.StartTime = datetime.now()
                 self.StopTime = datetime.now()
 
+    def __WritePiece__(self, info):
+        if not isinstance(info, str):
+            return
+        elif len(info.strip()) < 10:
+            return
+        else:
+            try:
+                f = open(os.path.join(self.logpath, r"log2.txt"),
+                         'a+', encoding='UTF-8')
+                allLines = f.readlines()
+                allLines.append(info+"\n")
+                f.writelines(allLines)
+                f.close()
+            except:
+                pass
+
+
+class MultiInputDialog(QDialog):
+    timedateStyle_1 = ("QDateTimeEdit{border-radius:4px;font-size:16px;font-weight:bold;color:rgb(6, 75, 177);}"
+                       "QDateTimeEdit{border:2px solid rgb(189, 189, 189);}"
+                       "QDateTimeEdit{font-family:'Century'}")
+
+    lineEditStyle_1 = ("QLineEdit{border-radius:4px;font-size:16px;font-weight:bold;color:rgb(6, 75, 177);}"
+                       "QLineEdit{border:2px solid rgb(189, 189, 189);}"
+                       "QLineEdit{font-family:'Century'}")
+    srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
+
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Piece Info")
+        self.setWindowIcon(QIcon(os.path.join(self.srcpath, "记录-1.png")))
+
+        # protop info
+        self.start = datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M:%S")
+        self.finish = self.start
+        self.pieceInfo = ""
+
+        self.GetStart = QDateTimeEdit(
+            QDateTime.currentDateTime())  # 创建日期+时间的组件
+        self.GetStart.setDisplayFormat('yyyy-MM-dd hh:mm:ss')  # 显示样式
+        self.GetStart.setStyleSheet(self.timedateStyle_1)
+
+        self.GetFinish = QDateTimeEdit(
+            QDateTime.currentDateTime())  # 创建日期+时间的组件
+        self.GetFinish.setDisplayFormat('yyyy-MM-dd hh:mm:ss')  # 显示样式
+        self.GetFinish.setStyleSheet(self.timedateStyle_1)
+
+        # detail item
+        self.Detail = QLineEdit()
+        self.Detail.setStyleSheet(self.lineEditStyle_1)
+        # button area
+        buttonbox = QDialogButtonBox(self)
+        buttonbox.setOrientation(Qt.Horizontal)
+        buttonbox.setStandardButtons(
+            QDialogButtonBox.Cancel | QDialogButtonBox.Ok)
+        buttonbox.accepted.connect(self.isOk)
+        buttonbox.rejected.connect(self.isCancle)
+
+        # space item
+        spacerItem = QSpacerItem(
+            20, 20, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.bingoLabel = QLabel("Bingo")
+        self.bingoLabel.setVisible(False)
+
+        # frame layout
+        layout_2 = QVBoxLayout()
+
+        layout_2.addWidget(self.GetStart, 0)
+        layout_2.addWidget(self.GetFinish, 1)
+        layout_2.addWidget(self.Detail, 2)
+        layout_2.addItem(spacerItem)
+        layout_2.addWidget(self.bingoLabel, 3)
+        layout_2.addWidget(buttonbox, 4)
+
+        # layout
+        self.setLayout(layout_2)
+        self.show()
+
+    def isOk(self):
+        # set info piece
+        gap = datetime.strptime(self.GetFinish.text(), "%Y-%m-%d %H:%M:%S") - \
+            datetime.strptime(self.GetStart.text(), "%Y-%m-%d %H:%M:%S")
+        gap_m = abs(int(gap.seconds/60))
+        detail = self.Detail.text()
+        detail = detail.strip()
+        pieceInfo = self.GetStart.text()+"|"+self.GetFinish.text() + \
+            "|"+str(gap_m)+"|"+self.Detail.text()
+
+        if gap_m > 1:
+            self.pieceInfo = pieceInfo
+            # make it visiable
+            style = ("QLabel{font-size:16px;font-weight:bold;color:green;font-family:'Century'}"
+                     "QLabel{border-radius:4px;border:2px solid rgb(118,154,40);}"
+                     "QLabel{background-color: #ABABAB;}"
+                     "QLabel:title{text-align:center}")
+            self.bingoLabel.setStyleSheet(style)
+            self.bingoLabel.setVisible(True)
+        else:
+            self.pieceInfo = ""
+
+    def isCancle(self):
+        self.pieceInfo = ""
+
+    def closeEvent(self, event):
+        return
+        reply = QMessageBox.question(self, 'Close Message',
+                                     "Add to Log?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            if len(self.pieceInfo.strip()) == 0:
+
+                self.pieceInfo = ""
+            event.accept()
+        else:
+            event.ignore()
+
+    def GetPieceInfo(self):
+        return self.pieceInfo
+
 
 if __name__ == "__main__":
     import sys
-    app = QApplication(sys.argv)
-    form = ClockStatics_V1()
-    form.show()
-    app.exec_()
+    if 0 or 1:
+        app = QApplication(sys.argv)
+        if 1:
+            form = ClockStatics_V1()
+        else:
+            form = ClockStatics()
+        form.show()
+        app.exec_()
+    if 1 and 0:
+        app = QApplication(sys.argv)
+        dialog = MultiInputDialog()
+        if dialog.exec_():
+            hs = int(dialog.GetStart.text())
+            ls = int(dialog.GetFinish.text())
+            print(hs, ls)
