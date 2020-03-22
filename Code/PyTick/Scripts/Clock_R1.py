@@ -97,7 +97,7 @@ class ClockStatics_V1(QWidget):
         self.BaseTicker.start(1000)
 
         self.setLayout(WholeLCDLayout)
-        self.setMinimumWidth(500)
+        # self.setMinimumWidth(420)
 
     def PushLCD(self):
         # Start 👉 Stop(计时开始)

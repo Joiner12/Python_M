@@ -6,7 +6,7 @@
     [2]pie https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.pie.html
     [3]中文显示乱码https://www.jianshu.com/p/b5138e48fefa
     [4]embedin pyqt https://matplotlib.org/gallery/user_interfaces/embedding_in_qt_sgskip.html?highlight=pyqt
-
+    [5]https://www.learnpyqt.com/courses/graphics-plotting/plotting-matplotlib/
 '''
 
 from datetime import datetime
@@ -33,15 +33,15 @@ class LogMoudle(QWidget):
         self.__GenList__()
         fileflag = os.path.exists(logpath)
         self.setupUI()
-        self.StaticDrawPie()
+        # self.StaticDrawPie()
         self.time_01 = QTimer()
 
     def setupUI(self):
         mainlayout = QVBoxLayout()
-        self.staticPieCanvas = FigureCanvas(Figure(figsize=(5, 5)))
+        self.staticPieCanvas = FigureCanvas(Figure(figsize=(5, 5), dpi=100))
         self.danamicPieCanvas = FigureCanvas(Figure(figsize=(5, 5)))
         mainlayout.addWidget(self.staticPieCanvas)
-        self.button_1 = QPushButton("BUTTON")
+        self.button_1 = QPushButton("Draw")
         self.button_1.clicked.connect(self.StaticDrawPie)
         mainlayout.addWidget(self.button_1)
         self.setLayout(mainlayout)
@@ -85,6 +85,7 @@ class LogMoudle(QWidget):
             labels = ('1', '2', '3', '4')
             self.sPieDraw = self.staticPieCanvas.figure.subplots()
             self.sPieDraw.pie([1, 2, 3, 4], labels=labels)
+        self.staticPieCanvas.draw()
 
     def DynamicDrawPie(self):
         pass

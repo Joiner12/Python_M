@@ -40,35 +40,35 @@ class StackWindow(QWidget):
 
         # QListWidget样式
         self.selectArea = QListWidget()
-        self.selectArea.setIconSize(QSize(40, 40))
+        self.selectArea.setIconSize(QSize(40, 30))
         self.selectArea.setViewMode(QListView.ListMode)
         self.selectArea.setStyleSheet(self.selectAreaStyle)
         self.selectArea.setSpacing(20)
-        self.selectArea.setFixedWidth(180)
+        self.selectArea.setFixedWidth(130)
 
         bo = QListWidgetItem('DC')
         self.selectArea.insertItem(0, bo)
         bo.setTextAlignment(Qt.AlignCenter)
         bo.setIcon(QIcon(os.path.join(self.srcpath, r'I-1.ico')))
-        bo.setSizeHint(QSize(40, 40))
+        bo.setSizeHint(QSize(40, 30))
 
         ser_1 = QListWidgetItem('AN')
         self.selectArea.insertItem(1, ser_1)
         ser_1.setTextAlignment(Qt.AlignCenter)
         ser_1.setIcon(QIcon(os.path.join(self.srcpath, r'love.png')))
-        ser_1.setSizeHint(QSize(40, 40))
+        ser_1.setSizeHint(QSize(40, 30))
 
         ser_2 = QListWidgetItem('MM')
         ser_2.setTextAlignment(Qt.AlignCenter)
         ser_2.setIcon(QIcon(os.path.join(self.srcpath, r'horse.png')))
         self.selectArea.insertItem(2, ser_2)
-        ser_2.setSizeHint(QSize(40, 40))
+        ser_2.setSizeHint(QSize(40, 30))
 
         ser_3 = QListWidgetItem('MH')
         ser_3.setTextAlignment(Qt.AlignCenter)
         ser_3.setIcon(QIcon(os.path.join(self.srcpath, r'flower.png')))
         self.selectArea.insertItem(3, ser_3)
-        ser_3.setSizeHint(QSize(40, 40))
+        ser_3.setSizeHint(QSize(40, 30))
         self.stackArea = QStackedWidget(self)
 
         self.stack1 = QWidget()
@@ -107,7 +107,7 @@ class StackWindow(QWidget):
         # 绑定stack
         self.selectArea.currentRowChanged.connect(self.display)
         self.setLayout(mainWidget)
-        self.setGeometry(200, 200, 600/0.618, 600)
+        self.setGeometry(200, 200, 400/0.618, 400)
 
     # 时钟及相应界面
     def stack1UI(self):
@@ -115,14 +115,14 @@ class StackWindow(QWidget):
         self.ticker = ClockStatics_V1()
         sr = '''
 
-        你想要的幸福 其实不在远处
+        你寻求的幸福 其实不在远处
         
         它就是你脚下 一直走的路
         
         '''
         info = QLabel(sr)
         info.setStyleSheet(
-            "QLabel{color:#161616;font-size:25px;font-weight:bold;font-family:Consoles;}")
+            "QLabel{color:#161616;font-size:20px;font-weight:bold;font-family:Consoles;}")
         info.setAlignment(Qt.AlignCenter)
 
         layout.addWidget(self.ticker)

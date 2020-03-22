@@ -34,3 +34,6 @@ Code/PyTick/Scripts/__pycache__
 *.mp3
 Code/FeelUOwn/
 Code/PyTick/Logs
+
+# reading file
+Code/PyTick/Scripts/Reading.py
