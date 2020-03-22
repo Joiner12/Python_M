@@ -81,7 +81,7 @@ class ClockStatics_V1(QWidget):
                               "QPushButton{border:2px solid rgb(118,154,40);}"
                               "QPushButton:hover{background:rgb(118,154,40);}")
         # 按钮样式-2 enable = False
-        self.buttonStyle_2 = ("QPushButton{border-radius:4px;font-size:16px;font-weight:bold;color:rgb(2, 9, 34);}"
+        self.buttonStyle_2 = ("QPushButton{border-radius:4px;font-size:16px;font-weight:bold;color:#ff5500;}"
                               "QPushButton{border:2px solid rgb(118,154,40);}"
                               "QPushButton:hover{background:rgb(118,154,40);}")
 
@@ -100,13 +100,13 @@ class ClockStatics_V1(QWidget):
         self.ManualButton = QPushButton("LOGFL")
         self.ManualButton.setIcon(
             QIcon(os.path.join(self.srcpath, "打开-1.png")))
-        self.ManualButton.setStyleSheet(self.buttonStyle_2)
+        self.ManualButton.setStyleSheet(self.buttonStyle_1)
         self.ManualButton.clicked.connect(self.ManmalTrack)
 
         self.PieceButton = QPushButton("PIECE")
         self.PieceButton.setIcon(
             QIcon(os.path.join(self.srcpath, "文件-1.png")))
-        self.PieceButton.setStyleSheet(self.buttonStyle_2)
+        self.PieceButton.setStyleSheet(self.buttonStyle_1)
         self.PieceButton.clicked.connect(self.AddPiece)
 
         # button area
@@ -145,6 +145,7 @@ class ClockStatics_V1(QWidget):
             self.StartButton.setText("START")
             self.StartButton.setIcon(
                 QIcon(os.path.join(self.srcpath, "启动-2.png")))
+
             self.TrackButton.setEnabled(True)
             self.LCD.setStyleSheet(
                 "QLCDNumber{border:2px solidgreen;color:rgb(102, 212, 209 );}")
@@ -152,9 +153,12 @@ class ClockStatics_V1(QWidget):
             # 更新时间
             self.StopTime = datetime.now()
             self.gap = self.StopTime - self.StartTime
+            if self.gap.seconds/60 > 1:
+                self.TrackButton.setStyleSheet(self.buttonStyle_2)
 
     def TrackLCD(self):
         # 有效记录
+        self.TrackButton.setStyleSheet(self.buttonStyle_1)
         if int(self.gap.seconds) >= 0:
             self.gap = datetime.now() - datetime.now()
             self.__Writelog__()

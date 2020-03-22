@@ -33,7 +33,6 @@ class StackWindow(QWidget):
         "QListWidget{background-color:transparent;}")
 
     def __init__(self):
-        print('constructor')
         super().__init__()
         self.setupUi()
 
@@ -127,21 +126,17 @@ class StackWindow(QWidget):
         layout = QVBoxLayout()
         self.ticker = ClockStatics_V1()
         sr = '''
-        Stars shining bright above you
-        星儿在你头顶闪耀
-        Night breezes seem to whisper "I love you"
-        夜晚的微风似乎轻轻地在说 我爱你
-        Birds singing in the sycamore tree
-        鸟儿在梧桐树里歌唱着
-        Dream a little dream of me
-        愿你的梦里有我
-        Say "Night-ie night" and kiss me
-        说晚安吧，然后亲吻我
-            '''
+
+        你想要的幸福 其实不在远处
+        
+        它就是你脚下 一直走的路
+        
+        '''
         info = QLabel(sr)
         info.setStyleSheet(
-            "QLabel{color:#161616;font-size:15px;font-family:Consoles;}")
-        info.setAlignment(Qt.AlignLeft)
+            "QLabel{color:#161616;font-size:25px;font-weight:bold;font-family:Consoles;}")
+        info.setAlignment(Qt.AlignCenter)
+
         layout.addWidget(self.ticker)
         layout.addWidget(info)
         self.stack1.setLayout(layout)
@@ -175,7 +170,7 @@ class StackWindow(QWidget):
 
     def paintEvent(self, event):
         bgQp = QPainter(self)
-        mainBackGround = os.path.join(self.srcpath, 'Background-5.jpg')
+        mainBackGround = os.path.join(self.srcpath, 'Background-2.jpg')
         bg = QPixmap(mainBackGround)
         bgQp.drawPixmap(self.rect(), bg)
 

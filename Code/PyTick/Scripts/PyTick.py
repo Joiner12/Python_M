@@ -11,6 +11,8 @@
     [7] PyQt中QLabel背景与字体的一些设置 https://blog.csdn.net/jiuzuidongpo/article/details/45485127
     [8] QPalette https://doc.qt.io/qtforpython/PySide2/QtGui/QPalette.html
     [9] 无边框 https://www.cnblogs.com/jyroy/p/9461317.html
+    [10]Layerout https://www.learnpyqt.com/courses/start/layouts/
+    [11]QListWidget与QTableWidget的使用以及样式设置https://www.cnblogs.com/findumars/p/5655015.html
 '''
 
 import sys
@@ -19,15 +21,18 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from Clock_R1 import ClockStatics_V1
-from SmokeArea_R1 import SmokeArea
 from ScrollText_R1 import SrollTxt
 # from StaticArea_R2 import StaticsArea, StaticsArea_1
 # from KeyMouse_R1 import KeyMouse
 
 
 class StackWindow(QWidget):
+    selectAreaStyle = (
+        "QListWidget{font-size:16px;font-weight:bold;color:rgb(67, 9, 34);}"
+        "QListWidget{border:4px;border-radius:4px;}"
+        "QListWidget{background-color:transparent;}")
+
     def __init__(self):
-        print('constructor')
         super().__init__()
         self.setupUi()
 
@@ -43,45 +48,40 @@ class StackWindow(QWidget):
         self.setWindowTitle('ITool')
         self.setWindowIcon(QIcon(os.path.join(self.srcpath, r'Deer.ico')))
 
-        # 主窗垂直布局(3/3) +  分割
         mainWidget = QVBoxLayout()
 
         # QListWidget样式
         self.selectArea = QListWidget()
-        self.selectArea.setIconSize(QSize(30, 40))
+        self.selectArea.setIconSize(QSize(40, 40))
         self.selectArea.setViewMode(QListView.ListMode)
-        selectAreaStyle = "border: 1px; background-color: transparent"
-        self.selectArea.setStyleSheet(selectAreaStyle)
-        self.selectArea.Font = QFont()
-        self.selectArea.Font.setPointSize(10)
-        self.selectArea.Font.setWeight(60)
-        self.selectArea.setFont(self.selectArea.Font)
+        self.selectArea.setStyleSheet(self.selectAreaStyle)
+        self.selectArea.setSpacing(20)
+        self.selectArea.setFixedWidth(180)
 
-        bo = QListWidgetItem('Daily Count')
+        bo = QListWidgetItem('DC')
         self.selectArea.insertItem(0, bo)
         bo.setTextAlignment(Qt.AlignCenter)
         bo.setIcon(QIcon(os.path.join(self.srcpath, r'I-1.ico')))
-        bo.setSizeHint(QSize(60, 40))
+        bo.setSizeHint(QSize(40, 40))
 
-        ser_1 = QListWidgetItem('爱你')
+        ser_1 = QListWidgetItem('AN')
         self.selectArea.insertItem(1, ser_1)
         ser_1.setTextAlignment(Qt.AlignCenter)
         ser_1.setIcon(QIcon(os.path.join(self.srcpath, r'love.png')))
-        ser_1.setSizeHint(QSize(60, 40))
+        ser_1.setSizeHint(QSize(40, 40))
 
         ser_2 = QListWidgetItem('MM')
         ser_2.setTextAlignment(Qt.AlignCenter)
         ser_2.setIcon(QIcon(os.path.join(self.srcpath, r'horse.png')))
         self.selectArea.insertItem(2, ser_2)
-        ser_2.setSizeHint(QSize(60, 40))
+        ser_2.setSizeHint(QSize(40, 40))
 
-        ser_3 = QListWidgetItem('麻花儿')
+        ser_3 = QListWidgetItem('MH')
         ser_3.setTextAlignment(Qt.AlignCenter)
         ser_3.setIcon(QIcon(os.path.join(self.srcpath, r'flower.png')))
         self.selectArea.insertItem(3, ser_3)
-        ser_3.setSizeHint(QSize(60, 40))
+        ser_3.setSizeHint(QSize(40, 40))
         self.stackArea = QStackedWidget(self)
-        self.selectArea.setFixedWidth(150)
 
         self.stack1 = QWidget()
         self.stack2 = QWidget()
@@ -119,33 +119,29 @@ class StackWindow(QWidget):
         # 绑定stack
         self.selectArea.currentRowChanged.connect(self.display)
         self.setLayout(mainWidget)
-        self.setGeometry(200, 200, 400/0.618, 400)
+        self.setGeometry(200, 200, 600/0.618, 600)
 
     # 时钟及相应界面
     def stack1UI(self):
         layout = QVBoxLayout()
         self.ticker = ClockStatics_V1()
         sr = '''
-        Stars shining bright above you
-        星儿在你头顶闪耀
-        Night breezes seem to whisper "I love you"
-        夜晚的微风似乎轻轻地在说 我爱你
-        Birds singing in the sycamore tree
-        鸟儿在梧桐树里歌唱着
-        Dream a little dream of me
-        愿你的梦里有我
-        Say "Night-ie night" and kiss me
-        说晚安吧，然后亲吻我
-            '''
+
+        你想要的幸福 其实不在远处
+        
+        它就是你脚下 一直走的路
+        
+        '''
         info = QLabel(sr)
         info.setStyleSheet(
-            "QLabel{color:rgb(216,245,255,250);font-size:15px;font-family:Consoles;}")
-        info.setAlignment(Qt.AlignLeft)
+            "QLabel{color:#161616;font-size:25px;font-weight:bold;font-family:Consoles;}")
+        info.setAlignment(Qt.AlignCenter)
+
         layout.addWidget(self.ticker)
         layout.addWidget(info)
         self.stack1.setLayout(layout)
-        layout.setStretch(0, 3)
-        layout.setStretch(1, 7)
+        layout.setStretch(0, 4)
+        layout.setStretch(1, 6)
 
     def stack2UI(self):
          # 水平布局
@@ -174,7 +170,7 @@ class StackWindow(QWidget):
 
     def paintEvent(self, event):
         bgQp = QPainter(self)
-        mainBackGround = os.path.join(self.srcpath, 'bg-2.jpg')
+        mainBackGround = os.path.join(self.srcpath, 'Background-2.jpg')
         bg = QPixmap(mainBackGround)
         bgQp.drawPixmap(self.rect(), bg)
 

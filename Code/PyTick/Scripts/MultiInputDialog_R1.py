@@ -93,6 +93,7 @@ class MultiInputDialog(QDialog):
 
         # layout
         self.setLayout(layout_2)
+        self.setFixedWidth(400)
 
     def isOk(self):
         # set info piece
