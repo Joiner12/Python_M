@@ -18,7 +18,7 @@ import os
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
-from Clock_R1 import ClockStatics
+from Clock_R1 import ClockStatics_V1
 from SmokeArea_R1 import SmokeArea
 from ScrollText_R1 import SrollTxt
 # from StaticArea_R2 import StaticsArea, StaticsArea_1
@@ -124,7 +124,7 @@ class StackWindow(QWidget):
     # 时钟及相应界面
     def stack1UI(self):
         layout = QVBoxLayout()
-        self.ticker = ClockStatics()
+        self.ticker = ClockStatics_V1()
         sr = '''
         Stars shining bright above you
         星儿在你头顶闪耀
