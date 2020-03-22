@@ -22,8 +22,8 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from Clock_R1 import ClockStatics_V1
 from ScrollText_R1 import SrollTxt
-# from StaticArea_R2 import StaticsArea, StaticsArea_1
-# from KeyMouse_R1 import KeyMouse
+# from StaticArea_R1 import StaticsArea, StaticsArea_1
+from AnimatLog_R1 import LogMoudle
 
 
 class StackWindow(QWidget):
@@ -146,8 +146,8 @@ class StackWindow(QWidget):
     def stack2UI(self):
          # 水平布局
         layout = QHBoxLayout()
-        # figUI = StaticsArea_1()
-        # layout.addWidget(figUI)
+        figUI = LogMoudle(r'D:\Codes\Python_M\Code\PyTick\Logs\log2.txt')
+        layout.addWidget(figUI)
         self.stack2.setLayout(layout)
 
     def stack3UI(self):

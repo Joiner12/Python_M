@@ -5,6 +5,7 @@
     [1]nested pie chartshttps://matplotlib.org/3.2.0/gallery/pie_and_polar_charts/nested_pie.html#sphx-glr-gallery-pie-and-polar-charts-nested-pie-py
     [2]pie https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.pie.html
     [3]中文显示乱码https://www.jianshu.com/p/b5138e48fefa
+    [4]embedin pyqt https://matplotlib.org/gallery/user_interfaces/embedding_in_qt_sgskip.html?highlight=pyqt
 
 '''
 
@@ -34,15 +35,15 @@ class LogMoudle(QWidget):
         self.setupUI()
         self.StaticDrawPie()
         self.time_01 = QTimer()
-        self.show()
 
     def setupUI(self):
         mainlayout = QVBoxLayout()
         self.staticPieCanvas = FigureCanvas(Figure(figsize=(5, 5)))
         self.danamicPieCanvas = FigureCanvas(Figure(figsize=(5, 5)))
         mainlayout.addWidget(self.staticPieCanvas)
-        mainlayout.addWidget(self.danamicPieCanvas)
-        mainlayout.addWidget(QPushButton("BUTTON"))
+        self.button_1 = QPushButton("BUTTON")
+        self.button_1.clicked.connect(self.StaticDrawPie)
+        mainlayout.addWidget(self.button_1)
         self.setLayout(mainlayout)
 
     def __GenList__(self):
@@ -92,5 +93,6 @@ class LogMoudle(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     ex = LogMoudle(r'D:\Codes\Python_M\Code\PyTick\Logs\log2.txt')
+    ex.show()
     sys.exit(app.exec_())
     # pyqtgraph.examples.run()
