@@ -10,6 +10,7 @@
 '''
 
 from datetime import datetime
+from numpy import random
 import os
 import sys
 from PyQt5.QtGui import *  # (the example applies equally well to PySide)
@@ -33,7 +34,7 @@ class LogMoudle(QWidget):
         self.__GenList__()
         fileflag = os.path.exists(logpath)
         self.setupUI()
-        # self.StaticDrawPie()
+        self.StaticDrawPie()
         self.time_01 = QTimer()
 
     def setupUI(self):
@@ -43,7 +44,7 @@ class LogMoudle(QWidget):
         mainlayout.addWidget(self.staticPieCanvas)
         self.button_1 = QPushButton("Draw")
         self.button_1.clicked.connect(self.StaticDrawPie)
-        mainlayout.addWidget(self.button_1)
+        # mainlayout.addWidget(self.button_1)
         self.setLayout(mainlayout)
 
     def __GenList__(self):
@@ -75,7 +76,8 @@ class LogMoudle(QWidget):
             for i in self.logDetailList:
                 dayGap.append(i[2])
                 labels.append(i[3])
-            dayGap = dayGap[0:10]
+            # dayGap = dayGap[0:10]
+            dayGap = random.randint(1, 10, size=10)
             labels = labels[0:10]
             self.sPieDraw.pie(dayGap, labels=labels, radius=1, wedgeprops=dict(
                 width=0.4, edgecolor='w'))
