@@ -26,7 +26,6 @@ Code/Scripts/Draft.py
 
 # *.exe
 
-!Code/PyTick/Logs
 !Code/PyTick/Src
 Code/PyTick/Exe/*.exe
 
@@ -34,3 +33,4 @@ Code/PyTick/Scripts/__pycache__
 
 *.mp3
 Code/FeelUOwn/
+Code/PyTick/Logs
