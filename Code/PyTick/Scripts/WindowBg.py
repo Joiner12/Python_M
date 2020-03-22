@@ -1,12 +1,6 @@
 # -*- coding:utf-8 -*-
 '''
     设置mainwindow背景图
-
-    Reference:
-    [1]<修改背景图> https://blog.csdn.net/jia666666/article/details/81874045
-    [2]<通过PYQT调整>https://blog.csdn.net/qq_41784559/article/details/88601084
-    [3]<路径问题>https://www.cnblogs.com/wangyanyan/p/7440685.html
-    [4]<QPainter event>http://zetcode.com/gui/pyqt5/painting/
 '''
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow

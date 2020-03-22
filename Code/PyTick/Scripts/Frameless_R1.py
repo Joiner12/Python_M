@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
 '''
-    Reference:
-    [1]PyQt：无边框自定义标题栏及最大化最小化窗体大小调整 https://www.cnblogs.com/jyroy/p/9461317.html
+    无边框布局
 '''
 import sys
 from PyQt5.QtCore import QSize

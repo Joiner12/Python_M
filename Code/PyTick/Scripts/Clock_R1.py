@@ -1,34 +1,6 @@
 # -*- coding:utf-8 -*-
 '''
     时钟功能区
-
-    ref:
-    [1]Qt 之 QLCDNumber https://blog.csdn.net/liang19890820/article/details/50917205
-    [2]qLCDnumber https://www.riverbankcomputing.com/static/Docs/PyQt4/qLCDnumber.html
-    [3]pyqt实现时钟效果 https://www.pythontab.com/html/2013/pythongui_0703/474.html
-    [4]pyqt实现简易时钟 https://blog.csdn.net/Kprogram/article/details/83623079
-    [5]PyQt5基本控件详解之QPushButton（六）https://blog.csdn.net/jia666666/article/details/81513443
-    [6]计算时间差 https://www.cnblogs.com/SophiaTang/archive/2012/03/25/2417031.html
-    [7]python--利用datetime模块计算时间差https://blog.csdn.net/wo1182929447/article/details/77841529?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task
-    [8]python datetime处理时间 https://www.cnblogs.com/lhj588/archive/2012/04/23/2466653.html
-    [9]PyQt5布局管理之QSplitter（六）https://blog.csdn.net/jia666666/article/details/81705675
-    [10]PyQt的Layout的比例化分块 https://blog.csdn.net/weixin_33995481/article/details/86275539
-    [11]QSplitter分割界面 初始比例https://blog.csdn.net/imxiangzi/article/details/52584599
-    [12]setStyleSheet 一些QSS设置的集合https://www.cnblogs.com/xj626852095/p/3648112.html
-    [13]QPushButton 按钮设置大小颜色以及字体的大小https://blog.csdn.net/qq_44920726/article/details/102575334
-    [14]qss样式表之QPushButton https://blog.csdn.net/aiwangtingyun/article/details/94462976
-    [15]QLCDNumber使用https://blog.csdn.net/xuancailinggan/article/details/77487705
-    [16]PyQt5系列教程（8）：标准输入对话框https://zhuanlan.zhihu.com/p/29101077
-    [17]Python读写文本三种方式 https://zhuanlan.zhihu.com/p/21347291
-    [18]Python读写txt文本文件 https://www.cnblogs.com/hackpig/p/8215786.html
-    [19]python报错 TypeError: bad operand type for unary +: 'str' 的解决办法
-     https://stackoverflow.com/questions/29880136/python-2-7-typeerror-bad-operand-type-for-unary-str
-    [20]PyQt信号与槽之多窗口数据传递（七）https://blog.csdn.net/jia666666/article/details/81781697
-    [21]打开文件https://blog.csdn.net/humanking7/article/details/80546728
-    [22]python运行其他程序方式https://blog.csdn.net/Jerry_1126/article/details/46584179
-    [23]判断文件是否存在https://blog.csdn.net/samxx8/article/details/6284960
-    [24]os.path https://www.runoob.com/python/python-os-path.html
-
 '''
 
 import sys

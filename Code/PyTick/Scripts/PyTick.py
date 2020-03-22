@@ -1,18 +1,7 @@
 # -*- coding:utf-8 -*-
 '''
-    Ref:
-    [1] QListWidget 设置样式 https://www.bbsmax.com/A/KE5QOlL0zL/
-    [2] 设置QListWidget透明背景 https://blog.csdn.net/liyan728/article/details/8955634
-    [3] QSplitter 分割线 https://blog.csdn.net/skykingf/article/details/8247593
-    [4] QListWidgetItem带上颜色的问题 https://www.cnblogs.com/hushaojun/p/4632843.html
-    [5] QT控制选中item的文字颜色(HighlightedText) 和 QT表格交替背景色
-    https://blog.csdn.net/aisq2008/article/details/6393874?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task
-    [6] PyQt - QLabel Widget https://www.tutorialspoint.com/pyqt/pyqt_qlabel_widget.htm
-    [7] PyQt中QLabel背景与字体的一些设置 https://blog.csdn.net/jiuzuidongpo/article/details/45485127
-    [8] QPalette https://doc.qt.io/qtforpython/PySide2/QtGui/QPalette.html
-    [9] 无边框 https://www.cnblogs.com/jyroy/p/9461317.html
-    [10]Layerout https://www.learnpyqt.com/courses/start/layouts/
-    [11]QListWidget与QTableWidget的使用以及样式设置https://www.cnblogs.com/findumars/p/5655015.html
+    Release Version
+    2020/3/22
 '''
 
 import sys

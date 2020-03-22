@@ -8,6 +8,7 @@
 
 '''
 from types import MethodType
+import numpy as np
 
 
 def Variables():
@@ -109,14 +110,19 @@ def TestMethod():
     ai.SetAge(3)
 
 
+def SecondArray():
+    a = [0 for i in range(3)]
+    b = [[a] for i in range(3)]
+    a = np.linspace(0, 11, 12, dtype=int)
+    a_1 = a.reshape(2, 6)
+    debug_a = 0
+
+    # 利用句柄进行操作
+    b_1 = [[1, 2, 3], [5, 3], [7, 6, 3, 2]]
+    for i in b_1:
+        for j in i:
+            print(j)
+
+
 if __name__ == "__main__":
-    # Variables()
-    # HandleList()
-    # for i in range(1, 4):
-    #     HandleInput()
-    # HandleLoop()
-    # HandleDict()
-    # HandleSet()
-    # HandleCheckPara('1')
-    # HandleCheckPara(1)
-    TestMethod()
+    SecondArray()
