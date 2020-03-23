@@ -125,4 +125,8 @@ def SecondArray():
 
 
 if __name__ == "__main__":
-    SecondArray()
+    # SecondArray()
+    a = 3
+    b = a**2
+    c = a*2
+    debug_a = 0
