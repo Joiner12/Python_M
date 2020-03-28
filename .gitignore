@@ -37,3 +37,7 @@ Code/PyTick/Logs
 
 # reading file
 Code/PyTick/Scripts/Reading.py
+
+Code/PyTick/Scripts/Draft.py
+
+Code/Scripts/__pycache__/
