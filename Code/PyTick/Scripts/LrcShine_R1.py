@@ -88,7 +88,17 @@ class SearchBar(QWidget):
         self.setGeometry(20, 50, 400, 300)
 
     def enterPress(self):
-        self.__SearchLrc__()
+        # self.__SearchLrc__()
+        getStr = list()
+        tempstr = self.editLine.text()
+        for i in range(int(len(tempstr)/20)):
+            getStr.append(tempstr[i*20:int((i+1)*20-1)])
+        getStr.append(tempstr[-1*int(len(tempstr) % 20)-1:])
+
+        showtext = ""
+        for j in getStr:
+            showtext += '''<p style = "color:#7a8588;font-size:16PX;" >''' + j + ''' </p >'''
+        self.__updateLabel__(showtext)
 
     def resetButton(self):
         你的答案 = '''
@@ -111,7 +121,7 @@ class SearchBar(QWidget):
             接受所有的嘲讽
             </p >
             <p style = "color:#7a8588;font-size:12PX;" >
-            迎着风 拥抱彩虹 
+            迎着风 拥抱彩虹
             </p >
             <p style = "color:#7a8588;font-size:12PX;" >
             勇敢的向前走
@@ -179,6 +189,9 @@ class SearchBar(QWidget):
                 i_temp = piece_pattern.sub(" ", i)
                 i_temp = i_temp.strip()
                 words.append(i_temp)
+            if len(name) > 15 or len(words[0]) > 25 or len(words[1]) > 25:
+                return
+            # error length string check
             name = "<h1 style='color:#1d8388'>" + name + "</h1>"
             word_1 = '''<p style="color:#ff007f;font-size:16px;font-weight:bold">''' + \
                 words[0]+'''</p>'''

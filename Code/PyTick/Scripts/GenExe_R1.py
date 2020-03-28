@@ -8,6 +8,7 @@ import os
 
 
 def GenerateExe(startOrnot):
+    os.system("chcp 65001")
     # 开始
     if startOrnot:
         ExeNumber = 1
