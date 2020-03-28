@@ -12,6 +12,7 @@ from Clock_R1 import ClockStatics_V1
 from ScrollText_R1 import SrollTxt
 # from StaticArea_R1 import StaticsArea, StaticsArea_1
 from AnimatLog_R1 import LogMoudle
+from LrcShine_R1 import SearchBar
 
 
 class StackWindow(QWidget):
@@ -134,16 +135,14 @@ class StackWindow(QWidget):
     def stack2UI(self):
          # 水平布局
         layout = QHBoxLayout()
-        figUI = LogMoudle(r'D:\Codes\Python_M\Code\PyTick\Logs\log2.txt')
+        figUI = LogMoudle(r'D:\Codes\Python_M\Code\PyTick\Logs\log.txt')
         layout.addWidget(figUI)
         self.stack2.setLayout(layout)
 
     def stack3UI(self):
-        layout = QHBoxLayout()
-        # 添加控件到布局中
-        layout.addWidget(QLabel('科目'))
-        layout.addWidget(QCheckBox('物理'))
-        layout.addWidget(QCheckBox('高数'))
+        layout = QVBoxLayout()
+        self.lrcwarpper = SearchBar()
+        layout.addWidget(self.lrcwarpper)
         self.stack3.setLayout(layout)
 
     def stack4UI(self):
