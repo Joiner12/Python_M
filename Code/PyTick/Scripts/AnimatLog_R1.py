@@ -118,11 +118,11 @@ class LogMoudle(QWidget):
                     things.append(i[3])
                     duration.append(int(i[2]))
                     whenDo.append(i[0].strftime("%H:%M") +
-                                  i[1].strftime("%H:%M"))
+                                  "-"+i[1].strftime("%H:%M"))
 
-                self.sPieDraw.pie(duration, labels=things, radius=1, wedgeprops=dict(
+                self.sPieDraw.pie(duration, labels=whenDo, radius=1, wedgeprops=dict(
                     width=0.4, edgecolor='w'))
-                self.sPieDraw.pie(duration, counterclock=False, radius=1-0.3, wedgeprops=dict(
+                self.sPieDraw.pie(duration, labels=things, counterclock=False, radius=1-0.3, wedgeprops=dict(
                     width=0.3, edgecolor='w'))
         self.staticPieCanvas.figure.canvas.draw()
 

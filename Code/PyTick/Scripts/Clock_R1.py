@@ -154,7 +154,6 @@ class ClockStatics_V1(QWidget):
             self, '打开日志', '', 'Text Files (*.txt)')
         if openfile_name[0].strip() != "":
             startNotepad = "notepad " + openfile_name[0].strip()
-            print(startNotepad)
             try:
                 os.system(openfile_name[0].strip())
             except:
