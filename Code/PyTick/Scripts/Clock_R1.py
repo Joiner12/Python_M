@@ -153,7 +153,12 @@ class ClockStatics_V1(QWidget):
         openfile_name = QFileDialog.getOpenFileName(
             self, '打开日志', '', 'Text Files (*.txt)')
         if openfile_name[0].strip() != "":
-            os.system(openfile_name[0].strip())
+            startNotepad = "notepad " + openfile_name[0].strip()
+            print(startNotepad)
+            try:
+                os.system(openfile_name[0].strip())
+            except:
+                pass
 
     def AddPiece(self):
         # 手动单独添加
