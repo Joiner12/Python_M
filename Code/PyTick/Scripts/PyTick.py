@@ -108,7 +108,8 @@ class StackWindow(QWidget):
         # 绑定stack
         self.selectArea.currentRowChanged.connect(self.display)
         self.setLayout(mainWidget)
-        self.setGeometry(200, 200, 400/0.618, 400)
+        self.setFixedSize(400/0.618, 400)
+        self.move(200, 200)
 
     # 时钟及相应界面
     def stack1UI(self):
