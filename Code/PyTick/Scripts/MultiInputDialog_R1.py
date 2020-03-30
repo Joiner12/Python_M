@@ -20,6 +20,7 @@ from datetime import datetime
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
+import PathManager as pathm
 
 
 class MultiInputDialog(QDialog):
@@ -30,7 +31,7 @@ class MultiInputDialog(QDialog):
     lineEditStyle_1 = ("QLineEdit{border-radius:4px;font-size:16px;font-weight:bold;color:rgb(6, 75, 177);}"
                        "QLineEdit{border:2px solid rgb(189, 189, 189);}"
                        "QLineEdit{font-family:'Century'}")
-    srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
+    srcpath = pathm.GetUiPath()
     signal_PieceInfo = pyqtSignal(str)
 
     def __init__(self, parent=None):

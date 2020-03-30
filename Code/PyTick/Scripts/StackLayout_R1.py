@@ -11,6 +11,7 @@ from PyQt5.QtWidgets import *
 from Clock_R1 import ClockStatics
 from SmokeArea_R1 import SmokeArea
 from ScrollText_R1 import SrollTxt
+import PathManager as pathm
 
 
 class StackWindow(QWidget):
@@ -26,8 +27,8 @@ class StackWindow(QWidget):
                 os.path.dirname(os.path.dirname(__file__)), "Src")
             self.logpath = os.path.join(os.path.dirname(
                 os.path.dirname(__file__)), r"Log")
-        self.srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
-        self.logpath = r"D:\Codes\Python_M\Code\PyTick\Logs"
+        self.srcpath = pathm.GetUiPath()
+        self.logpath = pathm.GetLogPath()
         self.setWindowTitle('ITool')
         self.setWindowIcon(QIcon(os.path.join(self.srcpath, r'Deer.ico')))
         # self.setWindowOpacity(0.9)  # 边框透明

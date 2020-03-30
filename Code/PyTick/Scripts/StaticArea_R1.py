@@ -24,6 +24,7 @@ from PyQt5.QtWidgets import *
 # matlab lib
 import matplotlib
 matplotlib.use('Qt5Agg')
+import PathManager as pathm
 
 # 将pyplot嵌入到GUI中
 
@@ -32,13 +33,9 @@ class StaticsArea(QWidget):
     def __init__(self):
         super().__init__()
         # 环境配置
-        if False:
-            self.srcpath = r"D:\Python_M\Code\PyTick\Src"
-            self.logpath = r"D:\Python_M\Code\PyTick\Log"
-        else:
-            self.srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
-            self.logpath = r"D:\Codes\Python_M\Code\PyTick\Logs"
-
+        self.srcpath = pathm.GetUiPath()
+        self.logpath = pathm.GetLogPath()
+    
         self.drawCnt = 0
         # 初步提取之后的日志
 

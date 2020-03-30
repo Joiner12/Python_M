@@ -14,6 +14,7 @@ import os
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
+import PathManager as pathm
 
 
 class SrollTxt(QWidget):
@@ -64,7 +65,7 @@ class SrollTxt(QWidget):
         self.pieceIndex = self.pieceIndex + 1
 
     def __ReadLog__(self):
-        f = open(r"D:\Codes\Python_M\Code\PyTick\Logs\log.txt",
+        f = open(os.path.join(pathm.GetLogPath(), "log.txt"),
                  'r', encoding='UTF-8')
         allLines = f.readlines()
         self.logdetail = allLines

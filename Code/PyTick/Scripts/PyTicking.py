@@ -13,6 +13,7 @@ from ScrollText_R1 import SrollTxt
 # from StaticArea_R1 import StaticsArea, StaticsArea_1
 from AnimatLog_R1 import LogMoudle
 from LrcShine_R1 import SearchBar
+import PathManager as pathm
 
 
 class StackWindow(QWidget):
@@ -32,8 +33,8 @@ class StackWindow(QWidget):
                 os.path.dirname(os.path.dirname(__file__)), "Src")
             self.logpath = os.path.join(os.path.dirname(
                 os.path.dirname(__file__)), r"Log")
-        self.srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
-        self.logpath = r"D:\Codes\Python_M\Code\PyTick\Logs"
+        self.srcpath = pathm.GetUiPath()
+        self.logpath = pathm.GetLogPath()
         self.setWindowTitle('ITool')
         self.setWindowIcon(QIcon(os.path.join(self.srcpath, r'Deer.ico')))
 
@@ -50,24 +51,24 @@ class StackWindow(QWidget):
         bo = QListWidgetItem('DC')
         self.selectArea.insertItem(0, bo)
         bo.setTextAlignment(Qt.AlignCenter)
-        bo.setIcon(QIcon(os.path.join(self.srcpath, r'I-1.ico')))
+        # bo.setIcon(QIcon(os.path.join(self.srcpath, r'I-1.ico')))
         bo.setSizeHint(QSize(40, 30))
 
         ser_1 = QListWidgetItem('AN')
         self.selectArea.insertItem(1, ser_1)
         ser_1.setTextAlignment(Qt.AlignCenter)
-        ser_1.setIcon(QIcon(os.path.join(self.srcpath, r'love.png')))
+        # ser_1.setIcon(QIcon(os.path.join(self.srcpath, r'love.png')))
         ser_1.setSizeHint(QSize(40, 30))
 
         ser_2 = QListWidgetItem('MM')
         ser_2.setTextAlignment(Qt.AlignCenter)
-        ser_2.setIcon(QIcon(os.path.join(self.srcpath, r'horse.png')))
+        # ser_2.setIcon(QIcon(os.path.join(self.srcpath, r'horse.png')))
         self.selectArea.insertItem(2, ser_2)
         ser_2.setSizeHint(QSize(40, 30))
 
         ser_3 = QListWidgetItem('MH')
         ser_3.setTextAlignment(Qt.AlignCenter)
-        ser_3.setIcon(QIcon(os.path.join(self.srcpath, r'flower.png')))
+        # ser_3.setIcon(QIcon(os.path.join(self.srcpath, r'flower.png')))
         self.selectArea.insertItem(3, ser_3)
         ser_3.setSizeHint(QSize(40, 30))
         self.stackArea = QStackedWidget(self)
@@ -136,7 +137,7 @@ class StackWindow(QWidget):
     def stack2UI(self):
          # 水平布局
         layout = QHBoxLayout()
-        figUI = LogMoudle(r'D:\Codes\Python_M\Code\PyTick\Logs\log.txt')
+        figUI = LogMoudle(os.path.join(pathm.GetLogPath(), r"log.txt"))
         layout.addWidget(figUI)
         self.stack2.setLayout(layout)
 
@@ -158,7 +159,7 @@ class StackWindow(QWidget):
 
     def paintEvent(self, event):
         bgQp = QPainter(self)
-        mainBackGround = os.path.join(self.srcpath, 'Background-2.jpg')
+        mainBackGround = os.path.join(self.srcpath, 'Background-5.jpg')
         bg = QPixmap(mainBackGround)
         bgQp.drawPixmap(self.rect(), bg)
 

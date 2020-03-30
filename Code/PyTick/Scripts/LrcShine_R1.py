@@ -12,13 +12,14 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 import random
 import re
-srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
-lrcSrcPath = r"D:\Codes\Python_M\Src\LRC"
+import PathManager as pathm
+srcpath = pathm.GetUiPath()
+lrcSrcPath = pathm.GetLrcPath()
 
 
 class LrcWidget(QWidget):
-    lrcSrcPath = r"D:\Codes\Python_M\Code\PyTick\Src"
-    srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
+    lrcSrcPath = lrcSrcPath
+    srcpath = srcpath
 
     def __init__(self):
         super().__init__()

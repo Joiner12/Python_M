@@ -10,8 +10,9 @@
     [6]PyQt与Matplotlib画图结合 https://blog.csdn.net/The_Time_Runner/article/details/89312660
 '''
 
+import PathManager as pathm
 from datetime import datetime
-from numpy import random, arange
+from numpy import random, arange, linspace, cos, exp
 import os
 import sys
 from PyQt5.QtGui import *  # (the example applies equally well to PySide)
@@ -27,7 +28,7 @@ plt.rcParams['axes.unicode_minus'] = False
 
 
 class LogMoudle(QWidget):
-    srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
+    srcpath = pathm.GetUiPath()
     logDetailList = list()
     todayDetailList = list()
     pushStyle_1 = ("QPushButton{border-radius:4px;font-size:16px;font-weight:bold;color:rgb(2, 9, 34);}"
@@ -39,7 +40,6 @@ class LogMoudle(QWidget):
          # check file
         super().__init__()
         self.logpath = logpath
-        self.__GenList__()
         fileflag = os.path.exists(logpath)
         self.setupUI()
         self.__showImg__()
@@ -48,6 +48,8 @@ class LogMoudle(QWidget):
     def setupUI(self):
         mainlayout = QVBoxLayout()
         self.staticPieCanvas = FigureCanvas(Figure(figsize=(6, 4), dpi=100))
+        self.staticPieCanvas.setSizePolicy(
+            QSizePolicy.Expanding, QSizePolicy.Expanding)
         mainlayout.addWidget(self.staticPieCanvas)
         butlayout = QHBoxLayout()
         self.button_1 = QPushButton("Draw")
@@ -70,6 +72,8 @@ class LogMoudle(QWidget):
         self.button_3.clicked.connect(self.__clf__)
 
     def __GenList__(self):
+        self.logDetailList = list()
+        self.todayDetailList = list()
         try:
             with open(self.logpath, 'r', encoding='utf-8') as f:
                 logDetail = f.readlines()
@@ -95,6 +99,7 @@ class LogMoudle(QWidget):
             self.logDetailList = ['error' for i in range(4)]
 
     def StaticDrawPie(self):
+        self.__GenList__()
         self.staticPieCanvas.figure.clf()
         self.sPieDraw = self.staticPieCanvas.figure.subplots()
         if len(self.logDetailList) > 1 and False:
@@ -106,7 +111,7 @@ class LogMoudle(QWidget):
             dayGap = random.randint(1, 10, size=10)
             labels = labels[0:10]
             self.sPieDraw.pie(dayGap, labels=labels, radius=1, wedgeprops=dict(
-                width=0.4, edgecolor='w'))
+                width=0.8, edgecolor='w'))
             self.sPieDraw.pie(dayGap, counterclock=False, radius=1-0.3, wedgeprops=dict(
                 width=0.3, edgecolor='w'))
         else:
@@ -120,16 +125,18 @@ class LogMoudle(QWidget):
                     whenDo.append(i[0].strftime("%H:%M") +
                                   "-"+i[1].strftime("%H:%M"))
 
-                self.sPieDraw.pie(duration, labels=whenDo, radius=1, wedgeprops=dict(
-                    width=0.4, edgecolor='w'))
-                self.sPieDraw.pie(duration, labels=things, counterclock=False, radius=1-0.3, wedgeprops=dict(
+                self.sPieDraw.pie(duration, startangle=90, radius=1 - 0.3, wedgeprops=dict(
                     width=0.3, edgecolor='w'))
+                self.sPieDraw.pie(duration, labels=things, radius=1, wedgeprops=dict(
+                    width=0.5, edgecolor='w'), startangle=90)
+        self.staticPieCanvas.setStyleSheet("background-color:transparent;")
         self.staticPieCanvas.figure.canvas.draw()
 
     def DynamicDrawPie(self):
         pass
 
     def drawToday(self):
+        self.__GenList__()
         self.staticPieCanvas.figure.clf()
         ax = self.staticPieCanvas.figure.subplots()
         # Example data
@@ -149,29 +156,41 @@ class LogMoudle(QWidget):
             # ax.invert_yaxis()  # labels read top-to-bottom
             ax.set_ylabel('Performance')
             ax.set_title('How fast do you want to go today?')
+            self.staticPieCanvas.setStyleSheet("background-color:transparent;")
             self.staticPieCanvas.figure.canvas.draw()
         else:
+
             self.__showImg__()
 
     def __clf__(self):
         self.staticPieCanvas.figure.clf()
+        self.__showImg__()
         self.staticPieCanvas.figure.canvas.draw()
 
        # show image
     def __showImg__(self):
         self.staticPieCanvas.figure.clf()
         ax = self.staticPieCanvas.figure.subplots()
-        with cbook.get_sample_data(os.path.join(self.srcpath, 'horse.png')) as image_file:
-            image = plt.imread(image_file)
-        ax.imshow(image)
+        if False:
+            with cbook.get_sample_data(os.path.join(self.srcpath, 'horse.png')) as image_file:
+                image = plt.imread(image_file)
+            ax.imshow(image)
+        else:
+            x1 = linspace(0.0, 5.0)
+            x2 = linspace(0.0, 2.0)
+
+            y1 = cos(2 * 3.14 * x1) * exp(-x1)
+            y2 = cos(2 * 3.14 * x2)
+            ax.plot(x1, y1, 'o-')
         ax.axis('off')  # clear x-axis and y-axis
+        self.staticPieCanvas.setStyleSheet("background-color:transparent;")
         self.staticPieCanvas.figure.canvas.draw()
 
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     if True:
-        ex = LogMoudle(r'D:\Codes\Python_M\Code\PyTick\Logs\log.txt')
+        ex = LogMoudle(os.path.join(pathm.GetLogPath(), r"log.txt"))
         ex.show()
     sys.exit(app.exec_())
     # pyqtgraph.examples.run()

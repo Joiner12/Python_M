@@ -5,7 +5,7 @@
 '''
 import PyInstaller.__main__ as PyRun
 import os
-
+import PathManager
 
 def GenerateExe(startOrnot):
     os.system("chcp 65001")
@@ -17,34 +17,34 @@ def GenerateExe(startOrnot):
             PyRun.run([
                 '--name=%s' % r'PyTick',
                 '--onefile',
-                '--distpath=%s' % r'D:\Codes\Python_M\Code\PyTick\Exe',
+                '--distpath=%s' % PathManager.GetExePath(),
                 '--icon=%s' % os.path.join(
-                    r'D:\Codes\Python_M\Code\PyTick\Src', 'Deer.ico'),
+                    PathManager.GetUiPath(), 'Deer.ico'),
                 '--noconsole',
                 os.path.join(
-                    r'D:\Codes\Python_M\Code\PyTick\Scripts', 'PyTick.py'),
+                    PathManager.GetScriptPath(), 'PyTick.py'),
             ])
         elif ExeNumber == 2:
             PyRun.run([
                 '--name=%s' % r'ColorPicker',
                 '--onefile',
-                '--distpath=%s' % r'D:\Codes\Python_M\Code\PyTick\Exe',
-                '--icon=%s' % os.path.join(r'D:\Codes\Python_M\Code\PyTick\Src',
+                '--distpath=%s' % PathManager.GetExePath(),
+                '--icon=%s' % os.path.join(PathManager.GetUiPath(),
                                            'clock-1.ico'),
                 '--noconsole',
                 os.path.join(
-                    r'D:\Codes\Python_M\Code\PyTick\Scripts', 'ColorSelect_R1.py'),
+                    PathManager.GetScriptPath(), 'ColorSelect_R1.py'),
             ])
         else:
             PyRun.run([
                 '--name=%s' % r'Shakehand',
                 '--onefile',
-                '--distpath=%s' % r'D:\Codes\Python_M\Code\PyTick\Exe',
-                '--icon=%s' % os.path.join(r'D:\Codes\Python_M\Code\PyTick\Src',
+                '--distpath=%s' % PathManager.GetExePath(),
+                '--icon=%s' % os.path.join(PathManager.GetUiPath(),
                                            'clock-1.ico'),
                 '--noconsole',
                 os.path.join(
-                    r'D:\Codes\Python_M\Code\PyTick\Scripts', 'KeyMouse_R1.py'),
+                    PathManager.GetScriptPath(), 'KeyMouse_R1.py'),
             ])
     # 取消
     else:

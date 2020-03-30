@@ -10,19 +10,15 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from MultiInputDialog_R1 import MultiInputDialog
+import PathManager as pathm
 
 
 class ClockStatics_V1(QWidget):
     def __init__(self):
         super().__init__()
         # 环境配置
-        if False:
-            self.srcpath = os.path.join(os.path.dirname(
-                os.path.dirname(__file__)), r"Src")
-            self.logpath = os.path.join(os.path.dirname(
-                os.path.dirname(__file__)), r"Log")
-        self.srcpath = r"D:\Codes\Python_M\Code\PyTick\Src"
-        self.logpath = r"D:\Codes\Python_M\Code\PyTick\Logs"
+        self.srcpath = pathm.GetUiPath()
+        self.logpath = pathm.GetLogPath()
         self.Timing = False
         self.setupUI()
         # self.setFixedSize(500, 200)
