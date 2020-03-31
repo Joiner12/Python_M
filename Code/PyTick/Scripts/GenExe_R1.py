@@ -7,6 +7,7 @@ import PyInstaller.__main__ as PyRun
 import os
 import PathManager
 
+
 def GenerateExe(startOrnot):
     os.system("chcp 65001")
     # 开始

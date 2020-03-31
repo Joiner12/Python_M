@@ -65,13 +65,12 @@ class SrollTxt(QWidget):
         self.pieceIndex = self.pieceIndex + 1
 
     def __ReadLog__(self):
-        f = open(os.path.join(pathm.GetLogPath(), "log.txt"),
-                 'r', encoding='UTF-8')
-        allLines = f.readlines()
-        self.logdetail = allLines
+        f = open(pathm.GetLogFile()), 'r', encoding = 'UTF-8')
+        allLines=f.readlines()
+        self.logdetail=allLines
 
     def initLabel(self):
-        self.label_1 = QLabel(self)
+        self.label_1=QLabel(self)
         self.label_1.setStyleSheet(
             "QLabel{color:rgb(100,100,100,250);font-size:20px;font-weight:bold;font-family:Consoles;}")
         self.label_1.setText("Gausss...")
@@ -79,7 +78,7 @@ class SrollTxt(QWidget):
 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    ex = SrollTxt()
+    app=QApplication(sys.argv)
+    ex=SrollTxt()
     ex.show()
     sys.exit(app.exec_())

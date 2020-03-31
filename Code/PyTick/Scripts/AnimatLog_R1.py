@@ -12,7 +12,7 @@
 
 import PathManager as pathm
 from datetime import datetime
-from numpy import random, arange, linspace, cos, exp
+from numpy import random, arange, sin, deg2rad, sign, cos, sinc, linspace
 import os
 import sys
 from PyQt5.QtGui import *  # (the example applies equally well to PySide)
@@ -67,7 +67,7 @@ class LogMoudle(QWidget):
         self.setLayout(mainlayout)
         self.setStyleSheet("border:1px solid #eaeaea;border-radius:12px;")
 
-        self.button_1.clicked.connect(self.StaticDrawPie)
+        self.button_1.clicked.connect(self.StaticDrawPie_R2)
         self.button_2.clicked.connect(self.drawToday)
         self.button_3.clicked.connect(self.__clf__)
 
@@ -98,42 +98,45 @@ class LogMoudle(QWidget):
         except:
             self.logDetailList = ['error' for i in range(4)]
 
-    def StaticDrawPie(self):
+    def StaticDrawPie_R2(self):
+        # 获取数据列表
         self.__GenList__()
+        # canvaes 对象
         self.staticPieCanvas.figure.clf()
         self.sPieDraw = self.staticPieCanvas.figure.subplots()
-        if len(self.logDetailList) > 1 and False:
-            dayGap = list()
-            labels = list()
-            for i in self.logDetailList:
-                dayGap.append(i[2])
-                labels.append(i[3])
-            dayGap = random.randint(1, 10, size=10)
-            labels = labels[0:10]
-            self.sPieDraw.pie(dayGap, labels=labels, radius=1, wedgeprops=dict(
-                width=0.8, edgecolor='w'))
-            self.sPieDraw.pie(dayGap, counterclock=False, radius=1-0.3, wedgeprops=dict(
-                width=0.3, edgecolor='w'))
-        else:
-            if len(self.todayDetailList) > 0:
-                things = list()
-                duration = list()
-                whenDo = list()
-                for i in self.todayDetailList:
-                    things.append(i[3])
-                    duration.append(int(i[2]))
-                    whenDo.append(i[0].strftime("%H:%M") +
-                                  "-"+i[1].strftime("%H:%M"))
+        # today list data
+        if len(self.todayDetailList) > 0:
+            things = list()
+            duration = list()
+            whenDo = list()
+            for i in self.todayDetailList:
+                things.append(i[3])
+                duration.append(int(i[2]))
+                whenDo.append(i[0].strftime("%H:%M") +
+                              "-"+i[1].strftime("%H:%M"))
+            wedges, text = self.sPieDraw.pie(duration, labels=things,
+                                             wedgeprops=dict(width=0.3, edgecolor='w'), startangle=90, counterclock=False)
 
-                self.sPieDraw.pie(duration, startangle=90, radius=1 - 0.3, wedgeprops=dict(
-                    width=0.3, edgecolor='w'))
-                self.sPieDraw.pie(duration, labels=things, radius=1, wedgeprops=dict(
-                    width=0.5, edgecolor='w'), startangle=90)
+        # box style
+        bbox_props = dict(lw=0.72)
+        kw = dict(arrowprops=dict(
+            arrowstyle='-['), bbox=bbox_props, va="center")
+
+        # 设置pie属性
+        for i, p in enumerate(wedges):
+            ang = (p.theta2 - p.theta1)/2 + p.theta1
+            x = cos(deg2rad(ang))
+            y = sin(deg2rad(ang))
+            connectionstyle = "angle,angleA=0,angleB={}".format(ang)
+            horizontalalignment = {-1: "right", 1: "left"}[int(sign(x))]
+            kw["arrowprops"].update({"connectionstyle": connectionstyle})
+            self.sPieDraw.annotate(whenDo[i], xy=(x, y), xytext=(1.35*sign(x), 1.4*y),
+                                   horizontalalignment=horizontalalignment, **kw)
+
+        self.sPieDraw.set_title(
+            datetime.strftime(datetime.today(), "%Y-%m-%d"))
         self.staticPieCanvas.setStyleSheet("background-color:transparent;")
         self.staticPieCanvas.figure.canvas.draw()
-
-    def DynamicDrawPie(self):
-        pass
 
     def drawToday(self):
         self.__GenList__()
@@ -175,13 +178,11 @@ class LogMoudle(QWidget):
             with cbook.get_sample_data(os.path.join(self.srcpath, 'horse.png')) as image_file:
                 image = plt.imread(image_file)
             ax.imshow(image)
-        else:
-            x1 = linspace(0.0, 5.0)
-            x2 = linspace(0.0, 2.0)
 
-            y1 = cos(2 * 3.14 * x1) * exp(-x1)
-            y2 = cos(2 * 3.14 * x2)
-            ax.plot(x1, y1, 'o-')
+        # 改变问sinc
+        x = linspace(0, 3.14*2, num=100)
+        y = sinc(x)
+        ax.plot(x, y, marker='o', linewidth=2, markersize=3)
         ax.axis('off')  # clear x-axis and y-axis
         self.staticPieCanvas.setStyleSheet("background-color:transparent;")
         self.staticPieCanvas.figure.canvas.draw()
@@ -190,7 +191,7 @@ class LogMoudle(QWidget):
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     if True:
-        ex = LogMoudle(os.path.join(pathm.GetLogPath(), r"log.txt"))
+        ex = LogMoudle(pathm.GetLogFile())
         ex.show()
     sys.exit(app.exec_())
     # pyqtgraph.examples.run()

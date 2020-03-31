@@ -8,9 +8,8 @@ home_pc = True
 
 # ui
 
-
 def GetUiPath():
-    if not True:
+    if not home_pc:
         return r"D:\Python_M\Code\PyTick\Src"
     else:
         return r"D:\Codes\Python_M\Code\PyTick\Src"
@@ -19,7 +18,7 @@ def GetUiPath():
 
 
 def GetLogPath():
-    if not True:
+    if not home_pc:
         return r"D:\Python_M\Code\PyTick\Log"
     else:
         return r"D:\Codes\Python_M\Code\PyTick\Logs"
@@ -27,7 +26,7 @@ def GetLogPath():
 
 
 def GetLrcPath():
-    if not True:
+    if not home_pc:
         return r"D:\Python_M\Src"
     else:
         return r"D:\Codes\Python_M\Src\LRC"
@@ -36,7 +35,7 @@ def GetLrcPath():
 
 
 def GetExePath():
-    if not True:
+    if not home_pc:
         return r"D:\Python_M\Code\PyTick\Exe"
     else:
         return r"D:\Codes\Python_M\Code\PyTick\Exe"
@@ -45,7 +44,16 @@ def GetExePath():
 
 
 def GetScriptPath():
-    if not True:
+    if not home_pc:
         return r"D:\Python_M\Code\PyTick\Scripts"
     else:
         return r"D:\Codes\Python_M\Code\PyTick\Scripts"
+
+# logfile
+
+
+def GetLogFile():
+    if not home_pc:
+        return r"D:\Codes\Python_M\Code\PyTick\Logs\log.txt"
+    else:
+        return r"D:\Codes\Python_M\Code\PyTick\Logs\log.txt"
