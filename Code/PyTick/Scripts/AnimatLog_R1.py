@@ -109,11 +109,17 @@ class LogMoudle(QWidget):
             things = list()
             duration = list()
             whenDo = list()
+            # 合并重复的内容
             for i in self.todayDetailList:
-                things.append(i[3])
-                duration.append(int(i[2]))
-                whenDo.append(i[0].strftime("%H:%M") +
-                              "-"+i[1].strftime("%H:%M"))
+                if i[3] in things:
+                    exist_index = things.index(i[3])
+                    duration[exist_index] += int(i[2])
+                else:
+                    things.append(i[3])
+                    duration.append(int(i[2]))
+                    whenDo.append(i[0].strftime("%H:%M") +
+                                  "-"+i[1].strftime("%H:%M"))
+
             wedges, text = self.sPieDraw.pie(duration, labels=things,
                                              wedgeprops=dict(width=0.3, edgecolor='w'), startangle=90, counterclock=False)
 

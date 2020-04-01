@@ -8,6 +8,7 @@ home_pc = True
 
 # ui
 
+
 def GetUiPath():
     if not home_pc:
         return r"D:\Python_M\Code\PyTick\Src"
