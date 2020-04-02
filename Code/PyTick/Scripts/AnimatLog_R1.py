@@ -93,7 +93,10 @@ class LogMoudle(QWidget):
                     self.logDetailList.append(deTemp)
                     # today
                     dateToday = datetime.today()
-                    if dateToday.day == CowOne.day and dateToday.day == CowTwo.day:
+                    today_detail = [dateToday.month, dateToday.day]
+                    cowOne_detail = [CowOne.month, CowOne.day]
+                    CowTwo_detail = [CowTwo.month, CowTwo.day]
+                    if today_detail == cowOne_detail == CowTwo_detail:
                         self.todayDetailList.append(deTemp)
         except:
             self.logDetailList = ['error' for i in range(4)]
@@ -112,8 +115,8 @@ class LogMoudle(QWidget):
             # 合并重复的内容
             for i in self.todayDetailList:
                 if i[3] in things:
-                    exist_index = things.index(i[3])
-                    duration[exist_index] += int(i[2])
+                    temp_index = things.index(i[3])
+                    duration[temp_index] += int(i[2])
                 else:
                     things.append(i[3])
                     duration.append(int(i[2]))
@@ -136,7 +139,7 @@ class LogMoudle(QWidget):
             connectionstyle = "angle,angleA=0,angleB={}".format(ang)
             horizontalalignment = {-1: "right", 1: "left"}[int(sign(x))]
             kw["arrowprops"].update({"connectionstyle": connectionstyle})
-            self.sPieDraw.annotate(whenDo[i], xy=(x, y), xytext=(1.35*sign(x), 1.4*y),
+            self.sPieDraw.annotate(duration[i], xy=(x, y), xytext=(1.35*sign(x), 1.4*y),
                                    horizontalalignment=horizontalalignment, **kw)
 
         self.sPieDraw.set_title(
@@ -185,7 +188,7 @@ class LogMoudle(QWidget):
                 image = plt.imread(image_file)
             ax.imshow(image)
 
-        # 改变问sinc
+        # 改变为sinc
         x = linspace(0, 3.14*2, num=100)
         y = sinc(x)
         ax.plot(x, y, marker='o', linewidth=2, markersize=3)
