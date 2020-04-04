@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import *
 from Clock_R1 import ClockStatics_V1
 from ScrollText_R1 import SrollTxt
 # from StaticArea_R1 import StaticsArea, StaticsArea_1
-from AnimatLog_R1 import LogMoudle
+from AnimatLog_R1 import LogMoudle, PopUp
 from LrcShine_R1 import SearchBar
 import PathManager as pathm
 
@@ -132,7 +132,10 @@ class StackWindow(QWidget):
     def stack2UI(self):
          # 水平布局
         layout = QHBoxLayout()
-        figUI = LogMoudle(os.path.join(pathm.GetLogPath(), r"log.txt"))
+        figUI = LogMoudle(pathm.GetLogFile())
+        po = PopUp()
+        figUI.button_4.clicked.connect(po.callout)
+        figUI.closeSignal.connect(po.ReceiveClose)
         layout.addWidget(figUI)
         self.stack2.setLayout(layout)
 

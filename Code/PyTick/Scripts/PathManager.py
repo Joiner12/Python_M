@@ -55,6 +55,6 @@ def GetScriptPath():
 
 def GetLogFile():
     if not home_pc:
-        return r"D:\Codes\Python_M\Code\PyTick\Logs\log.txt"
+        return r"D:\Python_M\Code\PyTick\Logs\log.txt"
     else:
         return r"D:\Codes\Python_M\Code\PyTick\Logs\log.txt"

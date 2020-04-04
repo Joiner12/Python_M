@@ -12,7 +12,7 @@ def GenerateExe(startOrnot):
     os.system("chcp 65001")
     # 开始
     if startOrnot:
-        ExeNumber = 2
+        ExeNumber = 1
 
         if ExeNumber == 1:
             PyRun.run([
@@ -23,7 +23,7 @@ def GenerateExe(startOrnot):
                     PathManager.GetUiPath(), 'Deer.ico'),
                 '--noconsole',
                 '--clean',
-                '--exclude-module=[numpy]',
+                # '--exclude-module=[numpy]',
                 os.path.join(
                     PathManager.GetScriptPath(), 'PyTick.py'),
             ])

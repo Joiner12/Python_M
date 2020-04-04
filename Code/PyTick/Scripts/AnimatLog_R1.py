@@ -2,7 +2,8 @@
 '''
     日志处理模块
     Reference:
-    [1]nested pie chartshttps://matplotlib.org/3.2.0/gallery/pie_and_polar_charts/nested_pie.html#sphx-glr-gallery-pie-and-polar-charts-nested-pie-py
+    # sphx-glr-gallery-pie-and-polar-charts-nested-pie-py
+    [1]nested pie chartshttps://matplotlib.org/3.2.0/gallery/pie_and_polar_charts/nested_pie.html
     [2]pie https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.pie.html
     [3]中文显示乱码https://www.jianshu.com/p/b5138e48fefa
     [4]embedin pyqt https://matplotlib.org/gallery/user_interfaces/embedding_in_qt_sgskip.html?highlight=pyqt
@@ -28,6 +29,7 @@ plt.rcParams['axes.unicode_minus'] = False
 
 
 class LogMoudle(QWidget):
+    closeSignal = pyqtSignal()
     srcpath = pathm.GetUiPath()
     logDetailList = list()
     todayDetailList = list()
@@ -55,14 +57,17 @@ class LogMoudle(QWidget):
         self.button_1 = QPushButton("Draw")
         self.button_2 = QPushButton("Today")
         self.button_3 = QPushButton("Clf")
+        self.button_4 = QPushButton("Pop")
         self.button_1.setStyleSheet(self.pushStyle_1)
         self.button_2.setStyleSheet(self.pushStyle_1)
         self.button_3.setStyleSheet(self.pushStyle_1)
+        self.button_4.setStyleSheet(self.pushStyle_1)
 
         mainlayout.addLayout(butlayout)
         butlayout.addWidget(self.button_1)
         butlayout.addWidget(self.button_2)
         butlayout.addWidget(self.button_3)
+        butlayout.addWidget(self.button_4)
 
         self.setLayout(mainlayout)
         self.setStyleSheet("border:1px solid #eaeaea;border-radius:12px;")
@@ -196,11 +201,35 @@ class LogMoudle(QWidget):
         self.staticPieCanvas.setStyleSheet("background-color:transparent;")
         self.staticPieCanvas.figure.canvas.draw()
 
+    # 关闭事件
+    def closeEvent(self, event):
+        self.closeSignal.emit()
+
+
+class PopUp(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setupUI()
+
+    def setupUI(self):
+        self.setWindowTitle("pop ui")
+
+    def callout(self):
+        print("called me ")
+        # if not self.isVisible():
+        self.show()
+
+    def ReceiveClose(self):
+        self.close()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     if True:
         ex = LogMoudle(pathm.GetLogFile())
+        po = PopUp()
+        ex.button_4.clicked.connect(po.callout)
+        ex.closeSignal.connect(po.ReceiveClose)
         ex.show()
     sys.exit(app.exec_())
     # pyqtgraph.examples.run()
