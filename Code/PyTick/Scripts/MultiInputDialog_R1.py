@@ -32,6 +32,7 @@ class MultiInputDialog(QDialog):
                        "QLineEdit{border:2px solid rgb(189, 189, 189);}"
                        "QLineEdit{font-family:'Century'}")
     srcpath = pathm.GetUiPath()
+
     signal_PieceInfo = pyqtSignal(str)
 
     def __init__(self, parent=None):
@@ -42,7 +43,7 @@ class MultiInputDialog(QDialog):
         self.setWindowModality(Qt.ApplicationModal)
         # 无边框
         if False:
-            indowFlags(Qt.FramelessWindowHint | Qt.Dialog)
+            self.setWindowFlags(Qt.FramelessWindowHint | Qt.Dialog)
         # protop info
         self.pieceInfo = ""
 
@@ -53,11 +54,19 @@ class MultiInputDialog(QDialog):
                  "QLabel:title{text-align:center}")
         self.bingoLabel.setStyleSheet(style)
         self.bingoLabel.setVisible(False)
-
-        self.GetStart = QDateTimeEdit(
-            QDateTime.currentDateTime())  # 创建日期+时间的组件
-        self.GetStart.setDisplayFormat('yyyy-MM-dd hh:mm:ss')  # 显示样式
-        self.GetStart.setStyleSheet(self.timedateStyle_1)
+        try:
+            # 获取最后一条日志 作为start protop
+            recentLog = self.GetRecentLog(pathm.GetLogFile())
+            a = recentLog.split("|")
+            startProto = datetime.strptime(a[1], "%Y-%m-%d %H:%M:%S")
+            self.GetStart = QDateTimeEdit(startProto)  # 创建日期+时间的组件
+            self.GetStart.setDisplayFormat('yyyy-MM-dd hh:mm:ss')  # 显示样式
+            self.GetStart.setStyleSheet(self.timedateStyle_1)
+        except:
+            self.GetStart = QDateTimeEdit(
+                QDateTime.currentDateTime())  # 创建日期+时间的组件
+            self.GetStart.setDisplayFormat('yyyy-MM-dd hh:mm:ss')  # 显示样式
+            self.GetStart.setStyleSheet(self.timedateStyle_1)
 
         self.GetFinish = QDateTimeEdit(
             QDateTime.currentDateTime())  # 创建日期+时间的组件
@@ -114,7 +123,7 @@ class MultiInputDialog(QDialog):
             self.__reset__()
 
     def isCancle(self):
-        self.__reset__()
+        self.close()
 
     def closeEvent(self, event):
         return
@@ -145,6 +154,16 @@ class MultiInputDialog(QDialog):
         self.GetStart.setDateTime(QDateTime.currentDateTime())
         self.GetFinish.setDateTime(QDateTime.currentDateTime())
         self.pieceInfo = ""
+
+    def GetRecentLog(self, logfile):
+        # 参数检查 用try替换
+        recentPiece = str()
+        with open(logfile, mode="r", encoding="utf-8") as f:
+            allIn = f.readlines()
+            if not f.closed:
+                f.close()
+        recentPiece = allIn[-1]
+        return recentPiece
 
 
 if __name__ == "__main__":

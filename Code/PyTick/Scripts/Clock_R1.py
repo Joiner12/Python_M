@@ -21,7 +21,7 @@ class ClockStatics_V1(QWidget):
         self.logpath = pathm.GetLogPath()
         self.Timing = False
         self.setupUI()
-        # self.setFixedSize(500, 200)
+        self.setGeometry(100, 200, 600, 200)
 
     def setupUI(self):
         WholeLCDLayout = QHBoxLayout()
@@ -93,11 +93,12 @@ class ClockStatics_V1(QWidget):
         self.BaseTicker.start(1000)
 
         self.setLayout(WholeLCDLayout)
-        # self.setMinimumWidth(420)
 
     def PushLCD(self):
         # Start 👉 Stop(计时开始)
         if self.StartButton.text() == "START":
+
+            self.TrackButton.setStyleSheet(self.buttonStyle_1)
             self.StartButton.setText("STOP")
             self.StartButton.setIcon(
                 QIcon(os.path.join(self.srcpath, "停止-1.png")))
@@ -109,7 +110,7 @@ class ClockStatics_V1(QWidget):
             self.LCD.setStyleSheet(
                 "QLCDNumber{border:2px solidgreen;color:rgb(35, 107, 185 );}")
         else:
-            # Stop 👉 Star(计时停止)
+            # Stop 👉 Start(计时停止)
             self.StartButton.setText("START")
             self.StartButton.setIcon(
                 QIcon(os.path.join(self.srcpath, "启动-2.png")))
@@ -121,17 +122,29 @@ class ClockStatics_V1(QWidget):
             # 更新时间
             self.StopTime = datetime.now()
             self.gap = self.StopTime - self.StartTime
+            # 有效时长
             if self.gap.seconds/60 > 1:
-                self.TrackButton.setStyleSheet(self.buttonStyle_2)
+                protype = "<p style='color:#0B3D4A;font-weight:bolder;'>Track Now ? </P>"
+                Isok = QMessageBox.question(
+                    self, r'Track Track', protype, QMessageBox.Cancel | QMessageBox.Yes,  QMessageBox.Cancel)
+                rettemp = False
+                if Isok == QMessageBox.Yes:
+                    rettemp = self.TrackLCD()
+                if not rettemp:
+                    self.TrackButton.setStyleSheet(self.buttonStyle_2)
 
     def TrackLCD(self):
         # 有效记录
-        self.TrackButton.setStyleSheet(self.buttonStyle_1)
+        ret = False
         if int(self.gap.seconds) >= 0:
             self.gap = datetime.now() - datetime.now()
-            self.__Writelog__()
+            retTemp = self.__Writelog__()
+            if retTemp:
+                ret = True
+                self.TrackButton.setStyleSheet(self.buttonStyle_1)
         else:
             pass
+        return ret
 
     def UpdateLCD(self):
         if self.Timing:
@@ -162,6 +175,7 @@ class ClockStatics_V1(QWidget):
         self.mli.signal_PieceInfo.connect(self.__WritePiece__)
 
     def __Writelog__(self):
+        ret = False
         self.gap = self.StopTime - self.StartTime
         if int(self.gap.seconds) >= 2:
             text, ok = QInputDialog.getText(self, 'Track', 'What Did U DO?')
@@ -180,6 +194,8 @@ class ClockStatics_V1(QWidget):
                 self.gap = datetime.now() - datetime.now()
                 self.StartTime = datetime.now()
                 self.StopTime = datetime.now()
+                ret = True
+        return ret
 
     def __WritePiece__(self, info):
         if not isinstance(info, str):
