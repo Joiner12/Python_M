@@ -18,10 +18,18 @@ import pyaudio
 class audioModel(QWidget):
     def __init__(self):
         super().__init__()
+        self.setupUI()
 
-    # r"D:\Codes\Python_M\Code\PyTick\Src\1.wav"
-    def PlayAudio(self, wavfile):
-        wf = wave.open(wavfile, "rb")
+    def setupUI(self):
+        mainlayout = QGridLayout()
+        playbut = QPushButton("play")
+        playbut.clicked.connect(self.PlayAudio)
+
+        mainlayout.addWidget(playbut, 0, 0)
+        self.setLayout(mainlayout)
+
+    def PlayAudio(self):
+        wf = wave.open(r"D:\Codes\Python_M\Code\PyTick\Src\1.wav", "rb")
         p = pyaudio.PyAudio()
         stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
                         channels=wf.getnchannels(),
@@ -38,3 +46,10 @@ class audioModel(QWidget):
         stream.stop_stream()  # 暂停
         stream.close()  # 关闭
         p.terminate()
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    ex = audioModel()
+    ex.show()
+    sys.exit(app.exec_())

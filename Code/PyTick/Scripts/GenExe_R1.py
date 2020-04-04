@@ -12,7 +12,7 @@ def GenerateExe(startOrnot):
     os.system("chcp 65001")
     # 开始
     if startOrnot:
-        ExeNumber = 1
+        ExeNumber = 2
 
         if ExeNumber == 1:
             PyRun.run([
@@ -22,6 +22,8 @@ def GenerateExe(startOrnot):
                 '--icon=%s' % os.path.join(
                     PathManager.GetUiPath(), 'Deer.ico'),
                 '--noconsole',
+                '--clean',
+                '--exclude-module=[numpy]',
                 os.path.join(
                     PathManager.GetScriptPath(), 'PyTick.py'),
             ])
@@ -33,6 +35,8 @@ def GenerateExe(startOrnot):
                 '--icon=%s' % os.path.join(PathManager.GetUiPath(),
                                            'clock-1.ico'),
                 '--noconsole',
+                '--clean',
+                # '--exclude-module = [%s]' % ('numpy'),
                 os.path.join(
                     PathManager.GetScriptPath(), 'ColorSelect_R1.py'),
             ])
