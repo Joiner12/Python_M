@@ -116,18 +116,13 @@ class StackWindow(QWidget):
     def stack1UI(self):
         layout = QVBoxLayout()
         self.ticker = ClockStatics_V1()
-        sr = '''
-
-        你寻求的幸福 其实不在远处
-        
-        它就是你脚下 一直走的路
-        
-        '''
+        sr = """<p style="color:#161616;font-size:22px;font-weight:bold;">
+        The happiness you seek,in fact<br>
+        is not far away. <br>
+        It is the road you have been walking.
+        </p>"""
         info = QLabel(sr)
-        info.setStyleSheet(
-            "QLabel{color:#161616;font-size:20px;font-weight:bold;font-family:Consoles;}")
         info.setAlignment(Qt.AlignCenter)
-
         layout.addWidget(self.ticker)
         layout.addWidget(info)
         self.stack1.setLayout(layout)

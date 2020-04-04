@@ -41,3 +41,7 @@ Code/PyTick/Scripts/Reading.py
 Code/PyTick/Scripts/Draft.py
 
 Code/Scripts/__pycache__/
+
+# ÒôÆµÎÄ¼ş
+*.wav 
+*.mp3
