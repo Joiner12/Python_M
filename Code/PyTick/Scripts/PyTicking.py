@@ -132,11 +132,11 @@ class StackWindow(QWidget):
     def stack2UI(self):
          # 水平布局
         layout = QHBoxLayout()
-        figUI = LogMoudle(pathm.GetLogFile())
-        po = PopUp()
-        figUI.button_4.clicked.connect(po.callout)
-        figUI.closeSignal.connect(po.ReceiveClose)
-        layout.addWidget(figUI)
+        self.figUI = LogMoudle(pathm.GetLogFile())
+        self.po = PopUp()
+        self.figUI.button_4.clicked.connect(self.po.callout)
+        self.figUI.closeSignal.connect(self.po.ReceiveClose)
+        layout.addWidget(self.figUI)
         self.stack2.setLayout(layout)
 
     def stack3UI(self):
@@ -160,6 +160,10 @@ class StackWindow(QWidget):
         mainBackGround = os.path.join(self.srcpath, 'Background-5.jpg')
         bg = QPixmap(mainBackGround)
         bgQp.drawPixmap(self.rect(), bg)
+
+    def closeEvent(self, event):
+        if self.po.isVisible():
+            self.po.close()
 
 
 if __name__ == '__main__':
