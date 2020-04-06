@@ -126,7 +126,7 @@ class ClockStatics_V1(QWidget):
             if self.gap.seconds/60 > 1:
                 protype = "<p style='color:#0B3D4A;font-weight:bolder;'>Track Now ? </P>"
                 Isok = QMessageBox.question(
-                    self, r'Track Track', protype, QMessageBox.Cancel | QMessageBox.Yes,  QMessageBox.Cancel)
+                    self, r'Track Track', protype, QMessageBox.Yes | QMessageBox.Yes,  QMessageBox.Cancel)
                 rettemp = False
                 if Isok == QMessageBox.Yes:
                     rettemp = self.TrackLCD()
