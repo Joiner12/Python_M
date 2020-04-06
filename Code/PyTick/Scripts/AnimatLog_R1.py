@@ -238,24 +238,14 @@ class PopUp(QWidget):
         self.select.activated[str].connect(self.itemHandle)
 
         # 布局
-        mainlayout.addWidget(self.select, 0, 0, 1, 1)
+        mainlayout.addWidget(self.select, 0, 0)
         self.matCanvas = FigureCanvas(
-            Figure(figsize=(6, 4), dpi=100, facecolor="none"))
+            Figure(dpi=100, facecolor="none"))
         self.matCanvas.setSizePolicy(
             QSizePolicy.Expanding, QSizePolicy.Expanding)
-        mainlayout.addWidget(self.matCanvas, 1, 0, 9, 9)
-
-        mainlayout.addWidget(self.label, 0, 4, 1, 1)
-
+        mainlayout.addWidget(self.matCanvas, 1, 0)
         self.matCanvas.figure.clf()
         ax = self.matCanvas.figure.subplots()
-        # 设置背景图片
-        """
-        # with cbook.get_sample_data(os.path.join(pathm.GetUiPath(), r"Background-2.jpg")) as image_file:
-        #     image = plt.imread(image_file)
-        # self.matCanvas.figure.figimage(image)
-
-        """
         # 改变为sinc 初始图形
         x = linspace(0, 3.14*2, num=100)
         y = sinc(x)
@@ -288,7 +278,7 @@ class PopUp(QWidget):
                     deTemp[2] = CowThree
                     self.logDetailList.append(deTemp)
                     # today
-                    if False:
+                    if True:
                         dateToday = datetime.today()
                     else:
                         dateToday = datetime.strptime("2020-04-05", "%Y-%m-%d")
@@ -324,7 +314,7 @@ class PopUp(QWidget):
     # 设置背景
     def paintEvent(self, event):
         bgpainter = QPainter(self)
-        bg = QPixmap(os.path.join(pathm.GetUiPath(), r"Background-5.jpg"))
+        bg = QPixmap(os.path.join(pathm.GetUiPath(), r"Background-3.jpg"))
         bgpainter.drawPixmap(self.rect(), bg)
 
     def startShowToday(self):
@@ -337,8 +327,6 @@ class PopUp(QWidget):
         self.ax_1.set_ylim(-1*max_temp-20, max_temp+20)
         self.ax_1.set_xlim(-1, 25)
         self.todayDrawIndex = 0
-        self.ax_1.set_title("2020年4月5日", fontsize=20,
-                            fontweight='bold')
         self.ax_1.axis('off')
         self.timer_1.start(1000)
         print("start show today")
@@ -367,10 +355,11 @@ class PopUp(QWidget):
             y_tempT = -1*y_tempT
 
         # 绘图
+        cur_color = (random.rand(), random.rand(), random.rand())
         self.ax_1.text(x_tempT, y_tempT, s, size=15, ha="center", va="center",
-                       bbox=dict(boxstyle="round", ec=(1., 0.5, 0.5), fc=(1., 0.8, 0.8),))
+                       color=cur_color, wrap=True, bbox=dict(boxstyle="round", ec=cur_color, fc='none',))
         self.ax_1.arrow(x_temp, 0, 0, y_temp, alpha=0.8,
-                        color='red')
+                        color=cur_color)
         self.matCanvas.figure.canvas.draw()
         print("way back home")
         self.todayDrawIndex += 1
