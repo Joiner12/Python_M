@@ -13,7 +13,8 @@
 
 import PathManager as pathm
 from datetime import datetime
-from numpy import random, arange, sin, deg2rad, sign, cos, sinc, linspace
+from numpy import (random, arange, sin, deg2rad,
+                   sign, cos, sinc, linspace, array, max)
 import os
 import sys
 from PyQt5.QtGui import *  # (the example applies equally well to PySide)
@@ -49,6 +50,8 @@ class LogMoudle(QWidget):
 
     def setupUI(self):
         mainlayout = QVBoxLayout()
+        self.setWindowIcon(QIcon(os.path.join(pathm.GetUiPath(), r"I-1.ico")))
+        self.setWindowTitle("honu")
         self.staticPieCanvas = FigureCanvas(
             Figure(figsize=(6, 4), dpi=100, facecolor="none"))
         self.staticPieCanvas.setSizePolicy(
@@ -221,9 +224,12 @@ class PopUp(QWidget):
         self.timer_1.timeout.connect(self.showToday)
 
     def setupUI(self):
-        self.setWindowTitle("pop ui")
+        self.setWindowIcon(QIcon(os.path.join(pathm.GetUiPath(), r"I-1.ico")))
+        self.setWindowTitle("pop")
         mainlayout = QGridLayout()
 
+        # title label
+        self.label = QLabel("2020年4月6日")
         # 下拉选项
         self.select = QComboBox(self)
         self.select.addItem("Day")
@@ -238,6 +244,8 @@ class PopUp(QWidget):
         self.matCanvas.setSizePolicy(
             QSizePolicy.Expanding, QSizePolicy.Expanding)
         mainlayout.addWidget(self.matCanvas, 1, 0, 9, 9)
+
+        mainlayout.addWidget(self.label, 0, 4, 1, 1)
 
         self.matCanvas.figure.clf()
         ax = self.matCanvas.figure.subplots()
@@ -283,7 +291,7 @@ class PopUp(QWidget):
                     if False:
                         dateToday = datetime.today()
                     else:
-                        dateToday = datetime.strptime("2020-04-04", "%Y-%m-%d")
+                        dateToday = datetime.strptime("2020-04-05", "%Y-%m-%d")
                     today_detail = [dateToday.month, dateToday.day]
                     cowOne_detail = [CowOne.month, CowOne.day]
                     CowTwo_detail = [CowTwo.month, CowTwo.day]
@@ -303,7 +311,7 @@ class PopUp(QWidget):
     def callout(self):
         print("called me ")
         # if not self.isVisible():
-        # self.showMaximized()
+        self.showMaximized()
         self.show()
 
     def ReceiveClose(self):
@@ -316,12 +324,23 @@ class PopUp(QWidget):
     # 设置背景
     def paintEvent(self, event):
         bgpainter = QPainter(self)
-        bg = QPixmap(os.path.join(pathm.GetUiPath(), r"Background-2.jpg"))
+        bg = QPixmap(os.path.join(pathm.GetUiPath(), r"Background-5.jpg"))
         bgpainter.drawPixmap(self.rect(), bg)
 
     def startShowToday(self):
-        self.todayDrawIndex = 2
-        self.timer_1.start(2000)
+        self.matCanvas.figure.clf()
+        self.ax_1 = self.matCanvas.figure.subplots()
+
+        # 根据list 设置坐标轴
+        temp_list = array(self.todayDetailList)
+        max_temp = max(temp_list[:, 2])
+        self.ax_1.set_ylim(-1*max_temp-20, max_temp+20)
+        self.ax_1.set_xlim(-1, 25)
+        self.todayDrawIndex = 0
+        self.ax_1.set_title("2020年4月5日", fontsize=20,
+                            fontweight='bold')
+        self.ax_1.axis('off')
+        self.timer_1.start(1000)
         print("start show today")
 
     def startShowMon(self):
@@ -332,37 +351,36 @@ class PopUp(QWidget):
             self.timer_1.stop()
 
     def showToday(self):
-        if self.todayDrawIndex > len(self.todayDetailList):
+        if self.todayDrawIndex > len(self.todayDetailList) - 1:
             return
-        self.matCanvas.figure.clf()
-        drawDetail = self.todayDetailList[0:self.todayDrawIndex]
-        x = list()
-        y = list()
-        # idea = list()
-        # gap = list()
-        for i in drawDetail:
-            x_temp = i[0].hour + i[0].minute / 60
-            y_temp = int(i[2])
-            x.append(x_temp)
-            y.append(y_temp)
+        # 数据处理
+        drawDetail = self.todayDetailList[self.todayDrawIndex]
+        x_temp = drawDetail[0].hour + drawDetail[0].minute / 60
+        x_temp = round(x_temp, 1)
+        y_temp = int(drawDetail[2])
+        x_tempT = x_temp
+        y_tempT = y_temp + 5
 
-            x_temp = i[1].hour + i[1].minute / 60
-            y_temp = int(i[2])
-            x.append(x_temp)
-            y.append(y_temp)
+        s = str(drawDetail[3])
+        if (self.todayDrawIndex + 1) % 2 == 0:
+            y_temp = -1*y_temp
+            y_tempT = -1*y_tempT
 
-        ax = self.matCanvas.figure.subplots()
-        # stem([x, ] y, linefmt=None, markerfmt=None, basefmt=None)
-        ax.stem(x, y)
-        ax.set_xlim(10, 25)
-        # ax.set_ylim(0, 120)
-        ax.axis('off')
+        # 绘图
+        self.ax_1.text(x_tempT, y_tempT, s, size=15, ha="center", va="center",
+                       bbox=dict(boxstyle="round", ec=(1., 0.5, 0.5), fc=(1., 0.8, 0.8),))
+        self.ax_1.arrow(x_temp, 0, 0, y_temp, alpha=0.8,
+                        color='red')
         self.matCanvas.figure.canvas.draw()
         print("way back home")
         self.todayDrawIndex += 1
 
     def clearCanvas(self):
         self.matCanvas.figure.clf()
+
+    def closeEvent(self, event):
+        if self.timer_1.isActive():
+            self.timer_1.stop()
 
 
 if __name__ == "__main__":
