@@ -14,17 +14,22 @@ import PathManager as pathm
 
 
 class ClockStatics_V1(QWidget):
-    def __init__(self):
+    # 竖版(0) or 横版(1)
+    def __init__(self, ver_hor=1):
         super().__init__()
         # 环境配置
         self.srcpath = pathm.GetUiPath()
         self.logpath = pathm.GetLogPath()
+        self.verHor = ver_hor
         self.Timing = False
         self.setupUI()
         self.setGeometry(100, 200, 600, 200)
 
     def setupUI(self):
-        WholeLCDLayout = QHBoxLayout()
+        if self.verHor == 0:
+            WholeLCDLayout = QVBoxLayout()
+        else:
+            WholeLCDLayout = QHBoxLayout()
 
         self.LCD = QLCDNumber(self)
         self.LCD.setDigitCount(8)
@@ -42,7 +47,10 @@ class ClockStatics_V1(QWidget):
         self.StopTime = datetime.now()
         self.gap = datetime.now()-datetime.now()
         # button area
-        ButtonAreaLayout = QVBoxLayout()
+        if self.verHor == 0:
+            ButtonAreaLayout = QHBoxLayout()
+        else:
+            ButtonAreaLayout = QVBoxLayout()
 
         # 按钮样式-1
         self.buttonStyle_1 = ("QPushButton{border-radius:4px;font-size:16px;font-weight:bold;color:rgb(2, 9, 34);}"
@@ -219,7 +227,7 @@ if __name__ == "__main__":
     if 0 or 1:
         app = QApplication(sys.argv)
         if 1:
-            form = ClockStatics_V1()
+            form = ClockStatics_V1(ver_hor=0)
         else:
             form = ClockStatics()
         form.show()
