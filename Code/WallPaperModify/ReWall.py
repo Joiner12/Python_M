@@ -24,7 +24,7 @@ import os
 
 
 def Re_WallPaper():
-    filepath = r"D:\壁纸"
+    filepath = r"D:\壁纸-1"
     std_name = r'Wallpaper_'
     pic_Format = ['png', 'gif', 'jpg', 'bpm']
     std_fileCnt = 1

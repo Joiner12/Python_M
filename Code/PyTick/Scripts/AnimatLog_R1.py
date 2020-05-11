@@ -17,7 +17,7 @@ from numpy import (random, arange, sin, deg2rad,
                    sign, cos, sinc, linspace, array, max)
 import os
 import sys
-from PyQt5.QtGui import *  # (the example applies equally well to PySide)
+from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 from matplotlib.backends.backend_qt5agg import(
@@ -42,8 +42,8 @@ class LogMoudle(QWidget):
     def __init__(self, logpath):
          # check file
         super().__init__()
-        self.logpath = logpath
-        fileflag = os.path.exists(logpath)
+        # self.logpath = logpath
+        # fileflag = os.path.exists(logpath)
         self.setupUI()
         self.__showImg__()
         self.time_01 = QTimer()
@@ -101,7 +101,10 @@ class LogMoudle(QWidget):
                     deTemp[2] = CowThree
                     self.logDetailList.append(deTemp)
                     # today
-                    dateToday = datetime.today()
+                    if False:
+                        dateToday = datetime.today()
+                    else:
+                        dateToday = datetime.strptime("2020-04-15", "%Y-%m-%d")
                     today_detail = [dateToday.month, dateToday.day]
                     cowOne_detail = [CowOne.month, CowOne.day]
                     CowTwo_detail = [CowTwo.month, CowTwo.day]
@@ -278,10 +281,10 @@ class PopUp(QWidget):
                     deTemp[2] = CowThree
                     self.logDetailList.append(deTemp)
                     # today
-                    if True:
+                    if False:
                         dateToday = datetime.today()
                     else:
-                        dateToday = datetime.strptime("2020-04-05", "%Y-%m-%d")
+                        dateToday = datetime.strptime("2020-04-15", "%Y-%m-%d")
                     today_detail = [dateToday.month, dateToday.day]
                     cowOne_detail = [CowOne.month, CowOne.day]
                     CowTwo_detail = [CowTwo.month, CowTwo.day]
