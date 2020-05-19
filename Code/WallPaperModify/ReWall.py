@@ -17,6 +17,7 @@
     [8] <' " "' 的区别> https://blog.csdn.net/woainishifu/article/details/76105667
     [9] <生成exe文件> https://blog.csdn.net/zengxiantao1994/article/details/76578421
     [10] <bat 运行脚本> https://zhuanlan.zhihu.com/p/81042686
+    [11] <查看文件夹> https://www.cnblogs.com/strongYaYa/p/7200357.html
 '''
 
 import os
