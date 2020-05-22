@@ -2,8 +2,8 @@
 title Rename wallPaper
 cls
 REM cd D:\Codes\Python_M\Code\WallPaperModify
-cd D:\±⁄÷Ω
+cd D:\Â£ÅÁ∫∏
 echo ============================================================================
-python ReWall.py
+python ReWallPaper.py
 echo ============================================================================
 pause
