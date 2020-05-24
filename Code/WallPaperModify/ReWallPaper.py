@@ -4,7 +4,7 @@
 __author__ = "Risky Junior"
 __date__ = "2020-5-22"
 
-from os import path, listdir, walk, rename, sep
+from os import path, listdir, walk, rename, sep, system
 
 
 class RegularWallPaper():
@@ -99,5 +99,10 @@ class RegularWallPaper():
 
 
 if __name__ == "__main__":
-    print("Start to Rename Target WallPaper img files")
-    ex = RegularWallPaper()
+    handle_choice = input("Get Windows Focus On|Rename WallPaper:[0]|[1]: ")
+    if handle_choice == "0":
+        print(handle_choice)
+        system(r"D:\壁纸\GETwindowfocus.bat")
+    else:
+        print("Start to Rename Target WallPaper img files")
+        ex = RegularWallPaper()
