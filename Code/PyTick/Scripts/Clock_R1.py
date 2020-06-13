@@ -221,6 +221,11 @@ class ClockStatics_V1(QWidget):
             except:
                 pass
 
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        bg = QPixmap(os.path.join(pathm.GetUiPath(), r"deer-1.jpg"))
+        painter.drawPixmap(self.rect(), bg)
+
 
 if __name__ == "__main__":
     import sys

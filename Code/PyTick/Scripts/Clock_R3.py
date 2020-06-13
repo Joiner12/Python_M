@@ -8,7 +8,7 @@ from PyQt5.QtCore import QSize
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import Qt, pyqtSignal, QPoint
 from PyQt5.QtGui import QFont, QEnterEvent, QPainter, QColor, QPen, QPixmap
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QSpacerItem, QSizePolicy, QPushButton
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QSpacerItem, QSizePolicy, QPushButton, QMessageBox
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton, QTextEdit
 import PathManager as pathm
@@ -247,8 +247,8 @@ class FramelessWindow(QWidget):
         """由于是全透明背景窗口,重绘事件中绘制透明度为1的难以发现的边框,用于调整窗口大小"""
         super(FramelessWindow, self).paintEvent(event)
         painter = QPainter(self)
-        # bg = QPixmap(os.path.join(pathm.GetUiPath(),r"Wallpaper_15.jpg"))
-        # painter.drawPixmap(self.rect(),gb)
+        # bg = QPixmap(os.path.join(pathm.GetUiPath(), r"infinite.jpg"))
+        # painter.drawPixmap(self.rect(), bg)
         painter.setPen(QPen(QColor(255, 255, 255, 1), 2 * self.Margins))
         painter.drawRect(self.rect())
 
@@ -372,6 +372,14 @@ class FramelessWindow(QWidget):
             else:
                 return
         self.setGeometry(x, y, w, h)
+
+    def closeEvent(self, event):
+        reply = QMessageBox.question(
+            self, "Quit Dialog", "Quit", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if reply == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
 
 
 class MainWindow(QWidget):
