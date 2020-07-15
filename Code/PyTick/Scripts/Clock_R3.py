@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QSpacerIt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QPushButton, QTextEdit
 import PathManager as pathm
-from Clock_R1 import ClockStatics_V1
+from Clock_R2 import ClockStatics_V1
 
 # 样式
 StyleSheet = """
@@ -247,8 +247,8 @@ class FramelessWindow(QWidget):
         """由于是全透明背景窗口,重绘事件中绘制透明度为1的难以发现的边框,用于调整窗口大小"""
         super(FramelessWindow, self).paintEvent(event)
         painter = QPainter(self)
-        # bg = QPixmap(os.path.join(pathm.GetUiPath(), r"infinite.jpg"))
-        # painter.drawPixmap(self.rect(), bg)
+        # bg = QPixmap(os.path.join(pathm.GetUiPath(),r"Wallpaper_15.jpg"))
+        # painter.drawPixmap(self.rect(),gb)
         painter.setPen(QPen(QColor(255, 255, 255, 1), 2 * self.Margins))
         painter.drawRect(self.rect())
 
@@ -373,9 +373,10 @@ class FramelessWindow(QWidget):
                 return
         self.setGeometry(x, y, w, h)
 
+    # overload close event
     def closeEvent(self, event):
         reply = QMessageBox.question(
-            self, "Quit Dialog", "Quit", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            self, 'Quit Dialog', 'Quit?', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
             event.accept()
         else:
@@ -387,7 +388,7 @@ class MainWindow(QWidget):
         super(MainWindow, self).__init__(*args, **kwargs)
         layout = QVBoxLayout(self, spacing=0)
         layout.setContentsMargins(0, 0, 0, 0)
-        self.tick = ClockStatics_V1(ver_hor=0)
+        self.tick = ClockStatics_V1()
         layout.addWidget(self.tick)
         self.setLayout(layout)
 
@@ -400,7 +401,16 @@ if __name__ == '__main__':
     # mainWnd.setWindowTitle('IClock')
     mainWnd.setWindowIcon(
         QIcon(os.path.join(pathm.GetUiPath(), r"I-1.ico")))
-    mainWnd.resize(QSize(550, 550*0.62))
+    mainWindowWidth = 360
+    # mainWnd.resize(QSize(mainWindowWidth, mainWindowWidth*0.52))
+    desktop = QApplication.desktop()
+    # 获取显示器分辨率大小
+    screenRect = desktop.screenGeometry()
+    height = screenRect.height()
+
     mainWnd.setWidget(MainWindow(mainWnd))  # 把自己的窗口添加进来
+    mainWnd.setGeometry(0, height - 50 - mainWindowWidth*0.52,
+                        mainWindowWidth, mainWindowWidth*0.52)
+    # mainWnd.move(0,700)
     mainWnd.show()
     sys.exit(app.exec_())

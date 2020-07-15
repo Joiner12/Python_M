@@ -35,7 +35,7 @@ class MultiInputDialog(QDialog):
 
     signal_PieceInfo = pyqtSignal(str)
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, handleflag=0):
         super().__init__(parent)
         self.setWindowTitle("Piece Info")
         self.setWindowIcon(QIcon(os.path.join(self.srcpath, "记录-1.png")))
@@ -54,31 +54,66 @@ class MultiInputDialog(QDialog):
                  "QLabel:title{text-align:center}")
         self.bingoLabel.setStyleSheet(style)
         self.bingoLabel.setVisible(False)
-        try:
-            # 获取最后一条日志 作为start protop
-            recentLog = self.GetRecentLog(pathm.GetLogFile())
-            a = recentLog.split("|")
-            startProto = datetime.strptime(a[1], "%Y-%m-%d %H:%M:%S")
-            self.GetStart = QDateTimeEdit(startProto)  # 创建日期+时间的组件
-            self.GetStart.setDisplayFormat('yyyy-MM-dd hh:mm:ss')  # 显示样式
-            self.GetStart.setStyleSheet(self.timedateStyle_1)
-        except:
-            self.GetStart = QDateTimeEdit(
+        # 手动添加log文件
+        if handleflag == 1:
+            try:
+                # 获取最后一条日志 作为start protop
+                recentLog = self.GetRecentLog(pathm.GetLogFile())
+                a = recentLog.split("|")
+                startProto = datetime.strptime(a[1], "%Y-%m-%d %H:%M:%S")
+                self.GetStart = QDateTimeEdit(startProto)  # 创建日期+时间的组件
+                self.GetStart.setDisplayFormat('yyyy-MM-dd hh:mm:ss')  # 显示样式
+                self.GetStart.setStyleSheet(self.timedateStyle_1)
+            except:
+                self.GetStart = QDateTimeEdit(
+                    QDateTime.currentDateTime())  # 创建日期+时间的组件
+                self.GetStart.setDisplayFormat('yyyy-MM-dd hh:mm:ss')  # 显示样式
+                self.GetStart.setStyleSheet(self.timedateStyle_1)
+
+            self.GetFinish = QDateTimeEdit(
                 QDateTime.currentDateTime())  # 创建日期+时间的组件
-            self.GetStart.setDisplayFormat('yyyy-MM-dd hh:mm:ss')  # 显示样式
-            self.GetStart.setStyleSheet(self.timedateStyle_1)
+            self.GetFinish.setDisplayFormat('yyyy-MM-dd hh:mm:ss')  # 显示样式
+            self.GetFinish.setStyleSheet(self.timedateStyle_1)
 
-        self.GetFinish = QDateTimeEdit(
-            QDateTime.currentDateTime())  # 创建日期+时间的组件
-        self.GetFinish.setDisplayFormat('yyyy-MM-dd hh:mm:ss')  # 显示样式
-        self.GetFinish.setStyleSheet(self.timedateStyle_1)
+            # detail item
+            self.Detail = QLineEdit()
+            self.Detail.setStyleSheet(self.lineEditStyle_1)
+            self.Detail.setPlaceholderText("what did you do")
+            self.Detail.setClearButtonEnabled(True)
+        # 修改最后一条log文件
+        else:
+            try:
+                # 获取最新一条详细日志
+                recentLog = self.GetRecentLog(pathm.GetLogFile())
+                a = recentLog.split("|")
+                startProto = datetime.strptime(a[0], "%Y-%m-%d %H:%M:%S")
+                self.GetStart = QDateTimeEdit(startProto)  # 创建日期+时间的组件
+                self.GetStart.setDisplayFormat('yyyy-MM-dd hh:mm:ss')  # 显示样式
+                self.GetStart.setStyleSheet(self.timedateStyle_1)
 
-        # detail item
-        self.Detail = QLineEdit()
-        self.Detail.setStyleSheet(self.lineEditStyle_1)
-        self.Detail.setPlaceholderText("what did you do")
-        self.Detail.setClearButtonEnabled(True)
+                finishProto = datetime.strptime(a[1], "%Y-%m-%d %H:%M:%S")
+                self.GetFinish = QDateTimeEdit(finishProto)  # 创建日期+时间的组件
+                self.GetFinish.setDisplayFormat('yyyy-MM-dd hh:mm:ss')  # 显示样式
+                self.GetFinish.setStyleSheet(self.timedateStyle_1)
+                # detail item
+                self.Detail = QLineEdit()
+                self.Detail.setStyleSheet(self.lineEditStyle_1)
+                self.Detail.setPlaceholderText(a[-1])
+                self.Detail.setClearButtonEnabled(True)
+            except:
+                self.GetStart = QDateTimeEdit(
+                    QDateTime.currentDateTime())  # 创建日期+时间的组件
+                self.GetStart.setDisplayFormat('yyyy-MM-dd hh:mm:ss')  # 显示样式
+                self.GetStart.setStyleSheet(self.timedateStyle_1)
 
+                self.GetFinish = QDateTimeEdit(
+                    QDateTime.currentDateTime())  # 创建日期+时间的组件
+                self.GetFinish.setDisplayFormat('yyyy-MM-dd hh:mm:ss')  # 显示样式
+                self.GetFinish.setStyleSheet(self.timedateStyle_1)
+                self.Detail = QLineEdit()
+                self.Detail.setStyleSheet(self.lineEditStyle_1)
+                self.Detail.setPlaceholderText("try failed ")
+                self.Detail.setClearButtonEnabled(True)
         # button area
         buttonbox = QDialogButtonBox(self)
         buttonbox.setOrientation(Qt.Horizontal)
@@ -110,16 +145,34 @@ class MultiInputDialog(QDialog):
         gap = datetime.strptime(self.GetFinish.text(), "%Y-%m-%d %H:%M:%S") - \
             datetime.strptime(self.GetStart.text(), "%Y-%m-%d %H:%M:%S")
         gap_m = int(gap.seconds/60)
-        detail = self.Detail.text()
-        detail = detail.strip()
-        if gap_m > 1 and len(detail) > 0:
-            pieceInfo = self.GetStart.text()+"|"+self.GetFinish.text() + \
-                "|"+str(gap_m)+"|"+self.Detail.text()
-            self.pieceInfo = pieceInfo
-            self.bingoLabel.setVisible(True)
-            self.emitPiece()
-        else:
-            # 复位操作
+        # did't change edit line protocol
+        try:
+            detail = self.Detail.text()
+            detail = detail.strip()
+            if len(detail) == 0:
+                recentLog = self.GetRecentLog(pathm.GetLogFile())
+                lastLogTemp = recentLog.split("|")
+                detail = lastLogTemp[-1]
+
+            if gap_m > 1:
+                pieceInfo = self.GetStart.text()+"|"+self.GetFinish.text() + \
+                    "|"+str(gap_m)+"|" + detail
+                self.pieceInfo = pieceInfo
+                # self.bingoLabel.setVisible(True)
+                infoProto = 'T0:' + self.GetStart.text() + '\n' \
+                    + 'T1:' + self.GetFinish.text() + '\n' \
+                    + 'Gap:' + str(gap_m) + '\n' \
+                    + 'Detail:' + detail
+                reply = QMessageBox.question(self, 'Save Message',
+                                             infoProto, QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                if reply == QMessageBox.Yes:
+                    self.emitPiece()
+                    self.close()
+                    print('emit')
+                    event.accept()
+                else:
+                    event.ignore()
+        except:
             self.__reset__()
 
     def isCancle(self):
@@ -127,15 +180,6 @@ class MultiInputDialog(QDialog):
 
     def closeEvent(self, event):
         return
-        reply = QMessageBox.question(self, 'Close Message',
-                                     "Add to Log?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if reply == QMessageBox.Yes:
-            if len(self.pieceInfo.strip()) == 0:
-
-                self.pieceInfo = ""
-            event.accept()
-        else:
-            event.ignore()
 
     # 静态方法
     @staticmethod
@@ -150,7 +194,7 @@ class MultiInputDialog(QDialog):
         self.pieceInfo = ""
 
     def __reset__(self):
-        self.bingoLabel.setVisible(False)
+        # self.bingoLabel.setVisible(False)
         self.GetStart.setDateTime(QDateTime.currentDateTime())
         self.GetFinish.setDateTime(QDateTime.currentDateTime())
         self.pieceInfo = ""
@@ -158,11 +202,18 @@ class MultiInputDialog(QDialog):
     def GetRecentLog(self, logfile):
         # 参数检查 用try替换
         recentPiece = str()
-        with open(logfile, mode="r", encoding="utf-8") as f:
-            allIn = f.readlines()
-            if not f.closed:
-                f.close()
-        recentPiece = allIn[-1]
+        try:
+            with open(logfile, mode="r", encoding="utf-8") as f:
+                allIn = f.readlines()
+                cnt = -1
+                while (allIn[cnt].endswith('\n') and len(allIn[cnt]) == 1):
+                    cnt -= 1
+                    if cnt < -10:
+                        break
+                if not cnt < -10:
+                    recentPiece = allIn[cnt]
+        except:
+            pass
         return recentPiece
 
 

@@ -23,6 +23,7 @@ def GetLogPath():
         return r"D:\Python_M\Code\PyTick\Log"
     else:
         return r"D:\Codes\Python_M\Code\PyTick\Logs"
+
 # lrc
 
 
